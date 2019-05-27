@@ -163,8 +163,8 @@ object WindowDB: TWindowDB
     ParentFont = False
     TabOrder = 2
     Text = 
-      'D:\Ryan\Documents\Embarcadero\Studio\Projects\ProjectMigration\D' +
-      'B\NSC.FDB'
+      'C:\Users\Denis Denon.PCX\Documents\Embarcadero\Studio\Projects\T' +
+      'este\DB\NSC.FDB'
   end
   object TxtTable: TEdit
     Left = 80

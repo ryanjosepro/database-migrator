@@ -1,0 +1,66 @@
+object WindowFields: TWindowFields
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'WindowFields'
+  ClientHeight = 628
+  ClientWidth = 348
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Title3: TLabel
+    Left = 8
+    Top = 8
+    Width = 201
+    Height = 24
+    Alignment = taCenter
+    Caption = 'Firebird'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -20
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object LblCampos: TLabel
+    Left = 8
+    Top = 35
+    Width = 201
+    Height = 13
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'Campos Firebird'
+  end
+  object Label1: TLabel
+    Left = 215
+    Top = 35
+    Width = 125
+    Height = 13
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'N'#186' Campo Dataflex'
+  end
+  object GridFirebird: TStringGrid
+    Left = 8
+    Top = 54
+    Width = 332
+    Height = 566
+    ColCount = 2
+    DefaultColWidth = 200
+    FixedColor = clWindow
+    RowCount = 1
+    FixedRows = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing]
+    TabOrder = 0
+    RowHeights = (
+      24)
+  end
+end

@@ -5,7 +5,9 @@ uses
   ViewMain in 'View\ViewMain.pas' {WindowMain},
   MyUtils in 'Code\MyUtils.pas',
   ConnectionFactory in 'Connection\ConnectionFactory.pas' {ConnFactory: TDataModule},
-  ViewDB in 'View\ViewDB.pas' {WindowDB};
+  ViewDB in 'View\ViewDB.pas' {WindowDB},
+  ViewFields in 'View\ViewFields.pas' {WindowFields},
+  DAO in 'Connection\DAO.pas';
 
 {$R *.res}
 
@@ -15,5 +17,6 @@ begin
   Application.CreateForm(TWindowMain, WindowMain);
   Application.CreateForm(TConnFactory, ConnFactory);
   Application.CreateForm(TWindowDB, WindowDB);
+  Application.CreateForm(TWindowFields, WindowFields);
   Application.Run;
 end.

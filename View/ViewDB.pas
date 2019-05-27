@@ -36,6 +36,10 @@ implementation
 
 procedure TWindowDB.BtnProntoClick(Sender: TObject);
 begin
+  ConnFactory.Conn.Params.UserName := TxtUserName.Text;
+  ConnFactory.Conn.Params.Password := TxtPassword.Text;
+  ConnFactory.Conn.Params.Database := TxtDatabase.Text;
+  ConnFactory.Conn.Connected := true;
   Close;
 end;
 
@@ -46,6 +50,7 @@ begin
   ConnFactory.Conn.Params.Database := TxtDatabase.Text;
   try
     ConnFactory.Conn.Connected := true;
+    ShowMessage('Conexão Ok!');
   except on E: Exception do
     ShowMessage('Erro de conexão: ' + E.ToString);
   end;

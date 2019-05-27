@@ -113,6 +113,11 @@
             <Form>WindowDB</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="View\ViewFields.pas">
+            <Form>WindowFields</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="Connection\DAO.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

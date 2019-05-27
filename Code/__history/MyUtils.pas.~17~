@@ -1,0 +1,27 @@
+unit MyUtils;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Variants;
+
+type
+  TStringMatrix = array of array of string;
+
+  TDataFlex = class
+  public
+    class function ToMatrix(StrList: TStringList): TStringMatrix;
+  end;
+
+implementation
+
+{ TDataFlex }
+
+class function TDataFlex.ToMatrix(StrList: TStringList): TStringMatrix;
+var
+  TotCols, TotRows: integer;
+begin
+
+end;
+
+end.
