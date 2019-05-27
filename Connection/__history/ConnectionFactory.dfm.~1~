@@ -1,0 +1,1011 @@
+object ConnFactory: TConnFactory
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 155
+  Width = 251
+  object Conn: TFDConnection
+    Params.Strings = (
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'DriverID=FB')
+    LoginPrompt = False
+    Left = 64
+    Top = 16
+  end
+  object Trans: TFDTransaction
+    Connection = Conn
+    Left = 144
+    Top = 16
+  end
+  object QueryProdutos: TFDQuery
+    Connection = Conn
+    SQL.Strings = (
+      'select * from produtos')
+    Left = 104
+    Top = 88
+    object QueryProdutosID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QueryProdutosCODGRU: TIntegerField
+      FieldName = 'CODGRU'
+      Origin = 'CODGRU'
+    end
+    object QueryProdutosCODPRO: TStringField
+      FieldName = 'CODPRO'
+      Origin = 'CODPRO'
+      Required = True
+      Size = 14
+    end
+    object QueryProdutosCODBAR: TStringField
+      FieldName = 'CODBAR'
+      Origin = 'CODBAR'
+    end
+    object QueryProdutosNOMPRO: TStringField
+      FieldName = 'NOMPRO'
+      Origin = 'NOMPRO'
+      Size = 120
+    end
+    object QueryProdutosCODFOR: TIntegerField
+      FieldName = 'CODFOR'
+      Origin = 'CODFOR'
+    end
+    object QueryProdutosNOMFOR: TStringField
+      FieldName = 'NOMFOR'
+      Origin = 'NOMFOR'
+      Size = 60
+    end
+    object QueryProdutosUN: TStringField
+      FieldName = 'UN'
+      Origin = 'UN'
+      Size = 6
+    end
+    object QueryProdutosTRIBUT: TStringField
+      FieldName = 'TRIBUT'
+      Origin = 'TRIBUT'
+      Size = 3
+    end
+    object QueryProdutosREF: TStringField
+      FieldName = 'REF'
+      Origin = 'REF'
+    end
+    object QueryProdutosIPI_E: TBCDField
+      FieldName = 'IPI_E'
+      Origin = 'IPI_E'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosICMS_E: TBCDField
+      FieldName = 'ICMS_E'
+      Origin = 'ICMS_E'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosDH_CAD: TSQLTimeStampField
+      FieldName = 'DH_CAD'
+      Origin = 'DH_CAD'
+      Required = True
+    end
+    object QueryProdutosDH_ALT: TSQLTimeStampField
+      FieldName = 'DH_ALT'
+      Origin = 'DH_ALT'
+    end
+    object QueryProdutosDH_ESTOQUE: TSQLTimeStampField
+      FieldName = 'DH_ESTOQUE'
+      Origin = 'DH_ESTOQUE'
+    end
+    object QueryProdutosDT_UVENDA: TDateField
+      FieldName = 'DT_UVENDA'
+      Origin = 'DT_UVENDA'
+    end
+    object QueryProdutosDT_UCOMPRA: TDateField
+      FieldName = 'DT_UCOMPRA'
+      Origin = 'DT_UCOMPRA'
+    end
+    object QueryProdutosUPVEN: TBCDField
+      FieldName = 'UPVEN'
+      Origin = 'UPVEN'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosDT_ALT_PRECO: TDateField
+      FieldName = 'DT_ALT_PRECO'
+      Origin = 'DT_ALT_PRECO'
+    end
+    object QueryProdutosLUCRO1: TBCDField
+      FieldName = 'LUCRO1'
+      Origin = 'LUCRO1'
+      Precision = 18
+      Size = 3
+    end
+    object QueryProdutosPVENDA: TBCDField
+      FieldName = 'PVENDA'
+      Origin = 'PVENDA'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosPCUSTOL: TBCDField
+      FieldName = 'PCUSTOL'
+      Origin = 'PCUSTOL'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosPCUSTOB: TBCDField
+      FieldName = 'PCUSTOB'
+      Origin = 'PCUSTOB'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosPCUSTOM: TBCDField
+      FieldName = 'PCUSTOM'
+      Origin = 'PCUSTOM'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosESTOQUE: TBCDField
+      FieldName = 'ESTOQUE'
+      Origin = 'ESTOQUE'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosESTMIN: TBCDField
+      FieldName = 'ESTMIN'
+      Origin = 'ESTMIN'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosGRADE: TStringField
+      FieldName = 'GRADE'
+      Origin = 'GRADE'
+      Size = 5
+    end
+    object QueryProdutosQUANTINV: TStringField
+      FieldName = 'QUANTINV'
+      Origin = 'QUANTINV'
+      Size = 5
+    end
+    object QueryProdutosALIQUOTA: TBCDField
+      FieldName = 'ALIQUOTA'
+      Origin = 'ALIQUOTA'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosOBSERVACAO: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      Size = 300
+    end
+    object QueryProdutosCST: TStringField
+      FieldName = 'CST'
+      Origin = 'CST'
+      FixedChar = True
+      Size = 3
+    end
+    object QueryProdutosNCM: TStringField
+      FieldName = 'NCM'
+      Origin = 'NCM'
+      Size = 8
+    end
+    object QueryProdutosTIPO: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+    end
+    object QueryProdutosIAT: TStringField
+      FieldName = 'IAT'
+      Origin = 'IAT'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object QueryProdutosIPPT: TStringField
+      FieldName = 'IPPT'
+      Origin = 'IPPT'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object QueryProdutosATIVO: TStringField
+      FieldName = 'ATIVO'
+      Origin = 'ATIVO'
+      Size = 5
+    end
+    object QueryProdutosMARCA: TStringField
+      FieldName = 'MARCA'
+      Origin = 'MARCA'
+      Size = 5
+    end
+    object QueryProdutosORIG: TStringField
+      FieldName = 'ORIG'
+      Origin = 'ORIG'
+      Required = True
+      Size = 1
+    end
+    object QueryProdutosID_PIS_COFINS: TSmallintField
+      FieldName = 'ID_PIS_COFINS'
+      Origin = 'ID_PIS_COFINS'
+    end
+    object QueryProdutosID_SECAO: TSmallintField
+      FieldName = 'ID_SECAO'
+      Origin = 'ID_SECAO'
+    end
+    object QueryProdutosSECAO_POS: TIntegerField
+      FieldName = 'SECAO_POS'
+      Origin = 'SECAO_POS'
+    end
+    object QueryProdutosCODPOSSE: TSmallintField
+      FieldName = 'CODPOSSE'
+      Origin = 'CODPOSSE'
+    end
+    object QueryProdutosIBPT_ALIQ: TCurrencyField
+      FieldName = 'IBPT_ALIQ'
+      Origin = 'IBPT_ALIQ'
+    end
+    object QueryProdutosCOMPOSICAO: TStringField
+      FieldName = 'COMPOSICAO'
+      Origin = 'COMPOSICAO'
+      Size = 5
+    end
+    object QueryProdutosPESO_G: TIntegerField
+      FieldName = 'PESO_G'
+      Origin = 'PESO_G'
+    end
+    object QueryProdutosESTFIS: TBCDField
+      FieldName = 'ESTFIS'
+      Origin = 'ESTFIS'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosLINK: TStringField
+      FieldName = 'LINK'
+      Origin = 'LINK'
+      Size = 125
+    end
+    object QueryProdutosCOD_BALANCA: TIntegerField
+      FieldName = 'COD_BALANCA'
+      Origin = 'COD_BALANCA'
+    end
+    object QueryProdutosID_SUBSECAO: TIntegerField
+      FieldName = 'ID_SUBSECAO'
+      Origin = 'ID_SUBSECAO'
+    end
+    object QueryProdutosPESO_BRUTO: TBCDField
+      FieldName = 'PESO_BRUTO'
+      Origin = 'PESO_BRUTO'
+      Precision = 18
+      Size = 3
+    end
+    object QueryProdutosUSA_INDICE: TSmallintField
+      FieldName = 'USA_INDICE'
+      Origin = 'USA_INDICE'
+    end
+    object QueryProdutosVR_INDICE: TBCDField
+      FieldName = 'VR_INDICE'
+      Origin = 'VR_INDICE'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosCEST: TStringField
+      FieldName = 'CEST'
+      Origin = 'CEST'
+      Size = 7
+    end
+    object QueryProdutosOBS_NFE: TStringField
+      FieldName = 'OBS_NFE'
+      Origin = 'OBS_NFE'
+      Size = 1
+    end
+    object QueryProdutosID_EMP: TSmallintField
+      FieldName = 'ID_EMP'
+      Origin = 'ID_EMP'
+      Required = True
+    end
+    object QueryProdutosID_MARCAS: TIntegerField
+      FieldName = 'ID_MARCAS'
+      Origin = 'ID_MARCAS'
+    end
+    object QueryProdutosPVENDAP: TBCDField
+      FieldName = 'PVENDAP'
+      Origin = 'PVENDAP'
+      Precision = 18
+      Size = 2
+    end
+    object QueryProdutosALT: TSmallintField
+      FieldName = 'ALT'
+      Origin = 'ALT'
+    end
+  end
+  object QuerySQL: TFDQuery
+    Connection = Conn
+    Left = 24
+    Top = 88
+    object IntegerField1: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object IntegerField2: TIntegerField
+      FieldName = 'CODGRU'
+      Origin = 'CODGRU'
+    end
+    object StringField1: TStringField
+      FieldName = 'CODPRO'
+      Origin = 'CODPRO'
+      Required = True
+      Size = 14
+    end
+    object StringField2: TStringField
+      FieldName = 'CODBAR'
+      Origin = 'CODBAR'
+    end
+    object StringField3: TStringField
+      FieldName = 'NOMPRO'
+      Origin = 'NOMPRO'
+      Size = 120
+    end
+    object IntegerField3: TIntegerField
+      FieldName = 'CODFOR'
+      Origin = 'CODFOR'
+    end
+    object StringField4: TStringField
+      FieldName = 'NOMFOR'
+      Origin = 'NOMFOR'
+      Size = 60
+    end
+    object StringField5: TStringField
+      FieldName = 'UN'
+      Origin = 'UN'
+      Size = 6
+    end
+    object StringField6: TStringField
+      FieldName = 'TRIBUT'
+      Origin = 'TRIBUT'
+      Size = 3
+    end
+    object StringField7: TStringField
+      FieldName = 'REF'
+      Origin = 'REF'
+    end
+    object BCDField1: TBCDField
+      FieldName = 'IPI_E'
+      Origin = 'IPI_E'
+      Precision = 18
+      Size = 2
+    end
+    object BCDField2: TBCDField
+      FieldName = 'ICMS_E'
+      Origin = 'ICMS_E'
+      Precision = 18
+      Size = 2
+    end
+    object SQLTimeStampField1: TSQLTimeStampField
+      FieldName = 'DH_CAD'
+      Origin = 'DH_CAD'
+      Required = True
+    end
+    object SQLTimeStampField2: TSQLTimeStampField
+      FieldName = 'DH_ALT'
+      Origin = 'DH_ALT'
+    end
+    object SQLTimeStampField3: TSQLTimeStampField
+      FieldName = 'DH_ESTOQUE'
+      Origin = 'DH_ESTOQUE'
+    end
+    object DateField1: TDateField
+      FieldName = 'DT_UVENDA'
+      Origin = 'DT_UVENDA'
+    end
+    object DateField2: TDateField
+      FieldName = 'DT_UCOMPRA'
+      Origin = 'DT_UCOMPRA'
+    end
+    object BCDField3: TBCDField
+      FieldName = 'UPVEN'
+      Origin = 'UPVEN'
+      Precision = 18
+      Size = 2
+    end
+    object DateField3: TDateField
+      FieldName = 'DT_ALT_PRECO'
+      Origin = 'DT_ALT_PRECO'
+    end
+    object BCDField4: TBCDField
+      FieldName = 'LUCRO1'
+      Origin = 'LUCRO1'
+      Precision = 18
+      Size = 3
+    end
+    object BCDField5: TBCDField
+      FieldName = 'PVENDA'
+      Origin = 'PVENDA'
+      Precision = 18
+      Size = 2
+    end
+    object BCDField6: TBCDField
+      FieldName = 'PCUSTOL'
+      Origin = 'PCUSTOL'
+      Precision = 18
+      Size = 2
+    end
+    object BCDField7: TBCDField
+      FieldName = 'PCUSTOB'
+      Origin = 'PCUSTOB'
+      Precision = 18
+      Size = 2
+    end
+    object BCDField8: TBCDField
+      FieldName = 'PCUSTOM'
+      Origin = 'PCUSTOM'
+      Precision = 18
+      Size = 2
+    end
+    object BCDField9: TBCDField
+      FieldName = 'ESTOQUE'
+      Origin = 'ESTOQUE'
+      Precision = 18
+      Size = 2
+    end
+    object BCDField10: TBCDField
+      FieldName = 'ESTMIN'
+      Origin = 'ESTMIN'
+      Precision = 18
+      Size = 2
+    end
+    object StringField8: TStringField
+      FieldName = 'GRADE'
+      Origin = 'GRADE'
+      Size = 5
+    end
+    object StringField9: TStringField
+      FieldName = 'QUANTINV'
+      Origin = 'QUANTINV'
+      Size = 5
+    end
+    object BCDField11: TBCDField
+      FieldName = 'ALIQUOTA'
+      Origin = 'ALIQUOTA'
+      Precision = 18
+      Size = 2
+    end
+    object StringField10: TStringField
+      FieldName = 'OBSERVACAO'
+      Origin = 'OBSERVACAO'
+      Size = 300
+    end
+    object StringField11: TStringField
+      FieldName = 'CST'
+      Origin = 'CST'
+      FixedChar = True
+      Size = 3
+    end
+    object StringField12: TStringField
+      FieldName = 'NCM'
+      Origin = 'NCM'
+      Size = 8
+    end
+    object SmallintField1: TSmallintField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+    end
+    object StringField13: TStringField
+      FieldName = 'IAT'
+      Origin = 'IAT'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object StringField14: TStringField
+      FieldName = 'IPPT'
+      Origin = 'IPPT'
+      Required = True
+      FixedChar = True
+      Size = 1
+    end
+    object StringField15: TStringField
+      FieldName = 'ATIVO'
+      Origin = 'ATIVO'
+      Size = 5
+    end
+    object StringField16: TStringField
+      FieldName = 'MARCA'
+      Origin = 'MARCA'
+      Size = 5
+    end
+    object StringField17: TStringField
+      FieldName = 'ORIG'
+      Origin = 'ORIG'
+      Required = True
+      Size = 1
+    end
+    object SmallintField2: TSmallintField
+      FieldName = 'ID_PIS_COFINS'
+      Origin = 'ID_PIS_COFINS'
+    end
+    object SmallintField3: TSmallintField
+      FieldName = 'ID_SECAO'
+      Origin = 'ID_SECAO'
+    end
+    object IntegerField4: TIntegerField
+      FieldName = 'SECAO_POS'
+      Origin = 'SECAO_POS'
+    end
+    object SmallintField4: TSmallintField
+      FieldName = 'CODPOSSE'
+      Origin = 'CODPOSSE'
+    end
+    object CurrencyField1: TCurrencyField
+      FieldName = 'IBPT_ALIQ'
+      Origin = 'IBPT_ALIQ'
+    end
+    object StringField18: TStringField
+      FieldName = 'COMPOSICAO'
+      Origin = 'COMPOSICAO'
+      Size = 5
+    end
+    object IntegerField5: TIntegerField
+      FieldName = 'PESO_G'
+      Origin = 'PESO_G'
+    end
+    object BCDField12: TBCDField
+      FieldName = 'ESTFIS'
+      Origin = 'ESTFIS'
+      Precision = 18
+      Size = 2
+    end
+    object StringField19: TStringField
+      FieldName = 'LINK'
+      Origin = 'LINK'
+      Size = 125
+    end
+    object IntegerField6: TIntegerField
+      FieldName = 'COD_BALANCA'
+      Origin = 'COD_BALANCA'
+    end
+    object IntegerField7: TIntegerField
+      FieldName = 'ID_SUBSECAO'
+      Origin = 'ID_SUBSECAO'
+    end
+    object BCDField13: TBCDField
+      FieldName = 'PESO_BRUTO'
+      Origin = 'PESO_BRUTO'
+      Precision = 18
+      Size = 3
+    end
+    object SmallintField5: TSmallintField
+      FieldName = 'USA_INDICE'
+      Origin = 'USA_INDICE'
+    end
+    object BCDField14: TBCDField
+      FieldName = 'VR_INDICE'
+      Origin = 'VR_INDICE'
+      Precision = 18
+      Size = 2
+    end
+    object StringField20: TStringField
+      FieldName = 'CEST'
+      Origin = 'CEST'
+      Size = 7
+    end
+    object StringField21: TStringField
+      FieldName = 'OBS_NFE'
+      Origin = 'OBS_NFE'
+      Size = 1
+    end
+    object SmallintField6: TSmallintField
+      FieldName = 'ID_EMP'
+      Origin = 'ID_EMP'
+      Required = True
+    end
+    object IntegerField8: TIntegerField
+      FieldName = 'ID_MARCAS'
+      Origin = 'ID_MARCAS'
+    end
+    object BCDField15: TBCDField
+      FieldName = 'PVENDAP'
+      Origin = 'PVENDAP'
+      Precision = 18
+      Size = 2
+    end
+    object SmallintField7: TSmallintField
+      FieldName = 'ALT'
+      Origin = 'ALT'
+    end
+  end
+  object QueryClientes: TFDQuery
+    Connection = Conn
+    SQL.Strings = (
+      'select * from clientes')
+    Left = 192
+    Top = 88
+    object QueryClientesID: TIntegerField
+      FieldName = 'ID'
+      Origin = 'ID'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Required = True
+    end
+    object QueryClientesNOMCLI: TStringField
+      FieldName = 'NOMCLI'
+      Origin = 'NOMCLI'
+      Size = 60
+    end
+    object QueryClientesAPELIDO: TStringField
+      FieldName = 'APELIDO'
+      Origin = 'APELIDO'
+      Size = 60
+    end
+    object QueryClientesLOGRADOURO: TStringField
+      FieldName = 'LOGRADOURO'
+      Origin = 'LOGRADOURO'
+      Size = 40
+    end
+    object QueryClientesNUMERO: TStringField
+      FieldName = 'NUMERO'
+      Origin = 'NUMERO'
+      Size = 5
+    end
+    object QueryClientesCOMPLEMENTO: TStringField
+      FieldName = 'COMPLEMENTO'
+      Origin = 'COMPLEMENTO'
+      Size = 40
+    end
+    object QueryClientesSETOR: TStringField
+      FieldName = 'SETOR'
+      Origin = 'SETOR'
+      Size = 30
+    end
+    object QueryClientesTELRES: TStringField
+      FieldName = 'TELRES'
+      Origin = 'TELRES'
+      Size = 14
+    end
+    object QueryClientesCASAP: TStringField
+      FieldName = 'CASAP'
+      Origin = 'CASAP'
+      FixedChar = True
+      Size = 1
+    end
+    object QueryClientesID_CIDADES: TStringField
+      FieldName = 'ID_CIDADES'
+      Origin = 'ID_CIDADES'
+      Size = 7
+    end
+    object QueryClientesCIDADE: TStringField
+      FieldName = 'CIDADE'
+      Origin = 'CIDADE'
+      Size = 25
+    end
+    object QueryClientesCEP: TStringField
+      FieldName = 'CEP'
+      Origin = 'CEP'
+      Size = 9
+    end
+    object QueryClientesESTADO: TStringField
+      FieldName = 'ESTADO'
+      Origin = 'ESTADO'
+      FixedChar = True
+      Size = 2
+    end
+    object QueryClientesPROFISSAO: TStringField
+      FieldName = 'PROFISSAO'
+      Origin = 'PROFISSAO'
+      Size = 40
+    end
+    object QueryClientesENDPROF: TStringField
+      FieldName = 'ENDPROF'
+      Origin = 'ENDPROF'
+      Size = 40
+    end
+    object QueryClientesSETPROF: TStringField
+      FieldName = 'SETPROF'
+      Origin = 'SETPROF'
+      Size = 30
+    end
+    object QueryClientesTELPROF: TStringField
+      FieldName = 'TELPROF'
+      Origin = 'TELPROF'
+      Size = 14
+    end
+    object QueryClientesFIN_RENDA: TBCDField
+      FieldName = 'FIN_RENDA'
+      Origin = 'FIN_RENDA'
+      Precision = 18
+      Size = 2
+    end
+    object QueryClientesCONJUGE: TStringField
+      FieldName = 'CONJUGE'
+      Origin = 'CONJUGE'
+      Size = 60
+    end
+    object QueryClientesCPF_CNPJ: TStringField
+      FieldName = 'CPF_CNPJ'
+      Origin = 'CPF_CNPJ'
+      Size = 14
+    end
+    object QueryClientesRG_INSC: TStringField
+      FieldName = 'RG_INSC'
+      Origin = 'RG_INSC'
+      Size = 22
+    end
+    object QueryClientesORGEM: TStringField
+      FieldName = 'ORGEM'
+      Origin = 'ORGEM'
+      Size = 6
+    end
+    object QueryClientesDATNASC: TDateField
+      FieldName = 'DATNASC'
+      Origin = 'DATNASC'
+    end
+    object QueryClientesNATURALIDADE: TStringField
+      FieldName = 'NATURALIDADE'
+      Origin = 'NATURALIDADE'
+      Size = 25
+    end
+    object QueryClientesPAI: TStringField
+      FieldName = 'PAI'
+      Origin = 'PAI'
+      Size = 60
+    end
+    object QueryClientesMAE: TStringField
+      FieldName = 'MAE'
+      Origin = 'MAE'
+      Size = 60
+    end
+    object QueryClientesIPESS1: TStringField
+      FieldName = 'IPESS1'
+      Origin = 'IPESS1'
+      Size = 180
+    end
+    object QueryClientesCRED1: TStringField
+      FieldName = 'CRED1'
+      Origin = 'CRED1'
+      Size = 180
+    end
+    object QueryClientesOBSERV1: TStringField
+      FieldName = 'OBSERV1'
+      Origin = 'OBSERV1'
+      Size = 400
+    end
+    object QueryClientesDATCAD: TDateField
+      FieldName = 'DATCAD'
+      Origin = 'DATCAD'
+    end
+    object QueryClientesCREDITO: TStringField
+      FieldName = 'CREDITO'
+      Origin = 'CREDITO'
+    end
+    object QueryClientesSITUACAO: TStringField
+      FieldName = 'SITUACAO'
+      Origin = 'SITUACAO'
+      FixedChar = True
+      Size = 1
+    end
+    object QueryClientesTELCEL: TStringField
+      FieldName = 'TELCEL'
+      Origin = 'TELCEL'
+      Size = 14
+    end
+    object QueryClientesEMAIL: TStringField
+      FieldName = 'EMAIL'
+      Origin = 'EMAIL'
+      Size = 60
+    end
+    object QueryClientesTIPO_PESS: TStringField
+      FieldName = 'TIPO_PESS'
+      Origin = 'TIPO_PESS'
+      FixedChar = True
+      Size = 1
+    end
+    object QueryClientesDAT_EMI: TDateField
+      FieldName = 'DAT_EMI'
+      Origin = 'DAT_EMI'
+    end
+    object QueryClientesAP_CRED: TStringField
+      FieldName = 'AP_CRED'
+      Origin = 'AP_CRED'
+    end
+    object QueryClientesVEICULO: TStringField
+      FieldName = 'VEICULO'
+      Origin = 'VEICULO'
+      Size = 40
+    end
+    object QueryClientesFIN_LCREDITO: TBCDField
+      FieldName = 'FIN_LCREDITO'
+      Origin = 'FIN_LCREDITO'
+      Precision = 18
+      Size = 2
+    end
+    object QueryClientesLNOTAS: TBCDField
+      FieldName = 'LNOTAS'
+      Origin = 'LNOTAS'
+      Precision = 18
+      Size = 2
+    end
+    object QueryClientesCODCONV: TBCDField
+      FieldName = 'CODCONV'
+      Origin = 'CODCONV'
+      Precision = 18
+      Size = 2
+    end
+    object QueryClientesMARCA: TStringField
+      FieldName = 'MARCA'
+      Origin = 'MARCA'
+      Size = 5
+    end
+    object QueryClientesVENDEDOR: TIntegerField
+      FieldName = 'VENDEDOR'
+      Origin = 'VENDEDOR'
+    end
+    object QueryClientesUCOMPRA: TDateField
+      FieldName = 'UCOMPRA'
+      Origin = 'UCOMPRA'
+    end
+    object QueryClientesTIPO: TStringField
+      FieldName = 'TIPO'
+      Origin = 'TIPO'
+      FixedChar = True
+      Size = 1
+    end
+    object QueryClientesTELRES2: TStringField
+      FieldName = 'TELRES2'
+      Origin = 'TELRES2'
+      Size = 14
+    end
+    object QueryClientesFAX1: TStringField
+      FieldName = 'FAX1'
+      Origin = 'FAX1'
+      Size = 14
+    end
+    object QueryClientesSITE: TStringField
+      FieldName = 'SITE'
+      Origin = 'SITE'
+      Size = 40
+    end
+    object QueryClientesSEXO: TStringField
+      FieldName = 'SEXO'
+      Origin = 'SEXO'
+      Size = 1
+    end
+    object QueryClientesTELCEL_OP: TSmallintField
+      FieldName = 'TELCEL_OP'
+      Origin = 'TELCEL_OP'
+    end
+    object QueryClientesCRT: TSmallintField
+      FieldName = 'CRT'
+      Origin = 'CRT'
+    end
+    object QueryClientesDATA_ATUALIZACAO: TSQLTimeStampField
+      FieldName = 'DATA_ATUALIZACAO'
+      Origin = 'DATA_ATUALIZACAO'
+    end
+    object QueryClientesESTADOCIVIL: TStringField
+      FieldName = 'ESTADOCIVIL'
+      Origin = 'ESTADOCIVIL'
+      Size = 1
+    end
+    object QueryClientesCOB_LOGRADOURO: TStringField
+      FieldName = 'COB_LOGRADOURO'
+      Origin = 'COB_LOGRADOURO'
+      Size = 40
+    end
+    object QueryClientesCOB_NUMERO: TStringField
+      FieldName = 'COB_NUMERO'
+      Origin = 'COB_NUMERO'
+      Size = 5
+    end
+    object QueryClientesCOB_COMPLEMENTO: TStringField
+      FieldName = 'COB_COMPLEMENTO'
+      Origin = 'COB_COMPLEMENTO'
+      Size = 40
+    end
+    object QueryClientesCOB_SETOR: TStringField
+      FieldName = 'COB_SETOR'
+      Origin = 'COB_SETOR'
+      Size = 30
+    end
+    object QueryClientesCOB_CIDADE: TStringField
+      FieldName = 'COB_CIDADE'
+      Origin = 'COB_CIDADE'
+      Size = 25
+    end
+    object QueryClientesCOB_ID_CIDADES: TStringField
+      FieldName = 'COB_ID_CIDADES'
+      Origin = 'COB_ID_CIDADES'
+      Size = 7
+    end
+    object QueryClientesCOB_CEP: TStringField
+      FieldName = 'COB_CEP'
+      Origin = 'COB_CEP'
+      Size = 9
+    end
+    object QueryClientesCOB_ESTADO: TStringField
+      FieldName = 'COB_ESTADO'
+      Origin = 'COB_ESTADO'
+      FixedChar = True
+      Size = 2
+    end
+    object QueryClientesCARTAO_RENDA: TStringField
+      FieldName = 'CARTAO_RENDA'
+      Origin = 'CARTAO_RENDA'
+    end
+    object QueryClientesFIN_DIAFIXO: TIntegerField
+      FieldName = 'FIN_DIAFIXO'
+      Origin = 'FIN_DIAFIXO'
+    end
+    object QueryClientesFIN_VRMENSAL: TBCDField
+      FieldName = 'FIN_VRMENSAL'
+      Origin = 'FIN_VRMENSAL'
+      Precision = 18
+      Size = 2
+    end
+    object QueryClientesFIN_TIPO_RECEB: TSmallintField
+      FieldName = 'FIN_TIPO_RECEB'
+      Origin = 'FIN_TIPO_RECEB'
+    end
+    object QueryClientesPERFIL_FB: TStringField
+      FieldName = 'PERFIL_FB'
+      Origin = 'PERFIL_FB'
+      Size = 60
+    end
+    object QueryClientesTELCEL2: TStringField
+      FieldName = 'TELCEL2'
+      Origin = 'TELCEL2'
+      Size = 14
+    end
+    object QueryClientesTELCEL2_OP: TSmallintField
+      FieldName = 'TELCEL2_OP'
+      Origin = 'TELCEL2_OP'
+    end
+    object QueryClientesTELCEL_WAPP: TSmallintField
+      FieldName = 'TELCEL_WAPP'
+      Origin = 'TELCEL_WAPP'
+    end
+    object QueryClientesTELCEL2_WAPP: TSmallintField
+      FieldName = 'TELCEL2_WAPP'
+      Origin = 'TELCEL2_WAPP'
+    end
+    object QueryClientesTELCEL_CONTATO: TStringField
+      FieldName = 'TELCEL_CONTATO'
+      Origin = 'TELCEL_CONTATO'
+      Size = 40
+    end
+    object QueryClientesTELCEL2_CONTATO: TStringField
+      FieldName = 'TELCEL2_CONTATO'
+      Origin = 'TELCEL2_CONTATO'
+      Size = 40
+    end
+    object QueryClientesID_EMP: TSmallintField
+      FieldName = 'ID_EMP'
+      Origin = 'ID_EMP'
+      Required = True
+    end
+    object QueryClientesFIN_ID_FORMAS_PGT: TIntegerField
+      FieldName = 'FIN_ID_FORMAS_PGT'
+      Origin = 'FIN_ID_FORMAS_PGT'
+    end
+    object QueryClientesTIPO_ENTREGA: TSmallintField
+      FieldName = 'TIPO_ENTREGA'
+      Origin = 'TIPO_ENTREGA'
+    end
+    object QueryClientesPROD_RURAL: TStringField
+      FieldName = 'PROD_RURAL'
+      Origin = 'PROD_RURAL'
+      FixedChar = True
+      Size = 1
+    end
+    object QueryClientesTIPO_IE: TSmallintField
+      FieldName = 'TIPO_IE'
+      Origin = 'TIPO_IE'
+      Required = True
+    end
+    object QueryClientesID_MIG: TIntegerField
+      FieldName = 'ID_MIG'
+      Origin = 'ID_MIG'
+    end
+    object QueryClientesALT: TSmallintField
+      FieldName = 'ALT'
+      Origin = 'ALT'
+    end
+  end
+end

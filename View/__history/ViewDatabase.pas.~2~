@@ -1,0 +1,25 @@
+unit ViewDatabase;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls;
+
+type
+  TWindowDB = class(TForm)
+    Image1: TImage;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  WindowDB: TWindowDB;
+
+implementation
+
+{$R *.dfm}
+
+end.
