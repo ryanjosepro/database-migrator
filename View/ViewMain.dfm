@@ -131,8 +131,8 @@ object WindowMain: TWindowMain
   end
   object OpenFile: TOpenTextFileDialog
     FileName = 
-      'D:\Ryan\Documents\Embarcadero\Studio\Projects\ProjectMigration\I' +
-      'nfo\Clientes.Csv'
+      'C:\Users\Denis Denon.PCX\Documents\Embarcadero\Studio\Projects\T' +
+      'este\Info\Clientes.Csv'
     Filter = 'Csv|*.Csv'
     EncodingIndex = -1
     Left = 24
@@ -144,7 +144,7 @@ object WindowMain: TWindowMain
     Left = 464
     Top = 432
     Bitmap = {
-      494C010103002C00780040004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103002C007C0040004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

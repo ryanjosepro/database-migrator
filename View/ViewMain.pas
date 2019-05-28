@@ -3,9 +3,9 @@ unit ViewMain;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
-  Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList, Vcl.ExtDlgs,
-  ViewDB;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls,
+  Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList, System.ImageList,
+  Vcl.ImgList, Vcl.ExtDlgs, ViewDB, MyUtils;
 
 type
   TWindowMain = class(TForm)
@@ -23,11 +23,11 @@ type
     ActConfigDB: TAction;
     BtnFields: TSpeedButton;
     ActConfigs: TAction;
-    procedure BtnStartClick(Sender: TObject);
     procedure Log(Msg: string);
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigsExecute(Sender: TObject);
+    procedure BtnStartClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -37,6 +37,7 @@ type
 
 var
   WindowMain: TWindowMain;
+  Cont:
 
 implementation
 
@@ -49,6 +50,30 @@ begin
   OpenFile.Execute(Handle);
 end;
 
+procedure TWindowMain.BtnStartClick(Sender: TObject);
+var
+  ContRow: integer;
+  ContCol: integer;
+  StrList: TStringList;
+  DataFlex: TDataFlex;
+  Dados: TStringMatrix;
+  Together: string;
+begin
+  StrList := TStringList.Create;
+  StrList.LoadFromFile(OpenFile.FileName);
+  DataFlex := TDataFlex.Create(StrList);
+  SetLength(Dados, DataFlex.GetRows, DataFlex.GetCols);
+  Dados := DataFlex.ToMatrix;
+  for ContRow := 0 to 1 do
+  begin
+    for ContCol := 0 to DataFlex.GetCols - 1 do
+    begin
+      Together := Together + Dados[ContRow][ContCol] + ' - ';
+    end;
+    Log(Together);
+  end;
+end;
+
 procedure TWindowMain.ActConfigDBExecute(Sender: TObject);
 begin
   WindowDB.ShowModal;
@@ -57,11 +82,6 @@ end;
 procedure TWindowMain.ActConfigsExecute(Sender: TObject);
 begin
   WindowFields.ShowModal;
-end;
-
-procedure TWindowMain.BtnStartClick(Sender: TObject);
-begin
-  //
 end;
 
 procedure TWindowMain.Log(Msg: string);

@@ -7,7 +7,7 @@ uses
   ConnectionFactory in 'Connection\ConnectionFactory.pas' {ConnFactory: TDataModule},
   ViewDB in 'View\ViewDB.pas' {WindowDB},
   ViewFields in 'View\ViewFields.pas' {WindowFields},
-  DAO in 'Connection\DAO.pas';
+  DAO in 'DAO\DAO.pas';
 
 {$R *.res}
 
