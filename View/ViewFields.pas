@@ -4,8 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, DAO,
-  Data.DB, Vcl.DBGrids;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, DAO, Data.DB, Vcl.DBGrids;
 
 type
   TWindowFields = class(TForm)
@@ -15,10 +14,6 @@ type
     LblNCampos: TLabel;
     Title2: TLabel;
     procedure FormActivate(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var
@@ -33,6 +28,7 @@ var
   Cont: integer;
   Campos: TStringArray;
 begin
+  LblCampos.Caption := 'Campos Firebird - ' + TDAO.Table;
   GridFirebird.ColWidths[1] := 88;
   SetLength(Campos, TDAO.Count);
   Campos := TDAO.GetFieldsNames;

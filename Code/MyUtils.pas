@@ -24,9 +24,8 @@ type
     function GetRows: integer;
     function GetCols: integer;
 
-    //Transforma a stringlist em uma matrix
+    //Transforma a stringlist em uma matriz
     function ToMatrix: TStringMatrix;
-
   end;
 
 implementation

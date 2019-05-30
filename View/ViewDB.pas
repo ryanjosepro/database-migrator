@@ -21,10 +21,9 @@ type
     BtnTestConn: TSpeedButton;
     procedure BtnTestConnClick(Sender: TObject);
     procedure BtnProntoClick(Sender: TObject);
-  private
-    { Private declarations }
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   public
-    { Public declarations }
+
   end;
 
 var
@@ -54,6 +53,11 @@ begin
   except on E: Exception do
     ShowMessage('Erro de conexão: ' + E.ToString);
   end;
+end;
+
+procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  BtnProntoClick(Sender);
 end;
 
 end.

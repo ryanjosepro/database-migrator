@@ -28,16 +28,10 @@ type
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigsExecute(Sender: TObject);
     procedure BtnStartClick(Sender: TObject);
-
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var
   WindowMain: TWindowMain;
-  Cont:
 
 implementation
 
@@ -59,18 +53,24 @@ var
   Dados: TStringMatrix;
   Together: string;
 begin
-  StrList := TStringList.Create;
-  StrList.LoadFromFile(OpenFile.FileName);
-  DataFlex := TDataFlex.Create(StrList);
-  SetLength(Dados, DataFlex.GetRows, DataFlex.GetCols);
-  Dados := DataFlex.ToMatrix;
-  for ContRow := 0 to 1 do
-  begin
-    for ContCol := 0 to DataFlex.GetCols - 1 do
+  try
+    TxtLog.Clear;
+    StrList := TStringList.Create;
+    StrList.LoadFromFile(OpenFile.FileName);
+    DataFlex := TDataFlex.Create(StrList);
+    SetLength(Dados, DataFlex.GetRows, DataFlex.GetCols);
+    Dados := DataFlex.ToMatrix;
+    for ContRow := 0 to 50 do
     begin
-      Together := Together + Dados[ContRow][ContCol] + ' - ';
+      Together := '';
+      for ContCol := 0 to DataFlex.GetCols - 1 do
+      begin
+        Together := Together + Dados[ContRow][ContCol] + ' - ';
+      end;
+      Log(Together);
     end;
-    Log(Together);
+  except on E: EFOpenError do
+    ShowMessage('Selecione um arquivo!');
   end;
 end;
 

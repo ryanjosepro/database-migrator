@@ -13,6 +13,7 @@ object WindowDB: TWindowDB
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object ImageTitle: TImage

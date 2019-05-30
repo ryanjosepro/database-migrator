@@ -17,10 +17,6 @@ type
     QuerySQL: TFDQuery;
     QueryTable: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
   end;
 
 var

@@ -13,6 +13,8 @@ type
     class function QueryTable: TFDQuery;
     class function QuerySQL: TFDQuery;
 
+    class function Table: string;
+
     class function GetFieldsNames: TStringArray;
 
     class function Count: integer;
@@ -28,6 +30,11 @@ begin
   Result := ConnFactory.QueryTable;
 end;
 
+class function TDAO.Table: string;
+begin
+  Result := WindowDB.TxtTable.Text;
+end;
+
 class function TDAO.QuerySQL: TFDQuery;
 begin
   Result := ConnFactory.QuerySQL;
@@ -35,7 +42,8 @@ end;
 
 class function TDAO.Count: integer;
 begin
-  QueryTable.ParamByName('TABLE_NAME').AsString := WindowDB.TxtTable.Text;
+  QueryTable.Close;
+  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
   QueryTable.Open;
   Result := QueryTable.RowsAffected;
 end;
@@ -44,7 +52,8 @@ class function TDAO.GetFieldsNames: TStringArray;
 var
   Cont: integer;
 begin
-  QueryTable.ParamByName('TABLE_NAME').AsString := WindowDB.TxtTable.Text;
+  QueryTable.Close;
+  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
   QueryTable.Open;
   SetLength(Result, QueryTable.RowsAffected);
   QueryTable.First;

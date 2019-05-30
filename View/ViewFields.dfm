@@ -38,7 +38,7 @@ object WindowFields: TWindowFields
     Height = 13
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Campos Firebird'
+    Caption = 'Campos Firebird '
   end
   object LblNCampos: TLabel
     Left = 210
