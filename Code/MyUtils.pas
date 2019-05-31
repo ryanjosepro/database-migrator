@@ -3,13 +3,13 @@ unit MyUtils;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.Variants, System.StrUtils, System.Types;
+  System.SysUtils, System.Classes, System.Variants, System.StrUtils, System.Types, Vcl.Forms, IniFiles;
 
 type
   TStringMatrix = array of TStringDynArray;
 
   TDataFlex = class
-  private
+  strict private
     //Atributos
     StrList: TStringList;
     Rows: integer;
@@ -26,6 +26,19 @@ type
 
     //Transforma a stringlist em uma matriz
     function ToMatrix: TStringMatrix;
+  end;
+
+  TConfigs = class
+  public
+    class function GetUserName: string;
+    class function GetPassword: string;
+    class function GetDatabase: string;
+    class function GetTable: string;
+    class procedure SetUserName(const Value: string);
+    class procedure SetPassWord(const Value: string);
+    class procedure SetDatabase(const Value: string);
+    class procedure SetTable(const Value: string);
+
   end;
 
 implementation
@@ -66,6 +79,104 @@ begin
   for Cont := 0 to GetRows - 1 do
   begin
     Result[Cont] := Cut(self.StrList[Cont]);
+  end;
+end;
+
+{ TConfigs }
+
+class function TConfigs.GetUserName: string;
+var
+  Arq: TIniFile;
+begin
+  try
+    Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+    Result := Arq.ReadString('DB', 'UserName', 'SYSDBA');
+  finally
+    FreeAndNil(Arq);
+  end;
+end;
+
+class function TConfigs.GetPassword: string;
+var
+  Arq: TIniFile;
+begin
+  try
+    Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+    Result := Arq.ReadString('DB', 'Password', 'masterkey');
+  finally
+    FreeAndNil(Arq);
+  end;
+end;
+
+class function TConfigs.GetDatabase: string;
+var
+  Arq: TIniFile;
+begin
+  try
+    Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+    Result := Arq.ReadString('DB', 'Database', ExtractFilePath(Application.ExeName) + 'DB\NSC.FDB');
+  finally
+    FreeAndNil(Arq);
+  end;
+end;
+
+class function TConfigs.GetTable: string;
+var
+  Arq: TIniFile;
+begin
+  try
+    Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+    Result := Arq.ReadString('DB', 'Table', 'CLIENTES');
+  finally
+    FreeAndNil(Arq);
+  end;
+end;
+
+class procedure TConfigs.SetUserName(const Value: string);
+var
+  Arq: TIniFile;
+begin
+  try
+    Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+    Arq.WriteString('DB', 'UserName', Value);
+  finally
+    FreeAndNil(Arq);
+  end;
+end;
+
+class procedure TConfigs.SetPassWord(const Value: string);
+var
+  Arq: TIniFile;
+begin
+  try
+    Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+    Arq.WriteString('DB', 'Password', Value);
+  finally
+    FreeAndNil(Arq);
+  end;
+end;
+
+class procedure TConfigs.SetDatabase(const Value: string);
+var
+  Arq: TIniFile;
+begin
+  try
+    Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+    Arq.WriteString('DB', 'Database', Value);
+  finally
+    FreeAndNil(Arq);
+  end;
+end;
+
+class procedure TConfigs.SetTable(const Value: string);
+var
+  Arq: TIniFile;
+begin
+  try
+    Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+    Arq.WriteString('DB', 'Table', Value);
+  finally
+    FreeAndNil(Arq);
   end;
 end;
 

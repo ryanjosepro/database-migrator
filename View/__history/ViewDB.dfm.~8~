@@ -13,6 +13,8 @@ object WindowDB: TWindowDB
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnActivate = FormActivate
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object ImageTitle: TImage
@@ -57,9 +59,9 @@ object WindowDB: TWindowDB
   object LblUserName: TLabel
     Left = 8
     Top = 47
-    Width = 68
+    Width = 43
     Height = 16
-    Caption = 'User Name:'
+    Caption = 'Usu'#225'rio'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -70,9 +72,9 @@ object WindowDB: TWindowDB
   object LblPassword: TLabel
     Left = 8
     Top = 77
-    Width = 60
+    Width = 41
     Height = 16
-    Caption = 'Password:'
+    Caption = 'Senha:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -83,9 +85,9 @@ object WindowDB: TWindowDB
   object LblDatabase: TLabel
     Left = 8
     Top = 107
-    Width = 58
+    Width = 39
     Height = 16
-    Caption = 'Database:'
+    Caption = 'Banco:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -96,9 +98,9 @@ object WindowDB: TWindowDB
   object LblTable: TLabel
     Left = 8
     Top = 137
-    Width = 37
+    Width = 44
     Height = 16
-    Caption = 'Table:'
+    Caption = 'Tabela:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -106,19 +108,21 @@ object WindowDB: TWindowDB
     Font.Style = []
     ParentFont = False
   end
-  object SpeedButton1: TSpeedButton
+  object BtnSalvar: TSpeedButton
     Left = 175
     Top = 171
     Width = 92
     Height = 22
-    Caption = 'Pronto'
+    Caption = 'Salvar'
+    OnClick = BtnSalvarClick
   end
-  object SpeedButton2: TSpeedButton
+  object BtnTestConn: TSpeedButton
     Left = 80
     Top = 171
     Width = 89
     Height = 22
     Caption = 'Testar Conex'#227'o'
+    OnClick = BtnTestConnClick
   end
   object TxtUserName: TEdit
     Left = 80

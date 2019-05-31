@@ -3,8 +3,9 @@ unit ViewDB;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms,
-  Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons, ConnectionFactory;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms,Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons,
+  ConnectionFactory, MyUtils;
 
 type
   TWindowDB = class(TForm)
@@ -17,28 +18,32 @@ type
     TxtDatabase: TEdit;
     LblTable: TLabel;
     TxtTable: TEdit;
-    BtnPronto: TSpeedButton;
+    BtnSalvar: TSpeedButton;
     BtnTestConn: TSpeedButton;
     procedure BtnTestConnClick(Sender: TObject);
-    procedure BtnProntoClick(Sender: TObject);
+    procedure BtnSalvarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure EditsChange(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   public
 
   end;
 
 var
   WindowDB: TWindowDB;
+  DidChange: boolean;
 
 implementation
 
 {$R *.dfm}
 
-procedure TWindowDB.BtnProntoClick(Sender: TObject);
+procedure TWindowDB.BtnSalvarClick(Sender: TObject);
 begin
-  ConnFactory.Conn.Params.UserName := TxtUserName.Text;
-  ConnFactory.Conn.Params.Password := TxtPassword.Text;
-  ConnFactory.Conn.Params.Database := TxtDatabase.Text;
-  ConnFactory.Conn.Connected := true;
+  TConfigs.SetUserName(TxtUserName.Text);
+  TConfigs.SetPassWord(TxtPassword.Text);
+  TConfigs.SetDatabase(TxtDatabase.Text);
+  TConfigs.SetTable(TxtTable.Text);
+  DidChange := false;
   Close;
 end;
 
@@ -55,9 +60,33 @@ begin
   end;
 end;
 
+procedure TWindowDB.EditsChange(Sender: TObject);
+begin
+  DidChange := true;
+end;
+
+procedure TWindowDB.FormActivate(Sender: TObject);
+begin
+  TxtUserName.Text := TConfigs.GetUserName;
+  TxtPassword.Text := TConfigs.GetPassword;
+  TxtDatabase.Text := TConfigs.GetDatabase;
+  TxtTable.Text := TConfigs.GetTable;
+  DidChange := false;
+end;
+
 procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  BtnProntoClick(Sender);
+  if DidChange then
+  begin
+    case MessageDlg('Deseja salvar as configurações?', mtInformation, mbYesNoCancel,  2) of
+      6: BtnSalvarClick(BtnSalvar);
+      2: Action := TCloseAction.caNone;
+    end;
+  end
+  else
+  begin
+    DidChange := false;
+  end;
 end;
 
 end.

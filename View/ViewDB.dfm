@@ -13,6 +13,7 @@ object WindowDB: TWindowDB
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnActivate = FormActivate
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
@@ -58,9 +59,9 @@ object WindowDB: TWindowDB
   object LblUserName: TLabel
     Left = 8
     Top = 47
-    Width = 68
+    Width = 43
     Height = 16
-    Caption = 'User Name:'
+    Caption = 'Usu'#225'rio'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -71,9 +72,9 @@ object WindowDB: TWindowDB
   object LblPassword: TLabel
     Left = 8
     Top = 77
-    Width = 60
+    Width = 41
     Height = 16
-    Caption = 'Password:'
+    Caption = 'Senha:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -84,9 +85,9 @@ object WindowDB: TWindowDB
   object LblDatabase: TLabel
     Left = 8
     Top = 107
-    Width = 58
+    Width = 39
     Height = 16
-    Caption = 'Database:'
+    Caption = 'Banco:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -97,9 +98,9 @@ object WindowDB: TWindowDB
   object LblTable: TLabel
     Left = 8
     Top = 137
-    Width = 37
+    Width = 44
     Height = 16
-    Caption = 'Table:'
+    Caption = 'Tabela:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -107,13 +108,13 @@ object WindowDB: TWindowDB
     Font.Style = []
     ParentFont = False
   end
-  object BtnPronto: TSpeedButton
+  object BtnSalvar: TSpeedButton
     Left = 175
     Top = 171
     Width = 92
     Height = 22
-    Caption = 'Pronto'
-    OnClick = BtnProntoClick
+    Caption = 'Salvar'
+    OnClick = BtnSalvarClick
   end
   object BtnTestConn: TSpeedButton
     Left = 80
@@ -135,7 +136,7 @@ object WindowDB: TWindowDB
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    Text = 'SYSDBA'
+    OnChange = EditsChange
   end
   object TxtPassword: TEdit
     Left = 80
@@ -149,7 +150,7 @@ object WindowDB: TWindowDB
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    Text = 'masterkey'
+    OnChange = EditsChange
   end
   object TxtDatabase: TEdit
     Left = 80
@@ -163,9 +164,7 @@ object WindowDB: TWindowDB
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    Text = 
-      'C:\Users\Denis Denon.PCX\Documents\Embarcadero\Studio\Projects\T' +
-      'este\DB\NSC.FDB'
+    OnChange = EditsChange
   end
   object TxtTable: TEdit
     Left = 80
@@ -179,6 +178,6 @@ object WindowDB: TWindowDB
     Font.Style = []
     ParentFont = False
     TabOrder = 3
-    Text = 'CLIENTES'
+    OnChange = EditsChange
   end
 end

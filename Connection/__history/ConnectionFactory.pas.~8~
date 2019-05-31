@@ -1,0 +1,46 @@
+unit ConnectionFactory;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Vcl.Forms, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB,
+  FireDAC.Phys.FBDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet, IniFiles;
+
+type
+  TConnFactory = class(TDataModule)
+    Conn: TFDConnection;
+    Trans: TFDTransaction;
+    QuerySQL: TFDQuery;
+    QueryTable: TFDQuery;
+    procedure DataModuleCreate(Sender: TObject);
+  end;
+
+var
+  ConnFactory: TConnFactory;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TConnFactory.DataModuleCreate(Sender: TObject);
+var
+  Arq: TIniFile;
+  UserName, Password, Database, Table: string;
+begin
+  Arq := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'Config\Config.ini');
+  UserName := Arq.ReadString('DB', 'UserName', 'SYSDBA');
+  Password := Arq.ReadString('DB', 'Password', 'masterkey');
+  Database := Arq.ReadString('DB', 'Database', ExtractFilePath(Application.ExeName) + 'DB\NSC.FDB');
+  Table := Arq.ReadString('DB', 'Table', 'CLIENTES');
+  Conn.Params.UserName := UserName;
+  Conn.Params.Password := Password;
+  Conn.Params.Database := Database;
+end;
+
+end.

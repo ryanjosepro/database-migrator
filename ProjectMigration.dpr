@@ -14,6 +14,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  Application.Title := 'Migration';
   Application.CreateForm(TWindowMain, WindowMain);
   Application.CreateForm(TConnFactory, ConnFactory);
   Application.CreateForm(TWindowDB, WindowDB);

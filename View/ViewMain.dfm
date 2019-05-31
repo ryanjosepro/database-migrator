@@ -61,7 +61,7 @@ object WindowMain: TWindowMain
     Top = 46
     Width = 121
     Height = 49
-    Caption = 'Start'
+    Caption = 'Come'#231'ar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -129,19 +129,13 @@ object WindowMain: TWindowMain
     TabOrder = 0
     WordWrap = False
   end
-  object OpenFile: TOpenTextFileDialog
-    Filter = 'Csv|*.Csv'
-    EncodingIndex = -1
-    Left = 24
-    Top = 432
-  end
   object Images: TImageList
     Height = 64
     Width = 64
     Left = 464
     Top = 432
     Bitmap = {
-      494C010103002C00800040004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010103002C00840040004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2265,19 +2259,37 @@ object WindowMain: TWindowMain
     Left = 424
     Top = 432
     object ActOpenFile: TAction
-      Hint = 'Abrir Arquivo Dataflex'
       ImageIndex = 0
       OnExecute = ActOpenFileExecute
+      OnHint = ActOpenFileHint
     end
     object ActConfigDB: TAction
-      Hint = 'Configurar Banco de Dados'
+      Hint = 'Banco de Dados'
       ImageIndex = 1
       OnExecute = ActConfigDBExecute
     end
     object ActConfigs: TAction
-      Hint = 'Configurar Campos'
+      Hint = 'Campos'
       ImageIndex = 2
       OnExecute = ActConfigsExecute
     end
+  end
+  object OpenFile: TFileOpenDialog
+    FavoriteLinks = <>
+    FileName = 
+      'C:\Users\Denis Denon.PCX\Documents\Embarcadero\Studio\Projects\P' +
+      'rojectMigration2.0\Win32\Debug\Info\Clientes.csv'
+    FileTypes = <
+      item
+        DisplayName = 'Csv (*.csv)'
+        FileMask = '*.csv'
+      end
+      item
+        DisplayName = 'Todos os Arquivos (*.*)'
+        FileMask = '*.*'
+      end>
+    Options = []
+    Left = 24
+    Top = 440
   end
 end

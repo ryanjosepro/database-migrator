@@ -28,14 +28,18 @@ var
   Cont: integer;
   Campos: TStringArray;
 begin
-  LblCampos.Caption := 'Campos Firebird - ' + TDAO.Table;
-  GridFirebird.ColWidths[1] := 88;
-  SetLength(Campos, TDAO.Count);
-  Campos := TDAO.GetFieldsNames;
-  GridFirebird.RowCount := High(Campos);
-  for Cont := 0 to High(Campos) do
-  begin
-    GridFirebird.Cells[0, Cont] := (Campos[Cont]);
+  try
+    LblCampos.Caption := 'Campos Firebird - ' + TDAO.Table;
+    GridFirebird.ColWidths[1] := 88;
+    SetLength(Campos, TDAO.Count);
+    Campos := TDAO.GetFieldsNames;
+    GridFirebird.RowCount := High(Campos);
+    for Cont := 0 to High(Campos) do
+    begin
+      GridFirebird.Cells[0, Cont] := (Campos[Cont]);
+    end;
+  finally
+    //FreeAndNil(Campos);
   end;
 end;
 

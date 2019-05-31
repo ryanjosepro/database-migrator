@@ -5,9 +5,9 @@ object ConnFactory: TConnFactory
   Width = 161
   object Conn: TFDConnection
     Params.Strings = (
-      'DriverID=FB'
-      'User_Name=sysdba'
-      'Password=masterkey')
+      'User_Name=SYSDBA'
+      'Password=masterkey'
+      'DriverID=FB')
     LoginPrompt = False
     Left = 24
     Top = 16

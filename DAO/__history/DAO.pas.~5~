@@ -3,7 +3,7 @@ unit DAO;
 interface
 
 uses
-  System.SysUtils, System.Variants, System.Classes, FireDAC.Comp.Client, ViewDB, ConnectionFactory;
+  System.SysUtils, System.Variants, System.Classes, FireDAC.Comp.Client, ConnectionFactory, ViewDB, MyUtils;
 
 type
   TStringArray = array of string;
@@ -32,8 +32,7 @@ end;
 
 class function TDAO.Table: string;
 begin
-  Result := WindowDB.TxtTable.Text
-  ;
+  Result := TConfigs.GetTable;
 end;
 
 class function TDAO.QuerySQL: TFDQuery;
@@ -43,7 +42,8 @@ end;
 
 class function TDAO.Count: integer;
 begin
-  QueryTable.ParamByName('TABLE_NAME').AsString := WindowDB.TxtTable.Text;
+  QueryTable.Close;
+  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
   QueryTable.Open;
   Result := QueryTable.RowsAffected;
 end;
@@ -52,7 +52,8 @@ class function TDAO.GetFieldsNames: TStringArray;
 var
   Cont: integer;
 begin
-  QueryTable.ParamByName('TABLE_NAME').AsString := WindowDB.TxtTable.Text;
+  QueryTable.Close;
+  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
   QueryTable.Open;
   SetLength(Result, QueryTable.RowsAffected);
   QueryTable.First;
@@ -64,6 +65,5 @@ begin
     Inc(Cont, 1);
   end;
 end;
-
 
 end.
