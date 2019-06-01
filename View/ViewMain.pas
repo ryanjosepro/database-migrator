@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls,
   Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList, System.ImageList,
-  Vcl.ImgList, Vcl.ExtDlgs, ViewDB, MyUtils;
+  Vcl.ImgList, Vcl.ExtDlgs, ViewDB, ViewFields, MyUtils;
 
 type
   TWindowMain = class(TForm)
@@ -38,8 +38,6 @@ implementation
 
 {$R *.dfm}
 
-uses ViewFields;
-
 procedure TWindowMain.ActOpenFileExecute(Sender: TObject);
 begin
   OpenFile.Execute(Handle);
@@ -54,36 +52,39 @@ procedure TWindowMain.BtnStartClick(Sender: TObject);
 var
   ContRow: integer;
   ContCol: integer;
-  Linhas: TStringList;
+  Rows: TStringList;
   DataFlex: TDataFlex;
-  Dados: TStringMatrix;
-  Saida: string;
+  Datas: TStringMatrix;
+  OutStr: string;
 begin
-  Linhas := TStringList.Create;
-  Linhas.LoadFromFile(OpenFile.FileName);
-  DataFlex := TDataFlex.Create(Linhas);
-  SetLength(Dados, DataFlex.GetRows, DataFlex.GetCols);
-  Dados := DataFlex.ToMatrix;
+
+
+{
+  Rows := TStringList.Create;
+  Rows.LoadFromFile(OpenFile.FileName);
+  DataFlex := TDataFlex.Create(Rows);
+  SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
+  Datas := DataFlex.ToMatrix;
   try
     try
       TxtLog.Clear;
       for ContRow := 0 to 50 do
       begin
-        Saida := '';
+        OutStr := '';
         for ContCol := 0 to DataFlex.GetCols - 1 do
         begin
-          Saida := Saida + Dados[ContRow][ContCol] + ' - ';
+          OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
         end;
-        Log(Saida);
+        Log(OutStr);
       end;
     except on E: EFOpenError do
       ShowMessage('Selecione um arquivo!');
     end;
   finally
-    FreeAndNil(Linhas);
+    FreeAndNil(Rows);
     FreeAndNil(DataFlex);
-    //FreeAndNil(Dados);
   end;
+}
 end;
 
 procedure TWindowMain.ActConfigDBExecute(Sender: TObject);

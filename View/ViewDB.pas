@@ -18,10 +18,10 @@ type
     TxtDatabase: TEdit;
     LblTable: TLabel;
     TxtTable: TEdit;
-    BtnSalvar: TSpeedButton;
+    BtnSave: TSpeedButton;
     BtnTestConn: TSpeedButton;
     procedure BtnTestConnClick(Sender: TObject);
-    procedure BtnSalvarClick(Sender: TObject);
+    procedure BtnSaveClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure EditsChange(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -37,7 +37,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TWindowDB.BtnSalvarClick(Sender: TObject);
+procedure TWindowDB.BtnSaveClick(Sender: TObject);
 begin
   TConfigs.SetUserName(TxtUserName.Text);
   TConfigs.SetPassWord(TxtPassword.Text);
@@ -79,7 +79,7 @@ begin
   if DidChange then
   begin
     case MessageDlg('Deseja salvar as configurações?', mtInformation, mbYesNoCancel,  2) of
-      6: BtnSalvarClick(BtnSalvar);
+      6: BtnSaveClick(BtnSave);
       2: Action := TCloseAction.caNone;
     end;
   end
