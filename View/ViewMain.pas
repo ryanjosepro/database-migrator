@@ -23,12 +23,15 @@ type
     BtnFields: TSpeedButton;
     ActConfigs: TAction;
     OpenFile: TFileOpenDialog;
+    BtnDFDatas: TSpeedButton;
+    ActDFDatas: TAction;
     procedure Log(Msg: string);
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigsExecute(Sender: TObject);
     procedure BtnStartClick(Sender: TObject);
     procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
+    procedure ActDFDatasExecute(Sender: TObject);
   end;
 
 var
@@ -57,7 +60,38 @@ var
   Datas: TStringMatrix;
   OutStr: string;
 begin
-  TDAO.Teste;
+  if OpenFile.FileName = '' then
+  begin
+    OpenFile.Execute;
+  end;
+  Rows := TStringList.Create;
+  Rows.LoadFromFile(OpenFile.FileName);
+  DataFlex := TDataFlex.Create(Rows);
+  SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
+  Datas := DataFlex.ToMatrix;
+  try
+    try
+      for ContRow := 0 to DataFlex.GetRows do
+      begin
+        TDAO.Insert(Datas[ContRow], WindowFields.GetOrder);
+        OutStr := '';
+        for ContCol := 0 to DataFlex.GetCols - 1 do
+        begin
+          try
+            OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
+          except on E: Exception do
+            Log(E.ToString);
+          end;
+        end;
+        Log('Inserted' + OutStr);
+      end;
+    except on E: EFOpenError do
+      ShowMessage('Selecione um arquivo!');
+    end;
+  finally
+    FreeAndNil(Rows);
+    FreeAndNil(DataFlex);
+  end;
 {
   Rows := TStringList.Create;
   Rows.LoadFromFile(OpenFile.FileName);
@@ -94,6 +128,11 @@ end;
 procedure TWindowMain.ActConfigsExecute(Sender: TObject);
 begin
   WindowFields.ShowModal;
+end;
+
+procedure TWindowMain.ActDFDatasExecute(Sender: TObject);
+begin
+  //
 end;
 
 procedure TWindowMain.Log(Msg: string);

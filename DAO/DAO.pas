@@ -3,11 +3,10 @@ unit DAO;
 interface
 
 uses
-  System.SysUtils, System.Variants, System.Classes, FireDAC.Comp.Client, ConnectionFactory, ViewDB, MyUtils,
-  Vcl.Dialogs;
+  System.SysUtils, System.Variants, System.Classes, System.Types, FireDAC.Comp.Client, ConnectionFactory, ViewDB, Vcl.Dialogs,
+  MyUtils;
 
 type
-  TStringArray = array of string;
 
   TDAO = class
   public
@@ -16,11 +15,11 @@ type
 
     class function Table: string;
 
+    class procedure Insert(DataFlex: TStringDynArray; Order: TIntegerArray);
+
     class function GetFieldsNames: TStringArray;
 
     class function Count: integer;
-
-    class procedure Teste;
 
   end;
 
@@ -41,18 +40,6 @@ end;
 class function TDAO.Table: string;
 begin
   Result := TConfigs.GetTable;
-end;
-
-class procedure TDAO.Teste;
-begin
-  QuerySQL.SQL.Clear;
-  QuerySQL.Open('select * from clientes');
-  QuerySQL.Insert;
-  QuerySQL.FieldByName('id').AsVariant := 0;
-  QuerySQL.FieldByName('id_emp').AsVariant := 1;
-  QuerySQL.FieldByName('tipo_ie').AsVariant := 12;
-  QuerySQL.FieldByName('nomcli').AsVariant := 'Teste';
-  QuerySQl.Post;
 end;
 
 class function TDAO.GetFieldsNames: TStringArray;
@@ -77,6 +64,29 @@ begin
     SetLength(Result, 1);
     Result[0] := '';
   end;
+end;
+
+class procedure TDAO.Insert(DataFlex: TStringDynArray; Order: TIntegerArray);
+var
+  Cont: Integer;
+  Fields: TStringArray;
+begin
+  SetLength(Fields, Count);
+  Fields := GetFieldsNames;
+  QuerySQL.SQL.Clear;
+  QuerySQL.Open('select * from ' + Table);
+  QuerySQL.Insert;
+  for Cont := 0 to Count - 1 do
+  begin
+    if (Order[Cont] = -1) or (Order[Cont] -1 = -1) then
+    begin
+      continue
+    end;
+    //O grande problema - TIPOS
+    QuerySQL.FieldByName(Fields[Cont]).AsVariant := DataFlex[Order[Cont] - 1];
+    //The big problem - TYPES
+  end;
+  QuerySQL.Post;
 end;
 
 class function TDAO.Count: integer;

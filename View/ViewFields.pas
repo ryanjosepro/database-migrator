@@ -32,6 +32,10 @@ type
     procedure ActImportExecute(Sender: TObject);
     procedure ActOrdFieldsExecute(Sender: TObject);
     procedure ActClearFieldsExecute(Sender: TObject);
+
+  public
+    function GetOrder: TIntegerArray;
+
   end;
 
 var
@@ -119,6 +123,25 @@ begin
   finally
     LblTotFields.Caption := 'Total Campos Firebird: ' + TDAO.Count.ToString;
   end;
+end;
+
+function TWindowFields.GetOrder: TIntegerArray;
+var
+  Cont: integer;
+begin
+  GridFields.RowCount := TDAO.Count;
+  SetLength(Result, TDAO.Count);
+  for Cont := 0 to TDAO.Count - 1 do
+    begin
+      if GridFields.Cells[1, Cont].IsEmpty then
+      begin
+        Result[Cont] := -1;
+      end
+      else
+      begin
+        Result[Cont] := GridFields.Cells[1, Cont].ToInteger;
+      end;
+    end;
 end;
 
 end.

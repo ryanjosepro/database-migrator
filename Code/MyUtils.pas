@@ -6,6 +6,8 @@ uses
   System.SysUtils, System.Classes, System.Variants, System.StrUtils, System.Types, Vcl.Forms, IniFiles;
 
 type
+  TIntegerArray = array of integer;
+  TStringArray = array of string;
   TStringMatrix = array of TStringDynArray;
 
   TDataFlex = class
