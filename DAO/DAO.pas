@@ -20,6 +20,8 @@ type
 
     class function Count: integer;
 
+    class procedure Teste;
+
   end;
 
 implementation
@@ -31,14 +33,26 @@ begin
   Result := ConnFactory.QueryTable;
 end;
 
+class function TDAO.QuerySQL: TFDQuery;
+begin
+  Result := ConnFactory.QuerySQL;
+end;
+
 class function TDAO.Table: string;
 begin
   Result := TConfigs.GetTable;
 end;
 
-class function TDAO.QuerySQL: TFDQuery;
+class procedure TDAO.Teste;
 begin
-  Result := ConnFactory.QuerySQL;
+  QuerySQL.SQL.Clear;
+  QuerySQL.Open('select * from clientes');
+  QuerySQL.Insert;
+  QuerySQL.FieldByName('id').AsVariant := 0;
+  QuerySQL.FieldByName('id_emp').AsVariant := 1;
+  QuerySQL.FieldByName('tipo_ie').AsVariant := 12;
+  QuerySQL.FieldByName('nomcli').AsVariant := 'Teste';
+  QuerySQl.Post;
 end;
 
 class function TDAO.GetFieldsNames: TStringArray;
@@ -48,11 +62,11 @@ begin
   QueryTable.Close;
   QueryTable.ParamByName('TABLE_NAME').AsString := Table;
   QueryTable.Open;
-  if QueryTable.RowsAffected <> 0 then
+  if Count <> 0 then
   begin
-    SetLength(Result, QueryTable.RowsAffected);
+    SetLength(Result, Count);
     QueryTable.First;
-    for Cont := 0 to QueryTable.RowsAffected do
+    for Cont := 0 to Count - 1 do
     begin
       Result[Cont] := QueryTable.FieldByName('FIELD_NAME').AsString;
       QueryTable.Next;

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls,
   Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList, System.ImageList,
-  Vcl.ImgList, Vcl.ExtDlgs, ViewDB, ViewFields, MyUtils;
+  Vcl.ImgList, Vcl.ExtDlgs, ViewDB, ViewFields, MyUtils, DAO;
 
 type
   TWindowMain = class(TForm)
@@ -57,8 +57,7 @@ var
   Datas: TStringMatrix;
   OutStr: string;
 begin
-
-
+  TDAO.Teste;
 {
   Rows := TStringList.Create;
   Rows.LoadFromFile(OpenFile.FileName);

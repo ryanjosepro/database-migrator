@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, DAO, Data.DB, Vcl.DBGrids,
-  MyUtils, System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, MyUtils;
 
 type
   TWindowFields = class(TForm)
@@ -25,10 +25,13 @@ type
     OpenFile: TFileOpenDialog;
     ActOrdFields: TAction;
     SpeedButton1: TSpeedButton;
+    BtnClearFields: TSpeedButton;
+    ActClearFields: TAction;
     procedure FormActivate(Sender: TObject);
     procedure ActExportExecute(Sender: TObject);
     procedure ActImportExecute(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure ActOrdFieldsExecute(Sender: TObject);
+    procedure ActClearFieldsExecute(Sender: TObject);
   end;
 
 var
@@ -38,23 +41,57 @@ implementation
 
 {$R *.dfm}
 
+procedure TWindowFields.ActClearFieldsExecute(Sender: TObject);
+begin
+  GridFields.Cols[1].Clear;
+end;
+
 procedure TWindowFields.ActExportExecute(Sender: TObject);
 var
   Arq: TextFile;
   Cont: integer;
 begin
-  AssignFile(Arq, 'Temp\fields.txt');
-  Rewrite(Arq);
-  for Cont := 0 to GridFields.RowCount - 1 do
+  if SaveFile.Execute then
   begin
-    Writeln(Arq, GridFields.Cells[1, Cont]);
+    AssignFile(Arq, SaveFile.FileName);
+    Rewrite(Arq);
+    for Cont := 0 to GridFields.RowCount - 1 do
+    begin
+      Writeln(Arq, GridFields.Cells[1, Cont]);
+    end;
+    CloseFile(Arq);
   end;
-  CloseFile(Arq);
 end;
 
 procedure TWindowFields.ActImportExecute(Sender: TObject);
+var
+  Rows: TStringList;
+  Cont: integer;
 begin
-  //
+  Rows := TStringList.Create;
+  try
+    if OpenFile.Execute then
+    begin
+      Rows.LoadFromFile(OpenFile.FileName);
+      GridFields.Cols[1].Clear;
+      for Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
+      begin
+        GridFields.Cells[1, Cont] := Rows[Cont];
+      end;
+    end;
+  finally
+    FreeAndNil(Rows);
+  end;
+end;
+
+procedure TWindowFields.ActOrdFieldsExecute(Sender: TObject);
+var
+  Cont: integer;
+begin
+  for Cont := 0 to GridFields.RowCount - 1 do
+  begin
+    GridFields.Cells[1, Cont] := IntToStr(Cont + 1);
+  end;
 end;
 
 procedure TWindowFields.FormActivate(Sender: TObject);
@@ -69,8 +106,8 @@ begin
       LblCamposFB.Caption := 'Campos Firebird - ' + TDAO.Table;
       SetLength(Campos, TDAO.Count);
       Campos := TDAO.GetFieldsNames;
-      GridFields.RowCount := High(Campos);
-      for Cont := 0 to High(Campos) do
+      GridFields.RowCount := TDAO.Count;
+      for Cont := 0 to TDAO.Count - 1 do
       begin
         GridFields.Cells[0, Cont] := (Campos[Cont]);
       end;
@@ -81,16 +118,6 @@ begin
     end;
   finally
     LblTotFields.Caption := 'Total Campos Firebird: ' + TDAO.Count.ToString;
-  end;
-end;
-
-procedure TWindowFields.SpeedButton1Click(Sender: TObject);
-var
-  Cont: integer;
-begin
-  for Cont := 0 to GridFields.RowCount - 1 do
-  begin
-    GridFields.Cells[1, Cont] := IntToStr(Cont + 1);
   end;
 end;
 

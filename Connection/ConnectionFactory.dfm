@@ -5,13 +5,9 @@ object ConnFactory: TConnFactory
   Width = 161
   object Conn: TFDConnection
     Params.Strings = (
-      'User_Name=SYSDBA'
+      'User_Name=sysdba'
       'Password=masterkey'
-      
-        'Database=C:\Users\Denis Denon.PCX\Documents\Embarcadero\Studio\P' +
-        'rojects\ProjectMigration2.0\Win32\Debug\DB\NSC.FDB'
       'DriverID=FB')
-    Connected = True
     LoginPrompt = False
     Left = 24
     Top = 16
@@ -29,7 +25,7 @@ object ConnFactory: TConnFactory
   object QueryTable: TFDQuery
     Connection = Conn
     FetchOptions.AssignedValues = [evRowsetSize, evRecordCountMode]
-    FetchOptions.RowsetSize = 150
+    FetchOptions.RowsetSize = 200
     SQL.Strings = (
       'SELECT RF.RDB$FIELD_NAME FIELD_NAME'
       'FROM RDB$RELATION_FIELDS RF'

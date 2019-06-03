@@ -1,13 +1,53 @@
 ﻿[]
-Coordinates=10,78,76,36
+Coordinates=407,56,91,36
 Visible=True
 
 [Title1]
-Coordinates=103,10,49,58
+Coordinates=103,10,41,51
 
 [LblCamposFB]
-Coordinates=162,10,79,58
+Coordinates=162,10,84,51
 
 [GridFields]
-Coordinates=10,10,83,58
+Coordinates=0,70,65,51
+Visible=True
+
+[SpeedButton1]
+Coordinates=76,87,84,33
+
+[LblNCampos]
+Coordinates=68,1,77,51
+
+[Images]
+Coordinates=17,87,49,33
+
+[Actions]
+Coordinates=156,161,52,33
+
+[SaveFile]
+Coordinates=296,1,56,33
+
+[Title2]
+Coordinates=0,0,41,51
+
+[BtnExport]
+Coordinates=298,56,64,33
+
+[BtnImport]
+Coordinates=298,111,63,33
+
+[ActExport]
+Coordinates=298,166,63,33
+
+[LblTotFields]
+Coordinates=175,87,75,51
+
+[OpenFile]
+Coordinates=229,161,58,33
+
+[ActOrdFields]
+Coordinates=57,183,79,33
+
+[ActImport]
+Coordinates=407,1,62,33
 
