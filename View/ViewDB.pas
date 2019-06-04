@@ -5,8 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms,Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons,
-  ConnectionFactory, MyUtils, System.ImageList, Vcl.ImgList, System.Actions,
-  Vcl.ActnList;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, ConnectionFactory, MyUtils;
 
 type
   TWindowDB = class(TForm)
@@ -26,15 +25,14 @@ type
     Images: TImageList;
     ActDBFile: TAction;
     BtnDBFile: TSpeedButton;
-    procedure BtnTestConnClick(Sender: TObject);
-    procedure BtnSaveClick(Sender: TObject);
+    ActSave: TAction;
+    ActTestConn: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure EditsChange(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure ActDBFileExecute(Sender: TObject);
-    procedure OpenFileFileOkClick(Sender: TObject; var CanClose: Boolean);
-  public
-
+    procedure ActSaveExecute(Sender: TObject);
+    procedure ActTestConnExecute(Sender: TObject);
   end;
 
 var
@@ -47,10 +45,13 @@ implementation
 
 procedure TWindowDB.ActDBFileExecute(Sender: TObject);
 begin
-  OpenFile.Execute(Handle);
+  if OpenFile.Execute then
+  begin
+    TxtDatabase.Text := OpenFile.FileName;
+  end;
 end;
 
-procedure TWindowDB.BtnSaveClick(Sender: TObject);
+procedure TWindowDB.ActSaveExecute(Sender: TObject);
 begin
   TConfigs.SetUserName(TxtUserName.Text);
   TConfigs.SetPassWord(TxtPassword.Text);
@@ -60,7 +61,7 @@ begin
   Close;
 end;
 
-procedure TWindowDB.BtnTestConnClick(Sender: TObject);
+procedure TWindowDB.ActTestConnExecute(Sender: TObject);
 begin
   ConnFactory.Conn.Params.UserName := TxtUserName.Text;
   ConnFactory.Conn.Params.Password := TxtPassword.Text;
@@ -92,7 +93,7 @@ begin
   if DidChange then
   begin
     case MessageDlg('Deseja salvar as configurações?', mtInformation, mbYesNoCancel,  2) of
-      6: BtnSaveClick(BtnSave);
+      6: ActSaveExecute(BtnSave);
       2: Action := TCloseAction.caNone;
     end;
   end
@@ -100,11 +101,6 @@ begin
   begin
     DidChange := false;
   end;
-end;
-
-procedure TWindowDB.OpenFileFileOkClick(Sender: TObject; var CanClose: Boolean);
-begin
-  TxtDatabase.Text := OpenFile.FileName;
 end;
 
 end.

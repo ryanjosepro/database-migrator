@@ -3,8 +3,8 @@ unit DAO;
 interface
 
 uses
-  System.SysUtils, System.Variants, System.Classes, System.Types, FireDAC.Comp.Client, ConnectionFactory, ViewDB, Vcl.Dialogs,
-  MyUtils;
+  System.SysUtils, System.Variants, System.Classes, System.Types, FireDAC.Comp.Client,
+  Vcl.Dialogs, ConnectionFactory, MyUtils;
 
 type
 
@@ -18,6 +18,10 @@ type
     class procedure Insert(DataFlex: TStringDynArray; Order: TIntegerArray);
 
     class function GetFieldsNames: TStringArray;
+
+    class function GetFieldsTypes: TStringArray;
+
+    class function GetFieldsTypesNumber: TIntegerArray;
 
     class function Count: integer;
 
@@ -66,13 +70,64 @@ begin
   end;
 end;
 
+class function TDAO.GetFieldsTypes: TStringArray;
+var
+  Cont: integer;
+begin
+  QueryTable.Close;
+  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
+  QueryTable.Open;
+  if Count <> 0 then
+  begin
+    SetLength(Result, Count);
+    QueryTable.First;
+    for Cont := 0 to Count - 1 do
+    begin
+      Result[Cont] := QueryTable.FieldByName('FIELD_TYPE').AsString;
+      QueryTable.Next;
+    end;
+  end
+  else
+  begin
+    SetLength(Result, 1);
+    Result[0] := '';
+  end;
+end;
+
+class function TDAO.GetFieldsTypesNumber: TIntegerArray;
+var
+  Cont: integer;
+begin
+  QueryTable.Close;
+  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
+  QueryTable.Open;
+  if Count <> 0 then
+  begin
+    SetLength(Result, Count);
+    QueryTable.First;
+    for Cont := 0 to Count - 1 do
+    begin
+      Result[Cont] := QueryTable.FieldByName('FIELD_NUMBER').AsInteger;
+      QueryTable.Next;
+    end;
+  end
+  else
+  begin
+    SetLength(Result, 1);
+    Result[0] := 0;
+  end;
+end;
+
 class procedure TDAO.Insert(DataFlex: TStringDynArray; Order: TIntegerArray);
 var
   Cont: Integer;
   Fields: TStringArray;
+  Tipos: TIntegerArray;
 begin
   SetLength(Fields, Count);
   Fields := GetFieldsNames;
+  SetLength(Tipos, Count);
+  Tipos := GetFieldsTypesNumber;
   QuerySQL.SQL.Clear;
   QuerySQL.Open('select * from ' + Table);
   QuerySQL.Insert;
@@ -83,7 +138,21 @@ begin
       continue
     end;
     //O grande problema - TIPOS
-    QuerySQL.FieldByName(Fields[Cont]).AsVariant := DataFlex[Order[Cont] - 1];
+    case Tipos[Cont] of
+    7, 8:
+      QuerySQL.FieldByName(Fields[Cont]).AsInteger := DataFlex[Order[Cont] - 1].ToInteger;
+    12:
+      QuerySQL.FieldByName(Fields[Cont]).AsDateTime := StrToDate(DataFlex[Order[Cont] - 1]);
+    14:
+      QuerySQL.FieldByName(Fields[Cont]).AsWideString := DataFlex[Order[Cont] - 1];
+    16:
+      QuerySQL.FieldByName(Fields[Cont]).AsFloat := DataFlex[Order[Cont] - 1].ToDouble;
+    35:
+      QuerySQL.FieldByName(Fields[Cont]).AsDateTime := StrToDateTime(DataFlex[Order[Cont] - 1]);
+    37:
+      QuerySQL.FieldByName(Fields[Cont]).AsString := DataFlex[Order[Cont] - 1];
+    end;
+    //QuerySQL.FieldByName(Fields[Cont]).AsVariant := DataFlex[Order[Cont] - 1];
     //The big problem - TYPES
   end;
   QuerySQL.Post;

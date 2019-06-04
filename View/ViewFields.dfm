@@ -2,9 +2,9 @@ object WindowFields: TWindowFields
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Campos'
+  Caption = 'Migrator - Campos'
   ClientHeight = 648
-  ClientWidth = 383
+  ClientWidth = 490
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,10 +16,10 @@ object WindowFields: TWindowFields
   OnActivate = FormActivate
   PixelsPerInch = 96
   TextHeight = 13
-  object Title1: TLabel
+  object LblTitle1: TLabel
     Left = 8
     Top = 5
-    Width = 201
+    Width = 158
     Height = 24
     Alignment = taCenter
     AutoSize = False
@@ -34,25 +34,25 @@ object WindowFields: TWindowFields
   object LblCamposFB: TLabel
     Left = 8
     Top = 35
-    Width = 201
+    Width = 159
     Height = 13
     Alignment = taCenter
     AutoSize = False
     Caption = 'Campos Firebird '
   end
-  object LblNCampos: TLabel
-    Left = 210
+  object LblCamposDF: TLabel
+    Left = 336
     Top = 35
-    Width = 130
+    Width = 113
     Height = 13
     Alignment = taCenter
     AutoSize = False
     Caption = 'N'#186' Campo DataFlex'
   end
-  object Title2: TLabel
-    Left = 210
+  object LblTitle2: TLabel
+    Left = 336
     Top = 5
-    Width = 130
+    Width = 113
     Height = 24
     Alignment = taCenter
     AutoSize = False
@@ -67,14 +67,14 @@ object WindowFields: TWindowFields
   object LblTotFields: TLabel
     Left = 8
     Top = 626
-    Width = 332
+    Width = 441
     Height = 13
     Alignment = taCenter
     AutoSize = False
     Caption = 'Total Campos Firebird:'
   end
   object BtnExport: TSpeedButton
-    Left = 346
+    Left = 455
     Top = 54
     Width = 30
     Height = 30
@@ -83,7 +83,7 @@ object WindowFields: TWindowFields
     ShowHint = True
   end
   object BtnImport: TSpeedButton
-    Left = 346
+    Left = 455
     Top = 90
     Width = 30
     Height = 30
@@ -91,8 +91,8 @@ object WindowFields: TWindowFields
     ParentShowHint = False
     ShowHint = True
   end
-  object SpeedButton1: TSpeedButton
-    Left = 346
+  object BtnOrdFields: TSpeedButton
+    Left = 455
     Top = 126
     Width = 30
     Height = 30
@@ -101,7 +101,7 @@ object WindowFields: TWindowFields
     ShowHint = True
   end
   object BtnClearFields: TSpeedButton
-    Left = 346
+    Left = 455
     Top = 162
     Width = 30
     Height = 30
@@ -109,14 +109,24 @@ object WindowFields: TWindowFields
     ParentShowHint = False
     ShowHint = True
   end
+  object LblTipoCampo: TLabel
+    Left = 172
+    Top = 35
+    Width = 157
+    Height = 13
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'Tipo do Campo'
+  end
   object GridFields: TStringGrid
     Left = 8
     Top = 54
-    Width = 332
+    Width = 441
     Height = 566
-    ColCount = 2
-    DefaultColWidth = 200
+    ColCount = 3
+    DefaultColWidth = 160
     FixedColor = clWindow
+    FixedCols = 2
     RowCount = 1
     FixedRows = 0
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing]
@@ -127,7 +137,7 @@ object WindowFields: TWindowFields
   end
   object Actions: TActionList
     Images = Images
-    Left = 256
+    Left = 376
     Top = 568
     object ActExport: TAction
       Hint = 'Exportar Configura'#231#227'o'
@@ -153,10 +163,10 @@ object WindowFields: TWindowFields
   object Images: TImageList
     Height = 22
     Width = 22
-    Left = 304
+    Left = 416
     Top = 568
     Bitmap = {
-      494C010104000800A00016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800A40016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000580000002C0000000100200000000000803C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

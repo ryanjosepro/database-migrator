@@ -2,7 +2,7 @@ object WindowDB: TWindowDB
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Database'
+  Caption = 'Migrator - Banco de Dados'
   ClientHeight = 201
   ClientWidth = 277
   Color = clBtnFace
@@ -113,16 +113,14 @@ object WindowDB: TWindowDB
     Top = 171
     Width = 92
     Height = 22
-    Caption = 'Salvar'
-    OnClick = BtnSaveClick
+    Action = ActSave
   end
   object BtnTestConn: TSpeedButton
     Left = 80
     Top = 171
     Width = 89
     Height = 22
-    Caption = 'Testar Conex'#227'o'
-    OnClick = BtnTestConnClick
+    Action = ActTestConn
   end
   object BtnDBFile: TSpeedButton
     Left = 244
@@ -194,7 +192,6 @@ object WindowDB: TWindowDB
       '0\ProjectMigration.dpr'
     FileTypes = <>
     Options = []
-    OnFileOkClick = OpenFileFileOkClick
     Left = 16
   end
   object Actions: TActionList
@@ -204,11 +201,19 @@ object WindowDB: TWindowDB
       ImageIndex = 0
       OnExecute = ActDBFileExecute
     end
+    object ActSave: TAction
+      Caption = 'Salvar'
+      OnExecute = ActSaveExecute
+    end
+    object ActTestConn: TAction
+      Caption = 'Testar Conex'#227'o'
+      OnExecute = ActTestConnExecute
+    end
   end
   object Images: TImageList
     Left = 240
     Bitmap = {
-      494C010101000800140010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800180010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

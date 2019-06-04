@@ -27,7 +27,53 @@ object ConnFactory: TConnFactory
     FetchOptions.AssignedValues = [evRowsetSize, evRecordCountMode]
     FetchOptions.RowsetSize = 200
     SQL.Strings = (
-      'SELECT RF.RDB$FIELD_NAME FIELD_NAME'
+      'SELECT'
+      '  RF.RDB$FIELD_NAME FIELD_NAME,'
+      '  CASE F.RDB$FIELD_TYPE'
+      '    WHEN 7 THEN'
+      '      CASE F.RDB$FIELD_SUB_TYPE'
+      '        WHEN 0 THEN '#39'SMALLINT'#39
+      
+        '        WHEN 1 THEN '#39'NUMERIC('#39' || F.RDB$FIELD_PRECISION || '#39', '#39' ' +
+        '|| (-F.RDB$FIELD_SCALE) || '#39')'#39
+      '        WHEN 2 THEN '#39'DECIMAL'#39
+      '      END'
+      '    WHEN 8 THEN'
+      '      CASE F.RDB$FIELD_SUB_TYPE'
+      '        WHEN 0 THEN '#39'INTEGER'#39
+      
+        '        WHEN 1 THEN '#39'NUMERIC('#39'  || F.RDB$FIELD_PRECISION || '#39', '#39 +
+        ' || (-F.RDB$FIELD_SCALE) || '#39')'#39
+      '        WHEN 2 THEN '#39'DECIMAL'#39
+      '      END'
+      '    WHEN 9 THEN '#39'QUAD'#39
+      '    WHEN 10 THEN '#39'FLOAT'#39
+      '    WHEN 12 THEN '#39'DATE'#39
+      '    WHEN 13 THEN '#39'TIME'#39
+      
+        '    WHEN 14 THEN '#39'CHAR('#39' || (TRUNC(F.RDB$FIELD_LENGTH / CH.RDB$B' +
+        'YTES_PER_CHARACTER)) || '#39') '#39
+      '    WHEN 16 THEN'
+      '      CASE F.RDB$FIELD_SUB_TYPE'
+      '        WHEN 0 THEN '#39'BIGINT'#39
+      
+        '        WHEN 1 THEN '#39'NUMERIC('#39' || F.RDB$FIELD_PRECISION || '#39', '#39' ' +
+        '|| (-F.RDB$FIELD_SCALE) || '#39')'#39
+      '        WHEN 2 THEN '#39'DECIMAL'#39
+      '      END'
+      '    WHEN 27 THEN '#39'DOUBLE'#39
+      '    WHEN 35 THEN '#39'TIMESTAMP'#39
+      
+        '    WHEN 37 THEN '#39'VARCHAR('#39' || (TRUNC(F.RDB$FIELD_LENGTH / CH.RD' +
+        'B$BYTES_PER_CHARACTER)) || '#39')'#39
+      
+        '    WHEN 40 THEN '#39'CSTRING'#39' || (TRUNC(F.RDB$FIELD_LENGTH / CH.RDB' +
+        '$BYTES_PER_CHARACTER)) || '#39')'#39
+      '    WHEN 45 THEN '#39'BLOB_ID'#39
+      '    WHEN 261 THEN '#39'BLOB SUB_TYPE '#39' || F.RDB$FIELD_SUB_TYPE'
+      '    ELSE '#39'RDB$FIELD_TYPE: '#39' || F.RDB$FIELD_TYPE || '#39'?'#39
+      '  END FIELD_TYPE,'
+      '  F.RDB$FIELD_TYPE FIELD_NUMBER'
       'FROM RDB$RELATION_FIELDS RF'
       'JOIN RDB$FIELDS F ON (F.RDB$FIELD_NAME = RF.RDB$FIELD_SOURCE)'
       

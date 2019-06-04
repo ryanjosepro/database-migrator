@@ -4,16 +4,16 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, DAO, Data.DB, Vcl.DBGrids,
-  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, MyUtils;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, DAO, MyUtils;
 
 type
   TWindowFields = class(TForm)
-    Title1: TLabel;
+    LblTitle1: TLabel;
     GridFields: TStringGrid;
     LblCamposFB: TLabel;
-    LblNCampos: TLabel;
-    Title2: TLabel;
+    LblCamposDF: TLabel;
+    LblTitle2: TLabel;
     LblTotFields: TLabel;
     Actions: TActionList;
     Images: TImageList;
@@ -24,9 +24,10 @@ type
     SaveFile: TFileSaveDialog;
     OpenFile: TFileOpenDialog;
     ActOrdFields: TAction;
-    SpeedButton1: TSpeedButton;
+    BtnOrdFields: TSpeedButton;
     BtnClearFields: TSpeedButton;
     ActClearFields: TAction;
+    LblTipoCampo: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure ActExportExecute(Sender: TObject);
     procedure ActImportExecute(Sender: TObject);
@@ -47,7 +48,7 @@ implementation
 
 procedure TWindowFields.ActClearFieldsExecute(Sender: TObject);
 begin
-  GridFields.Cols[1].Clear;
+  GridFields.Cols[2].Clear;
 end;
 
 procedure TWindowFields.ActExportExecute(Sender: TObject);
@@ -61,7 +62,7 @@ begin
     Rewrite(Arq);
     for Cont := 0 to GridFields.RowCount - 1 do
     begin
-      Writeln(Arq, GridFields.Cells[1, Cont]);
+      Writeln(Arq, GridFields.Cells[2, Cont]);
     end;
     CloseFile(Arq);
   end;
@@ -77,10 +78,10 @@ begin
     if OpenFile.Execute then
     begin
       Rows.LoadFromFile(OpenFile.FileName);
-      GridFields.Cols[1].Clear;
+      GridFields.Cols[2].Clear;
       for Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
       begin
-        GridFields.Cells[1, Cont] := Rows[Cont];
+        GridFields.Cells[2, Cont] := Rows[Cont];
       end;
     end;
   finally
@@ -94,26 +95,29 @@ var
 begin
   for Cont := 0 to GridFields.RowCount - 1 do
   begin
-    GridFields.Cells[1, Cont] := IntToStr(Cont + 1);
+    GridFields.Cells[2, Cont] := IntToStr(Cont + 1);
   end;
 end;
 
 procedure TWindowFields.FormActivate(Sender: TObject);
 var
   Cont: integer;
-  Campos: TStringArray;
+  Campos, Tipos: TStringArray;
 begin
   try
-    GridFields.ColWidths[1] := 88;
+    GridFields.ColWidths[2] := 88;
     if TDAO.Count <> 0 then
     begin
       LblCamposFB.Caption := 'Campos Firebird - ' + TDAO.Table;
       SetLength(Campos, TDAO.Count);
       Campos := TDAO.GetFieldsNames;
+      SetLength(Tipos, TDAO.Count);
+      Tipos := TDAO.GetFieldsTypes;
       GridFields.RowCount := TDAO.Count;
       for Cont := 0 to TDAO.Count - 1 do
       begin
-        GridFields.Cells[0, Cont] := (Campos[Cont]);
+        GridFields.Cells[0, Cont] := Campos[Cont];
+        GridFields.Cells[1, Cont] := Tipos[Cont];
       end;
     end
     else
@@ -133,13 +137,13 @@ begin
   SetLength(Result, TDAO.Count);
   for Cont := 0 to TDAO.Count - 1 do
     begin
-      if GridFields.Cells[1, Cont].IsEmpty then
+      if GridFields.Cells[2, Cont].IsEmpty then
       begin
         Result[Cont] := -1;
       end
       else
       begin
-        Result[Cont] := GridFields.Cells[1, Cont].ToInteger;
+        Result[Cont] := GridFields.Cells[2, Cont].ToInteger;
       end;
     end;
 end;
