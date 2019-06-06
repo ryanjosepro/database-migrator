@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
-  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, DAO, MyUtils;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, DAO, MyUtils, ViewDados;
 
 type
   TWindowFields = class(TForm)
@@ -33,6 +33,7 @@ type
     procedure ActImportExecute(Sender: TObject);
     procedure ActOrdFieldsExecute(Sender: TObject);
     procedure ActClearFieldsExecute(Sender: TObject);
+    procedure ActDadosExecute(Sender: TObject);
 
   public
     function GetOrder: TIntegerArray;
@@ -49,6 +50,11 @@ implementation
 procedure TWindowFields.ActClearFieldsExecute(Sender: TObject);
 begin
   GridFields.Cols[2].Clear;
+end;
+
+procedure TWindowFields.ActDadosExecute(Sender: TObject);
+begin
+  WindowDados.ShowModal;
 end;
 
 procedure TWindowFields.ActExportExecute(Sender: TObject);

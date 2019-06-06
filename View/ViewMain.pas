@@ -23,7 +23,7 @@ type
     BtnFields: TSpeedButton;
     ActConfigFields: TAction;
     OpenFile: TFileOpenDialog;
-    BtnDados: TSpeedButton;
+    BtnDatas: TSpeedButton;
     ActDados: TAction;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
@@ -108,7 +108,7 @@ begin
           OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
         end;
         //Envia á variável de saída para o log;
-        Log('Inserted' + OutStr);
+        Log('Inserted ' + OutStr);
       end;
     except on E: Exception do
       ShowMessage(E.ToString);

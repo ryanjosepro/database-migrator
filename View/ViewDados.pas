@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids, System.Actions, Vcl.ActnList,
-  System.ImageList, Vcl.ImgList, Vcl.Buttons, DAO, MyUtils;
+  System.ImageList, Vcl.ImgList, Vcl.Buttons, DAO, MyUtils, Vcl.ExtCtrls;
 
 type
   TWindowDados = class(TForm)
@@ -17,6 +17,11 @@ type
     Images: TImageList;
     Actions: TActionList;
     ActConfigFields: TAction;
+    BtnSelect: TSpeedButton;
+    ActSelect: TAction;
+    PanelSearch: TPanel;
+    TxtTotRows: TEdit;
+    LblTotRowsSelect: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
   private
@@ -27,6 +32,7 @@ type
 
 var
   WindowDados: TWindowDados;
+  Arquivo: string;
 
 implementation
 
@@ -44,36 +50,48 @@ var
   Rows: TStringList;
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
-  ContRow, ContCol: integer;
+  ContRow, ContCol, TotRows: integer;
 begin
-  LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetFilePath;
-
-  Rows := TStringList.Create;
-  Rows.LoadFromFile(TConfigs.GetFilePath);
-  DataFlex := TDataFlex.Create(Rows);
-  SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
-  Datas := DataFlex.ToMatrix;
-
-  GridDatas.RowCount := DataFlex.GetRows + 1;
-  GridDatas.ColCount := DataFlex.GetCols + 1;
-  LblTotRows.Caption := 'Linhas: ' + DataFlex.GetRows.ToString;
-  LblTotCols.Caption := 'Colunas: ' + DataFlex.GetCols.ToString;
-
-  for ContRow := 1 to DataFlex.GetRows do
+  if Arquivo <> TConfigs.GetFilePath then
   begin
-    GridDatas.Cells[0, ContRow] := 'Dado ' + ContRow.ToString;
-  end;
+    Arquivo := TConfigs.GetFilePath;
 
-  for ContCol := 1 to DataFlex.GetCols do
-  begin
-    GridDatas.Cells[ContCol, 0] := 'Campo ' + ContCol.ToString;
-  end;
+    LblFileName.Caption := 'Arquivo Dataflex: ' + Arquivo;
 
-  for ContRow := 1 to DataFlex.GetRows do
-  begin
+    TotRows := StrToInt(TxtTotRows.Text);
+
+    Rows := TStringList.Create;
+    Rows.LoadFromFile(Arquivo);
+    DataFlex := TDataFlex.Create(Rows);
+    SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
+    Datas := DataFlex.ToMatrix;
+
+    if TotRows > DataFlex.GetRows then
+    begin
+      TotRows := DataFlex.GetRows;
+    end;
+
+    GridDatas.RowCount := TotRows + 1;
+    GridDatas.ColCount := DataFlex.GetCols + 1;
+    LblTotRows.Caption := 'Linhas: ' + DataFlex.GetRows.ToString;
+    LblTotCols.Caption := 'Colunas: ' + DataFlex.GetCols.ToString;
+
+    for ContRow := 1 to TotRows do
+    begin
+      GridDatas.Cells[0, ContRow] := 'Dado ' + ContRow.ToString;
+    end;
+
     for ContCol := 1 to DataFlex.GetCols do
     begin
-      GridDatas.Cells[ContCol, ContRow] := Datas[ContRow - 1, ContCol - 1];
+      GridDatas.Cells[ContCol, 0] := 'Campo ' + ContCol.ToString;
+    end;
+
+    for ContRow := 1 to TotRows do
+    begin
+      for ContCol := 1 to DataFlex.GetCols do
+      begin
+        GridDatas.Cells[ContCol, ContRow] := Datas[ContRow - 1, ContCol - 1];
+      end;
     end;
   end;
 end;
