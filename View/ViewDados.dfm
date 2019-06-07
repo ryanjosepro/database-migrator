@@ -2,7 +2,7 @@ object WindowDados: TWindowDados
   Left = 0
   Top = 0
   Caption = 'Migrator - Dados'
-  ClientHeight = 626
+  ClientHeight = 624
   ClientWidth = 953
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -15,7 +15,7 @@ object WindowDados: TWindowDados
   OnActivate = FormActivate
   DesignSize = (
     953
-    626)
+    624)
   PixelsPerInch = 96
   TextHeight = 13
   object LblFileName: TLabel
@@ -64,11 +64,12 @@ object WindowDados: TWindowDados
     Left = 8
     Top = 104
     Width = 937
-    Height = 514
+    Height = 512
     Anchors = [akLeft, akTop, akRight, akBottom]
     FixedColor = clBtnShadow
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goEditing]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goThumbTracking]
     TabOrder = 0
+    ExplicitHeight = 514
   end
   object PanelSearch: TPanel
     Left = 8
@@ -120,7 +121,7 @@ object WindowDados: TWindowDados
     Left = 904
     Top = 568
     Bitmap = {
-      494C01010200D800280140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010200D8002C0140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -2250,6 +2251,7 @@ object WindowDados: TWindowDados
     end
     object ActSelect: TAction
       Caption = 'Selecionar'
+      OnExecute = ActSelectExecute
     end
   end
 end

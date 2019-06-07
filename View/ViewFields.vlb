@@ -2,9 +2,6 @@
 Coordinates=407,56,91,36
 Visible=True
 
-[LblCamposFB]
-Coordinates=162,10,84,51
-
 [GridFields]
 Coordinates=0,70,65,51
 Visible=True
@@ -50,4 +47,7 @@ Coordinates=68,1,77,51
 
 [BtnOrdFields]
 Coordinates=76,87,84,33
+
+[LblTable]
+Coordinates=162,10,84,51
 

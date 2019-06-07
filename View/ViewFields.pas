@@ -11,7 +11,7 @@ type
   TWindowFields = class(TForm)
     LblTitle1: TLabel;
     GridFields: TStringGrid;
-    LblCamposFB: TLabel;
+    LblTable: TLabel;
     LblCamposDF: TLabel;
     LblTitle2: TLabel;
     LblTotFields: TLabel;
@@ -50,6 +50,7 @@ implementation
 procedure TWindowFields.ActClearFieldsExecute(Sender: TObject);
 begin
   GridFields.Cols[2].Clear;
+  GridFields.Cells[2, 0] := 'Nº Campo Dataflex';
 end;
 
 procedure TWindowFields.ActDadosExecute(Sender: TObject);
@@ -66,9 +67,9 @@ begin
   begin
     AssignFile(Arq, SaveFile.FileName);
     Rewrite(Arq);
-    for Cont := 0 to GridFields.RowCount - 1 do
+    for Cont := 1 to GridFields.RowCount - 1 do
     begin
-      Writeln(Arq, GridFields.Cells[2, Cont]);
+      Writeln(Arq, GridFields.Cells[2, Cont] + 'teste');
     end;
     CloseFile(Arq);
   end;
@@ -85,9 +86,9 @@ begin
     begin
       Rows.LoadFromFile(OpenFile.FileName);
       GridFields.Cols[2].Clear;
-      for Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
+      for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
       begin
-        GridFields.Cells[2, Cont] := Rows[Cont];
+        GridFields.Cells[2, Cont + 1] := Rows[Cont];
       end;
     end;
   finally
@@ -101,7 +102,7 @@ var
 begin
   for Cont := 0 to GridFields.RowCount - 1 do
   begin
-    GridFields.Cells[2, Cont] := IntToStr(Cont + 1);
+    GridFields.Cells[2, Cont + 1] := IntToStr(Cont + 1);
   end;
 end;
 
@@ -111,19 +112,22 @@ var
   Campos, Tipos: TStringArray;
 begin
   try
-    GridFields.ColWidths[2] := 88;
+    GridFields.ColWidths[2] := 100;
+    GridFields.Cells[0, 0] := 'Campo Firebird';
+    GridFields.Cells[1, 0] := 'Tipo Do Campo';
+    GridFields.Cells[2, 0] := 'Nº Campo Dataflex';
     if TDAO.Count <> 0 then
     begin
-      LblCamposFB.Caption := 'Campos Firebird - ' + TDAO.Table;
+      LblTable.Caption := TDAO.Table;
       SetLength(Campos, TDAO.Count);
       Campos := TDAO.GetFieldsNames;
       SetLength(Tipos, TDAO.Count);
       Tipos := TDAO.GetFieldsTypes;
-      GridFields.RowCount := TDAO.Count;
+      GridFields.RowCount := TDAO.Count + 1;
       for Cont := 0 to TDAO.Count - 1 do
       begin
-        GridFields.Cells[0, Cont] := Campos[Cont];
-        GridFields.Cells[1, Cont] := Tipos[Cont];
+        GridFields.Cells[0, Cont + 1] := Campos[Cont];
+        GridFields.Cells[1, Cont + 1] := Tipos[Cont];
       end;
     end
     else
@@ -143,7 +147,7 @@ begin
   SetLength(Result, TDAO.Count);
   for Cont := 0 to TDAO.Count - 1 do
     begin
-      if GridFields.Cells[2, Cont].IsEmpty then
+      if GridFields.Cells[2, Cont + 1].IsEmpty then
       begin
         Result[Cont] := -1;
       end

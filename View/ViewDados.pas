@@ -24,8 +24,9 @@ type
     LblTotRowsSelect: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
+    procedure ActSelectExecute(Sender: TObject);
   private
-    { Private declarations }
+    procedure FillGrid;
   public
     { Public declarations }
   end;
@@ -45,16 +46,19 @@ begin
   WindowFields.ShowModal;
 end;
 
-procedure TWindowDados.FormActivate(Sender: TObject);
+procedure TWindowDados.ActSelectExecute(Sender: TObject);
+begin
+  FillGrid;
+end;
+
+procedure TWindowDados.FillGrid;
 var
   Rows: TStringList;
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
   ContRow, ContCol, TotRows: integer;
 begin
-  if Arquivo <> TConfigs.GetFilePath then
-  begin
-    Arquivo := TConfigs.GetFilePath;
+  Arquivo := TConfigs.GetFilePath;
 
     LblFileName.Caption := 'Arquivo Dataflex: ' + Arquivo;
 
@@ -69,6 +73,7 @@ begin
     if TotRows > DataFlex.GetRows then
     begin
       TotRows := DataFlex.GetRows;
+      TxtTotRows.Text := DataFlex.GetRows.ToString;
     end;
 
     GridDatas.RowCount := TotRows + 1;
@@ -93,6 +98,13 @@ begin
         GridDatas.Cells[ContCol, ContRow] := Datas[ContRow - 1, ContCol - 1];
       end;
     end;
+end;
+
+procedure TWindowDados.FormActivate(Sender: TObject);
+begin
+  if Arquivo <> TConfigs.GetFilePath then
+  begin
+    FillGrid;
   end;
 end;
 
