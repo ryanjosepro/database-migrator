@@ -36,6 +36,7 @@ type
 
 var
   WindowDados: TWindowDados;
+  Arquivo: string;
 
 implementation
 
@@ -69,12 +70,14 @@ var
   Datas: TStringMatrix;
   ContRow, ContCol, TotRows: integer;
 begin
-  LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetFilePath;
+  Arquivo := TConfigs.GetFilePath;
+
+  LblFileName.Caption := 'Arquivo Dataflex: ' + Arquivo;
 
   TotRows := StrToInt(TxtTotRows.Text);
 
   Rows := TStringList.Create;
-  Rows.LoadFromFile(TConfigs.GetFilePath);
+  Rows.LoadFromFile(Arquivo);
   DataFlex := TDataFlex.Create(Rows);
   SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
   Datas := DataFlex.ToMatrix;

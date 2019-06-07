@@ -67,9 +67,9 @@ begin
   begin
     AssignFile(Arq, SaveFile.FileName);
     Rewrite(Arq);
-    for Cont := 0 to GridFields.RowCount - 1 do
+    for Cont := 1 to GridFields.RowCount - 1 do
     begin
-      Writeln(Arq, GridFields.Cells[2, Cont + 1]);
+      Writeln(Arq, GridFields.Cells[2, Cont] + 'teste');
     end;
     CloseFile(Arq);
   end;
@@ -86,7 +86,7 @@ begin
     begin
       Rows.LoadFromFile(OpenFile.FileName);
       GridFields.Cols[2].Clear;
-      for Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
+      for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
       begin
         GridFields.Cells[2, Cont + 1] := Rows[Cont];
       end;
