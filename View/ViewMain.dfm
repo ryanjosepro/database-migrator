@@ -69,7 +69,7 @@ object WindowMain: TWindowMain
   object LblTitle2: TLabel
     AlignWithMargins = True
     Left = 199
-    Top = -10
+    Top = -15
     Width = 121
     Height = 59
     Alignment = taCenter
@@ -102,7 +102,7 @@ object WindowMain: TWindowMain
     Height = 49
     Caption = 'Come'#231'ar'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clBackground
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
@@ -173,6 +173,20 @@ object WindowMain: TWindowMain
     ParentShowHint = False
     ShowHint = True
   end
+  object BtnStop: TSpeedButton
+    Left = 215
+    Top = 101
+    Width = 90
+    Height = 36
+    Caption = 'Parar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    OnClick = BtnStopClick
+  end
   object TxtLog: TMemo
     Left = 8
     Top = 155
@@ -190,7 +204,7 @@ object WindowMain: TWindowMain
     Left = 464
     Top = 432
     Bitmap = {
-      494C01010400D800080140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010400D8000C0140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       0200000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

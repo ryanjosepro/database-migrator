@@ -31,7 +31,7 @@ object WindowFields: TWindowFields
     Font.Style = []
     ParentFont = False
   end
-  object LblCamposFB: TLabel
+  object LblTable: TLabel
     Left = 8
     Top = 35
     Width = 159
@@ -124,15 +124,15 @@ object WindowFields: TWindowFields
     Width = 441
     Height = 566
     ColCount = 3
-    DefaultColWidth = 160
+    DefaultColWidth = 158
     FixedColor = clWindow
     FixedCols = 2
-    RowCount = 1
-    FixedRows = 0
+    RowCount = 2
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing]
     ScrollBars = ssVertical
     TabOrder = 0
     RowHeights = (
+      24
       24)
   end
   object Actions: TActionList
@@ -166,7 +166,7 @@ object WindowFields: TWindowFields
     Left = 416
     Top = 568
     Bitmap = {
-      494C010104000800D00016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800D80016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000580000002C0000000100200000000000803C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

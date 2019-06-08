@@ -19,7 +19,7 @@ object WindowFields: TWindowFields
   object LblTitle1: TLabel
     Left = 8
     Top = 5
-    Width = 158
+    Width = 322
     Height = 24
     Alignment = taCenter
     AutoSize = False
@@ -34,24 +34,14 @@ object WindowFields: TWindowFields
   object LblTable: TLabel
     Left = 8
     Top = 35
-    Width = 159
+    Width = 322
     Height = 13
     Alignment = taCenter
     AutoSize = False
-    Caption = 'Campos Firebird '
-  end
-  object LblCamposDF: TLabel
-    Left = 336
-    Top = 35
-    Width = 113
-    Height = 13
-    Alignment = taCenter
-    AutoSize = False
-    Caption = 'N'#186' Campo DataFlex'
   end
   object LblTitle2: TLabel
     Left = 336
-    Top = 5
+    Top = 8
     Width = 113
     Height = 24
     Alignment = taCenter
@@ -109,15 +99,6 @@ object WindowFields: TWindowFields
     ParentShowHint = False
     ShowHint = True
   end
-  object LblTipoCampo: TLabel
-    Left = 172
-    Top = 35
-    Width = 157
-    Height = 13
-    Alignment = taCenter
-    AutoSize = False
-    Caption = 'Tipo do Campo'
-  end
   object GridFields: TStringGrid
     Left = 8
     Top = 54
@@ -166,7 +147,7 @@ object WindowFields: TWindowFields
     Left = 416
     Top = 568
     Bitmap = {
-      494C010104000800D80016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800DC0016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000580000002C0000000100200000000000803C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

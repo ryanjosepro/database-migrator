@@ -12,7 +12,6 @@ type
     LblTitle1: TLabel;
     GridFields: TStringGrid;
     LblTable: TLabel;
-    LblCamposDF: TLabel;
     LblTitle2: TLabel;
     LblTotFields: TLabel;
     Actions: TActionList;
@@ -27,7 +26,6 @@ type
     BtnOrdFields: TSpeedButton;
     BtnClearFields: TSpeedButton;
     ActClearFields: TAction;
-    LblTipoCampo: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure ActExportExecute(Sender: TObject);
     procedure ActImportExecute(Sender: TObject);
@@ -137,7 +135,7 @@ function TWindowFields.GetOrder: TIntegerArray;
 var
   Cont: integer;
 begin
-  GridFields.RowCount := TDAO.Count;
+  GridFields.RowCount := TDAO.Count + 1;
   SetLength(Result, TDAO.Count);
   for Cont := 0 to TDAO.Count - 1 do
     begin

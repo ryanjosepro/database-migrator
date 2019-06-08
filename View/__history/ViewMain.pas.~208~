@@ -34,13 +34,19 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BtnStopClick(Sender: TObject);
     procedure BtnStartClick(Sender: TObject);
+
+  private
+    procedure Migrar;
+
   end;
 
   TMyThread = class(TThread)
   protected
     procedure Execute; override;
+
   public
     constructor Create;
+
   end;
 
 
@@ -76,6 +82,68 @@ begin
   WindowDados.ShowModal;
 end;
 
+procedure TWindowMain.Migrar;
+var
+  Rows: TStringList;
+  DataFlex: TDataFlex;
+  Datas: TStringMatrix;
+  ContRow, ContCol: integer;
+  OutStr: string;
+begin
+  MigrationEnabled := true;
+  //Se o arquivo não foi selecionado;
+  if OpenFile.FileName = '' then
+  begin
+    OpenFile.Execute;
+  end;
+  //Cria uma lista de strings;
+  Rows := TStringList.Create;
+  //Pega as linhas do arquivo;
+  Rows.LoadFromFile(OpenFile.FileName);
+  //Manda as linhas pra classe de tratamento;
+  DataFlex := TDataFlex.Create(Rows);
+  //Define o tamanho da matriz;
+  SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
+  //Atribui a matriz para uma variável;
+  Datas := DataFlex.ToMatrix;
+  //Try para liberação de objetos;
+  try
+    //Try para tratamento de erros;
+    try
+      //Limpa o log de saída;
+      TxtLog.Clear;
+      //Percorre cada linha da matriz;
+      for ContRow := 0 to DataFlex.GetRows do
+      begin
+        if MigrationEnabled then
+        begin
+          //Envia uma linha com dados para o DAO;
+          TDAO.Insert(Datas[ContRow], WindowFields.GetOrder);
+          //Limpa a variável de saída;
+          OutStr := '';
+          //Percorre cada dado da linha da matriz;
+          for ContCol := 0 to DataFlex.GetCols - 1 do
+          begin
+            //Atribui á variável de saída os dados da linha;
+            OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
+          end;
+          //Envia á variável de saída para o log;
+          Log('Inserted = ' + OutStr);
+        end
+        else
+        begin
+          break;
+        end;
+      end;
+    except on E: Exception do
+      ShowMessage(E.ToString);
+    end;
+  finally
+    FreeAndNil(Rows);
+    FreeAndNil(DataFlex);
+  end;
+end;
+
 procedure TWindowMain.BtnStartClick(Sender: TObject);
 begin
   if WindowMain.OpenFile.FileName = '' then
@@ -100,7 +168,6 @@ begin
   TConfigs.SetFilePath('');
 end;
 
-
 { TMyThread }
 
 constructor TMyThread.Create;
@@ -116,7 +183,6 @@ var
   ContRow, ContCol: integer;
   OutStr: string;
 begin
-  WindowMain.BtnStart.Enabled := false;
   inherited;
   MigrationEnabled := true;
   //Cria uma lista de strings;
@@ -151,11 +217,10 @@ begin
             OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
           end;
           //Envia á variável de saída para o log;
-          WindowMain.Log('Inserted -> ' + OutStr);
+          WindowMain.Log('Inserted = ' + OutStr);
         end
         else
         begin
-          WindowMain.Log('STOPED!');
           break;
         end;
       end;
@@ -163,7 +228,6 @@ begin
       ShowMessage(E.ToString);
     end;
   finally
-    WindowMain.BtnStart.Enabled := true;
     FreeAndNil(Rows);
     FreeAndNil(DataFlex);
   end;

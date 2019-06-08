@@ -50,6 +50,7 @@ object WindowMain: TWindowMain
     0000FFFF00008001000000000000000000000000000000000000C0030000}
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object LblTitle1: TLabel
@@ -66,10 +67,11 @@ object WindowMain: TWindowMain
     ParentFont = False
   end
   object LblTitle2: TLabel
+    AlignWithMargins = True
     Left = 199
-    Top = -17
+    Top = -15
     Width = 121
-    Height = 57
+    Height = 59
     Alignment = taCenter
     AutoSize = False
     Caption = #8594
@@ -100,7 +102,7 @@ object WindowMain: TWindowMain
     Height = 49
     Caption = 'Come'#231'ar'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clBackground
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
@@ -155,7 +157,7 @@ object WindowMain: TWindowMain
     ParentShowHint = False
     ShowHint = True
   end
-  object BtnDados: TSpeedButton
+  object BtnDatas: TSpeedButton
     Left = 67
     Top = 101
     Width = 48
@@ -170,6 +172,20 @@ object WindowMain: TWindowMain
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
+  end
+  object SpeedButton1: TSpeedButton
+    Left = 215
+    Top = 101
+    Width = 90
+    Height = 36
+    Caption = 'Parar'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    OnClick = BtnStartClick
   end
   object TxtLog: TMemo
     Left = 8
@@ -188,7 +204,7 @@ object WindowMain: TWindowMain
     Left = 464
     Top = 432
     Bitmap = {
-      494C01010400D800F80040004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010400D8000C0140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       0200000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

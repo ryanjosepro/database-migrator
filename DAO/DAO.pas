@@ -137,7 +137,6 @@ begin
     begin
       continue
     end;
-    //O grande problema - TIPOS
     case Tipos[Cont] of
     7, 8:
       QuerySQL.FieldByName(Fields[Cont]).AsInteger := DataFlex[Order[Cont] - 1].ToInteger;
@@ -152,8 +151,6 @@ begin
     37:
       QuerySQL.FieldByName(Fields[Cont]).AsString := DataFlex[Order[Cont] - 1];
     end;
-    //QuerySQL.FieldByName(Fields[Cont]).AsVariant := DataFlex[Order[Cont] - 1];
-    //The big problem - TYPES
   end;
   QuerySQL.Post;
 end;

@@ -33,7 +33,6 @@ type
     procedure ActImportExecute(Sender: TObject);
     procedure ActOrdFieldsExecute(Sender: TObject);
     procedure ActClearFieldsExecute(Sender: TObject);
-    procedure ActDadosExecute(Sender: TObject);
 
   public
     function GetOrder: TIntegerArray;
@@ -53,11 +52,6 @@ begin
   GridFields.Cells[2, 0] := 'Nº Campo Dataflex';
 end;
 
-procedure TWindowFields.ActDadosExecute(Sender: TObject);
-begin
-  WindowDados.ShowModal;
-end;
-
 procedure TWindowFields.ActExportExecute(Sender: TObject);
 var
   Arq: TextFile;
@@ -67,7 +61,7 @@ begin
   begin
     AssignFile(Arq, SaveFile.FileName);
     Rewrite(Arq);
-    for Cont := 1 to GridFields.RowCount do
+    for Cont := 1 to GridFields.RowCount - 1 do
     begin
       Writeln(Arq, GridFields.Cells[2, Cont]);
     end;
@@ -86,7 +80,7 @@ begin
     begin
       Rows.LoadFromFile(OpenFile.FileName);
       GridFields.Cols[2].Clear;
-      for Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
+      for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
       begin
         GridFields.Cells[2, Cont + 1] := Rows[Cont];
       end;
@@ -153,7 +147,7 @@ begin
       end
       else
       begin
-        Result[Cont] := GridFields.Cells[2, Cont].ToInteger;
+        Result[Cont] := GridFields.Cells[2, Cont + 1].ToInteger;
       end;
     end;
 end;

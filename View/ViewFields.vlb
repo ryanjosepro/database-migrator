@@ -42,9 +42,6 @@ Coordinates=103,10,41,51
 [LblTitle2]
 Coordinates=0,0,41,51
 
-[LblCamposDF]
-Coordinates=68,1,77,51
-
 [BtnOrdFields]
 Coordinates=76,87,84,33
 
