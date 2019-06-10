@@ -26,6 +26,8 @@ type
     BtnDatas: TSpeedButton;
     ActDados: TAction;
     BtnStop: TSpeedButton;
+    BtnConfigs: TSpeedButton;
+    ActConfigs: TAction;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
@@ -34,6 +36,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BtnStopClick(Sender: TObject);
     procedure BtnStartClick(Sender: TObject);
+    procedure ActConfigsExecute(Sender: TObject);
   end;
 
   TMyThread = class(TThread)
@@ -71,6 +74,11 @@ begin
   WindowFields.ShowModal;
 end;
 
+procedure TWindowMain.ActConfigsExecute(Sender: TObject);
+begin
+  //
+end;
+
 procedure TWindowMain.ActDadosExecute(Sender: TObject);
 begin
   WindowDados.ShowModal;
@@ -80,9 +88,15 @@ procedure TWindowMain.BtnStartClick(Sender: TObject);
 begin
   if WindowMain.OpenFile.FileName = '' then
   begin
-    WindowMain.OpenFile.Execute;
+    if OpenFile.Execute then
+    begin
+      TMyThread.Create;
+    end;
+  end
+  else
+  begin
+    TMyThread.Create;
   end;
-  TMyThread.Create;
 end;
 
 procedure TWindowMain.BtnStopClick(Sender: TObject);

@@ -12,6 +12,7 @@ object WindowDados: TWindowDados
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnActivate = FormActivate
   DesignSize = (
     953
     624)
@@ -43,10 +44,10 @@ object WindowDados: TWindowDados
     Caption = 'Colunas:'
   end
   object BtnFields: TSpeedButton
-    Left = 912
-    Top = 8
-    Width = 33
-    Height = 33
+    Left = 897
+    Top = 0
+    Width = 48
+    Height = 48
     Action = ActConfigFields
     Anchors = [akTop, akRight]
     Flat = True
@@ -60,10 +61,10 @@ object WindowDados: TWindowDados
     ShowHint = True
   end
   object SpeedButton1: TSpeedButton
-    Left = 873
-    Top = 8
-    Width = 33
-    Height = 33
+    Left = 843
+    Top = 0
+    Width = 48
+    Height = 48
     Action = ActOpenFile
     Anchors = [akTop, akRight]
     Flat = True
@@ -82,7 +83,9 @@ object WindowDados: TWindowDados
     Width = 937
     Height = 512
     Anchors = [akLeft, akTop, akRight, akBottom]
+    ColCount = 2
     FixedColor = clBtnShadow
+    RowCount = 2
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goThumbTracking]
     TabOrder = 0
   end
@@ -111,15 +114,15 @@ object WindowDados: TWindowDados
       Font.Style = []
       ParentFont = False
     end
-    object LblTotRowsSelect: TLabel
+    object LblRowsLimit: TLabel
       Left = 8
       Top = 9
-      Width = 73
+      Width = 81
       Height = 13
       AutoSize = False
-      Caption = 'Total de linhas:'
+      Caption = 'Limite De Linhas:'
     end
-    object TxtTotRows: TEdit
+    object TxtRowsLimit: TEdit
       Left = 87
       Top = 8
       Width = 90
@@ -127,7 +130,6 @@ object WindowDados: TWindowDados
       AutoSize = False
       NumbersOnly = True
       TabOrder = 0
-      Text = '10'
     end
   end
   object Images: TImageList
@@ -136,7 +138,7 @@ object WindowDados: TWindowDados
     Left = 904
     Top = 568
     Bitmap = {
-      494C01010200D800480140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010200D800500140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       0100000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -57,20 +57,37 @@ begin
   TConfigs.SetPassWord(TxtPassword.Text);
   TConfigs.SetDatabase(TxtDatabase.Text);
   TConfigs.SetTable(TxtTable.Text);
+
+  ConnFactory.Conn.Params.UserName := TxtUserName.Text;
+  ConnFactory.Conn.Params.Password := TxtPassword.Text;
+  ConnFactory.Conn.Params.Database := TxtDatabase.Text;
+
   DidChange := false;
   Close;
 end;
 
 procedure TWindowDB.ActTestConnExecute(Sender: TObject);
+var
+  CurrUserName, CurrPassword, CurrDatabase: string;
 begin
+  CurrUserName := ConnFactory.Conn.Params.UserName;
+  CurrPassword := ConnFactory.Conn.Params.Password;
+  CurrDatabase := ConnFactory.Conn.Params.Database;
+
   ConnFactory.Conn.Params.UserName := TxtUserName.Text;
   ConnFactory.Conn.Params.Password := TxtPassword.Text;
   ConnFactory.Conn.Params.Database := TxtDatabase.Text;
   try
-    ConnFactory.Conn.Connected := true;
-    ShowMessage('Conexão Ok!');
-  except on E: Exception do
-    ShowMessage('Erro de conexão: ' + E.ToString);
+    try
+      ConnFactory.Conn.Connected := true;
+      ShowMessage('Conexão Ok!');
+    except on E: Exception do
+      ShowMessage('Erro de conexão: ' + E.ToString);
+    end;
+  finally
+    ConnFactory.Conn.Params.UserName := CurrUserName;
+    ConnFactory.Conn.Params.Password := CurrPassword;
+    ConnFactory.Conn.Params.Database := CurrDatabase;
   end;
 end;
 

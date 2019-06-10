@@ -108,6 +108,13 @@ begin
     GridFields.Cells[0, 0] := 'Campo Firebird';
     GridFields.Cells[1, 0] := 'Tipo Do Campo';
     GridFields.Cells[2, 0] := 'Nº Campo Dataflex';
+    //Limpando Tabela
+    LblTable.Caption := '';
+    GridFields.RowCount := 2;
+    GridFields.Cells[0, 1] := '';
+    GridFields.Cells[1, 1] := '';
+    GridFields.Cells[2, 1] := '';
+    //Limpando Tabela
     if TDAO.Count <> 0 then
     begin
       LblTable.Caption := TDAO.Table;

@@ -20,14 +20,15 @@ type
     BtnSelect: TSpeedButton;
     ActSelect: TAction;
     PanelSearch: TPanel;
-    TxtTotRows: TEdit;
-    LblTotRowsSelect: TLabel;
+    TxtRowsLimit: TEdit;
+    LblRowsLimit: TLabel;
     ActOpenFile: TAction;
     SpeedButton1: TSpeedButton;
     OpenFile: TFileOpenDialog;
     procedure ActConfigFieldsExecute(Sender: TObject);
     procedure ActSelectExecute(Sender: TObject);
     procedure ActOpenFileExecute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     procedure FillGrid;
   public
@@ -69,9 +70,16 @@ var
   Datas: TStringMatrix;
   ContRow, ContCol, TotRows: integer;
 begin
-  LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetFilePath;
+  //TotRows := StrToInt(TxtRowsLimit.Text);
 
-  TotRows := StrToInt(TxtTotRows.Text);
+  if Trim(TxtRowsLimit.Text) = '' then
+  begin
+    TotRows := 0;
+  end
+  else
+  begin
+    TotRows := StrToInt(TxtRowsLimit.Text);
+  end;
 
   Rows := TStringList.Create;
   Rows.LoadFromFile(TConfigs.GetFilePath);
@@ -79,10 +87,10 @@ begin
   SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
   Datas := DataFlex.ToMatrix;
 
-  if TotRows > DataFlex.GetRows then
+  if (TotRows > DataFlex.GetRows) or (TotRows = 0) then
   begin
     TotRows := DataFlex.GetRows;
-    TxtTotRows.Text := DataFlex.GetRows.ToString;
+    TxtRowsLimit.Text := DataFlex.GetRows.ToString;
   end;
 
   GridDatas.RowCount := TotRows + 1;
@@ -107,6 +115,11 @@ begin
       GridDatas.Cells[ContCol, ContRow] := Datas[ContRow - 1, ContCol - 1];
     end;
   end;
+end;
+
+procedure TWindowDados.FormActivate(Sender: TObject);
+begin
+  LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetFilePath;
 end;
 
 end.
