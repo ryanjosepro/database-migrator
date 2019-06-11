@@ -127,6 +127,10 @@
             <Form>WindowDados</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="View\ViewConfigs.pas">
+            <Form>WindowConfigs</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

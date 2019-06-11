@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
-  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, DAO, MyUtils, ViewDados;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, DAO, MyUtils, ViewDados, shlObj;
 
 type
   TWindowFields = class(TForm)

@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls,
   Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList, System.ImageList,
-  Vcl.ImgList, Vcl.ExtDlgs, ViewDB, ViewFields, ViewDados, DAO, MyUtils;
+  Vcl.ImgList, Vcl.ExtDlgs, ViewDB, ViewFields, ViewDados, ViewConfigs, DAO, MyUtils;
 
 type
   TWindowMain = class(TForm)
@@ -76,7 +76,7 @@ end;
 
 procedure TWindowMain.ActConfigsExecute(Sender: TObject);
 begin
-  //
+  WindowConfigs.ShowModal;
 end;
 
 procedure TWindowMain.ActDadosExecute(Sender: TObject);
@@ -127,7 +127,7 @@ var
   Rows: TStringList;
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
-  ContRow, ContCol: integer;
+  ContRow, ContCol, TotRows: integer;
   OutStr: string;
 begin
   WindowMain.BtnStart.Enabled := false;
@@ -150,7 +150,23 @@ begin
       //Limpa o log de saída;
       WindowMain.TxtLog.Clear;
       //Percorre cada linha da matriz;
-      for ContRow := 0 to DataFlex.GetRows do
+      if WindowConfigs.RadioBtnAllRows.Checked then
+      begin
+        TotRows := DataFlex.GetRows;
+      end
+      else if WindowConfigs.RadioBtnLimitRows.Checked then
+      begin
+        if StrToInt(WindowConfigs.TxtLimitRows.Text) > DataFlex.GetRows then
+        begin
+          TotRows := DataFlex.GetRows;
+        end
+        else
+        begin
+          TotRows := StrToInt(WindowConfigs.TxtLimitRows.Text);
+        end;
+      end;
+
+      for ContRow := 0 to TotRows do
       begin
         if MigrationEnabled then
         begin

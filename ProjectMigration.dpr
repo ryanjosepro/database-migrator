@@ -8,7 +8,8 @@ uses
   ViewDB in 'View\ViewDB.pas' {WindowDB},
   ViewFields in 'View\ViewFields.pas' {WindowFields},
   DAO in 'DAO\DAO.pas',
-  ViewDados in 'View\ViewDados.pas' {WindowDados};
+  ViewDados in 'View\ViewDados.pas' {WindowDados},
+  ViewConfigs in 'View\ViewConfigs.pas' {WindowConfigs};
 
 {$R *.res}
 
@@ -21,5 +22,6 @@ begin
   Application.CreateForm(TWindowDB, WindowDB);
   Application.CreateForm(TWindowFields, WindowFields);
   Application.CreateForm(TWindowDados, WindowDados);
+  Application.CreateForm(TWindowConfigs, WindowConfigs);
   Application.Run;
 end.

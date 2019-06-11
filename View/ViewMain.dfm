@@ -1,9 +1,10 @@
 object WindowMain: TWindowMain
   Left = 0
   Top = 0
+  Action = ActConfigs
   BorderStyle = bsDialog
   Caption = 'Migrator'
-  ClientHeight = 505
+  ClientHeight = 570
   ClientWidth = 528
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -50,6 +51,7 @@ object WindowMain: TWindowMain
     0000FFFF00008001000000000000000000000000000000000000C0030000}
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnClick = ActConfigsExecute
   OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
@@ -191,7 +193,7 @@ object WindowMain: TWindowMain
     Left = 232
     Top = 119
     Width = 57
-    Height = 33
+    Height = 50
     Action = ActConfigs
     Flat = True
     Font.Charset = DEFAULT_CHARSET
@@ -205,9 +207,9 @@ object WindowMain: TWindowMain
   end
   object TxtLog: TMemo
     Left = 8
-    Top = 155
+    Top = 175
     Width = 512
-    Height = 342
+    Height = 387
     TabStop = False
     ReadOnly = True
     ScrollBars = ssBoth
@@ -218,9 +220,9 @@ object WindowMain: TWindowMain
     Height = 64
     Width = 64
     Left = 464
-    Top = 432
+    Top = 496
     Bitmap = {
-      494C01010500D800200140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010500D8002C0140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       0200000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4454,7 +4456,7 @@ object WindowMain: TWindowMain
   object Actions: TActionList
     Images = Images
     Left = 424
-    Top = 432
+    Top = 496
     object ActOpenFile: TAction
       ImageIndex = 0
       OnExecute = ActOpenFileExecute
@@ -4493,6 +4495,6 @@ object WindowMain: TWindowMain
       end>
     Options = []
     Left = 24
-    Top = 440
+    Top = 496
   end
 end

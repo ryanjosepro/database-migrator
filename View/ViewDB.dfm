@@ -18,7 +18,7 @@ object WindowDB: TWindowDB
   PixelsPerInch = 96
   TextHeight = 13
   object ImageTitle: TImage
-    Left = 136
+    Left = 128
     Top = 5
     Width = 33
     Height = 33
@@ -192,11 +192,11 @@ object WindowDB: TWindowDB
       '0\ProjectMigration.dpr'
     FileTypes = <>
     Options = []
-    Left = 16
+    Left = 8
   end
   object Actions: TActionList
     Images = Images
-    Left = 192
+    Left = 184
     object ActDBFile: TAction
       ImageIndex = 0
       OnExecute = ActDBFileExecute
@@ -213,7 +213,7 @@ object WindowDB: TWindowDB
   object Images: TImageList
     Left = 240
     Bitmap = {
-      494C0101010008001C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800200010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
