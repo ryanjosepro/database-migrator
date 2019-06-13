@@ -53,6 +53,16 @@ var
 
 implementation
 
+{
+PROGRAMATION RULES
+
+-To keep code always clean and organized
+-To create variables, objects, components always in english
+-To comment everything that you can
+
+PROGRAMATION RULES
+}
+
 {$R *.dfm}
 
 procedure TWindowMain.ActOpenFileExecute(Sender: TObject);
@@ -121,6 +131,7 @@ begin
   inherited Create(false);
 end;
 
+//TO COMMENT
 procedure TMyThread.Execute;
 var
   Rows: TStringList;

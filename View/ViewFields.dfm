@@ -4,7 +4,7 @@ object WindowFields: TWindowFields
   BorderStyle = bsDialog
   Caption = 'Migrator - Campos'
   ClientHeight = 648
-  ClientWidth = 490
+  ClientWidth = 575
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,6 +14,9 @@ object WindowFields: TWindowFields
   OldCreateOrder = False
   Position = poMainFormCenter
   OnActivate = FormActivate
+  DesignSize = (
+    575
+    648)
   PixelsPerInch = 96
   TextHeight = 13
   object LblTitle1: TLabel
@@ -64,54 +67,63 @@ object WindowFields: TWindowFields
     Caption = 'Total Campos Firebird:'
   end
   object BtnExport: TSpeedButton
-    Left = 455
+    Left = 541
     Top = 54
     Width = 30
     Height = 30
     Action = ActExport
+    Anchors = [akTop, akRight]
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 455
   end
   object BtnImport: TSpeedButton
-    Left = 455
+    Left = 541
     Top = 90
     Width = 30
     Height = 30
     Action = ActImport
+    Anchors = [akTop, akRight]
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 455
   end
   object BtnOrdFields: TSpeedButton
-    Left = 455
+    Left = 541
     Top = 126
     Width = 30
     Height = 30
     Action = ActOrdFields
+    Anchors = [akTop, akRight]
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 455
   end
   object BtnClearFields: TSpeedButton
-    Left = 455
+    Left = 541
     Top = 162
     Width = 30
     Height = 30
     Action = ActClearFields
+    Anchors = [akTop, akRight]
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 455
   end
   object GridFields: TStringGrid
     Left = 8
     Top = 54
-    Width = 441
+    Width = 527
     Height = 566
-    ColCount = 4
-    DefaultColWidth = 158
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    DefaultColWidth = 150
     FixedColor = clWindow
     FixedCols = 3
     RowCount = 2
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing]
     ScrollBars = ssVertical
     TabOrder = 0
+    ExplicitWidth = 441
     RowHeights = (
       24
       24)
@@ -147,7 +159,7 @@ object WindowFields: TWindowFields
     Left = 416
     Top = 568
     Bitmap = {
-      494C010104000800F40016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800F80016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000580000002C0000000100200000000000803C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

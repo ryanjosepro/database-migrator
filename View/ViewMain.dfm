@@ -5,7 +5,7 @@ object WindowMain: TWindowMain
   BorderStyle = bsDialog
   Caption = 'Migrator'
   ClientHeight = 570
-  ClientWidth = 528
+  ClientWidth = 524
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -52,6 +52,9 @@ object WindowMain: TWindowMain
   OldCreateOrder = False
   Position = poMainFormCenter
   OnClose = FormClose
+  DesignSize = (
+    524
+    570)
   PixelsPerInch = 96
   TextHeight = 13
   object LblTitle1: TLabel
@@ -84,7 +87,7 @@ object WindowMain: TWindowMain
     ParentFont = False
   end
   object LblTitle3: TLabel
-    Left = 392
+    Left = 384
     Top = 8
     Width = 67
     Height = 24
@@ -127,7 +130,7 @@ object WindowMain: TWindowMain
     ShowHint = True
   end
   object BtnDatabase: TSpeedButton
-    Left = 403
+    Left = 395
     Top = 38
     Width = 48
     Height = 48
@@ -143,7 +146,7 @@ object WindowMain: TWindowMain
     ShowHint = True
   end
   object BtnFields: TSpeedButton
-    Left = 403
+    Left = 395
     Top = 101
     Width = 48
     Height = 48
@@ -723,13 +726,15 @@ object WindowMain: TWindowMain
   object TxtLog: TMemo
     Left = 8
     Top = 175
-    Width = 512
+    Width = 508
     Height = 387
     TabStop = False
+    Anchors = [akLeft, akTop, akRight, akBottom]
     ReadOnly = True
     ScrollBars = ssBoth
     TabOrder = 0
     WordWrap = False
+    ExplicitWidth = 512
   end
   object Images: TImageList
     Height = 64
@@ -737,7 +742,7 @@ object WindowMain: TWindowMain
     Left = 464
     Top = 496
     Bitmap = {
-      494C01010500D800340140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010500D800380140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       0200000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

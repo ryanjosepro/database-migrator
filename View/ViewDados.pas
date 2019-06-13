@@ -29,6 +29,8 @@ type
     procedure ActSelectExecute(Sender: TObject);
     procedure ActOpenFileExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure TxtRowsLimitKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     procedure FillGrid;
   end;
@@ -116,6 +118,15 @@ end;
 procedure TWindowDados.FormActivate(Sender: TObject);
 begin
   LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetFilePath;
+end;
+
+procedure TWindowDados.TxtRowsLimitKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key.ToString = '13' then
+  begin
+    ActSelectExecute(BtnSelect);
+  end;
 end;
 
 end.

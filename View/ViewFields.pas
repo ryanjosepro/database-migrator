@@ -32,8 +32,12 @@ type
     procedure ActOrdFieldsExecute(Sender: TObject);
     procedure ActClearFieldsExecute(Sender: TObject);
 
+  private
+    procedure GridTitles;
+
   public
     function GetOrder: TIntegerArray;
+    function GetDefauts: TStringArray;
 
   end;
 
@@ -46,8 +50,8 @@ implementation
 
 procedure TWindowFields.ActClearFieldsExecute(Sender: TObject);
 begin
-  GridFields.Cols[2].Clear;
-  GridFields.Cells[2, 0] := 'Nº Campo Dataflex';
+  GridFields.Cols[3].Clear;
+  GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
 end;
 
 procedure TWindowFields.ActExportExecute(Sender: TObject);
@@ -61,7 +65,7 @@ begin
     Rewrite(Arq);
     for Cont := 1 to GridFields.RowCount - 1 do
     begin
-      Writeln(Arq, GridFields.Cells[2, Cont]);
+      Writeln(Arq, GridFields.Cells[3, Cont]);
     end;
     CloseFile(Arq);
   end;
@@ -77,10 +81,11 @@ begin
     if OpenFile.Execute then
     begin
       Rows.LoadFromFile(OpenFile.FileName);
-      GridFields.Cols[2].Clear;
+      GridFields.Cols[3].Clear;
+      GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
       for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
       begin
-        GridFields.Cells[2, Cont + 1] := Rows[Cont];
+        GridFields.Cells[3, Cont + 1] := Rows[Cont];
       end;
     end;
   finally
@@ -94,7 +99,7 @@ var
 begin
   for Cont := 0 to GridFields.RowCount - 1 do
   begin
-    GridFields.Cells[2, Cont + 1] := IntToStr(Cont + 1);
+    GridFields.Cells[3, Cont + 1] := IntToStr(Cont + 1);
   end;
 end;
 
@@ -106,18 +111,26 @@ var
 begin
   try
     GridFields.ColWidths[1] := 100;
-    GridFields.ColWidths[2] := 65;
+    GridFields.ColWidths[2] := 50;
+    GridFields.ColWidths[3] := 100;
+    GridFields.ColWidths[4] := 100;
     GridFields.Cells[0, 0] := 'Campo Firebird';
     GridFields.Cells[1, 0] := 'Tipo Do Campo';
     GridFields.Cells[2, 0] := 'Not Nulls';
     GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
+    GridFields.Cells[4, 0] := 'Valor Padrão';
+
     //Limpando Tabela
+    {
     LblTable.Caption := '';
     GridFields.RowCount := 2;
     GridFields.Cells[0, 1] := '';
     GridFields.Cells[1, 1] := '';
     GridFields.Cells[2, 1] := '';
+    GridFields.Cells[3, 1] := '';
+    }
     //Limpando Tabela
+
     if TDAO.Count <> 0 then
     begin
       LblTable.Caption := TDAO.Table;
@@ -132,7 +145,7 @@ begin
       begin
         GridFields.Cells[0, Cont + 1] := Fields[Cont];
         GridFields.Cells[1, Cont + 1] := Types[Cont];
-        GridFields.Cells[2, Cont + 1] := StrToInt(NotNulls[Cont]);
+        GridFields.Cells[2, Cont + 1] := TUtils.Iff(NotNulls[Cont] = 1, 'Not Null', '');
       end;
     end
     else
@@ -151,16 +164,44 @@ begin
   GridFields.RowCount := TDAO.Count + 1;
   SetLength(Result, TDAO.Count);
   for Cont := 0 to TDAO.Count - 1 do
+  begin
+    if (GridFields.Cells[3, Cont + 1].IsEmpty) or (StrToInt(GridFields.Cells[3, Cont + 1]) <= 0) then
     begin
-      if GridFields.Cells[2, Cont + 1].IsEmpty then
-      begin
-        Result[Cont] := -1;
-      end
-      else
-      begin
-        Result[Cont] := GridFields.Cells[2, Cont + 1].ToInteger;
-      end;
+      Result[Cont] := -1;
+    end
+    else
+    begin
+      Result[Cont] := GridFields.Cells[3, Cont + 1].ToInteger;
     end;
+  end;
+end;
+
+procedure TWindowFields.GridTitles;
+begin
+  GridFields.Cells[0, 0] := 'Campo Firebird';
+  GridFields.Cells[1, 0] := 'Tipo Do Campo';
+  GridFields.Cells[2, 0] := 'Not Nulls';
+  GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
+  GridFields.Cells[4, 0] := 'Valor Padrão';
+end;
+
+function TWindowFields.GetDefauts: TStringArray;
+var
+  Cont: integer;
+begin
+  GridFields.RowCount := TDAO.Count + 1;
+  SetLength(Result, TDAO.Count);
+  for Cont := 0 to TDAO.Count do
+  begin
+    if GridFields.Cells[4, Cont + 1].IsEmpty then
+    begin
+      Result[Cont] := null;
+    end
+    else
+    begin
+      Result[Cont] := GridFields.Cells[4, Cont + 1];
+    end;
+  end;
 end;
 
 end.
