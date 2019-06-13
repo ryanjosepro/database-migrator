@@ -31,6 +31,8 @@ type
     procedure FormActivate(Sender: TObject);
   private
     procedure FillGrid;
+  public
+    { Public declarations }
   end;
 
 var
@@ -68,6 +70,8 @@ var
   Datas: TStringMatrix;
   ContRow, ContCol, TotRows: integer;
 begin
+  //TotRows := StrToInt(TxtRowsLimit.Text);
+
   if Trim(TxtRowsLimit.Text) = '' then
   begin
     TotRows := 0;

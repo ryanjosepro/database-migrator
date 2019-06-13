@@ -18,9 +18,12 @@ type
     class procedure Insert(DataFlex: TStringDynArray; Order: TIntegerArray);
 
     class function GetFieldsNames: TStringArray;
+
     class function GetFieldsTypes: TStringArray;
+
     class function GetFieldsTypesNumber: TIntegerArray;
-    class function GetFieldsNotNulls: TIntegerArray;
+
+    class function GetFieldsNull: TIntegerArray;
 
     class function Count: integer;
 
@@ -154,7 +157,7 @@ begin
   end;
 end;
 
-class function TDAO.GetFieldsNotNulls: TIntegerArray;
+class function TDAO.GetFieldsNull: TIntegerArray;
 var
   Cont: integer;
 begin
@@ -171,7 +174,6 @@ begin
       QueryTable.Next;
     end;
   end
-  else
   begin
     SetLength(Result, 1);
     Result[0] := 0;

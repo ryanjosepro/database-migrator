@@ -132,7 +132,7 @@ begin
       begin
         GridFields.Cells[0, Cont + 1] := Fields[Cont];
         GridFields.Cells[1, Cont + 1] := Types[Cont];
-        GridFields.Cells[2, Cont + 1] := StrToInt(NotNulls[Cont]);
+        GridFields.Cells[2, Cont + 1] := NotNulls[Cont];
       end;
     end
     else

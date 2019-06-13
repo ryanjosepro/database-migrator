@@ -101,16 +101,14 @@ end;
 procedure TWindowFields.FormActivate(Sender: TObject);
 var
   Cont: integer;
-  Fields, Types: TStringArray;
-  NotNulls: TIntegerArray;
+  Campos, Tipos: TStringArray;
+  Nulos: TIntegerArray;
 begin
   try
-    GridFields.ColWidths[1] := 100;
-    GridFields.ColWidths[2] := 65;
+    GridFields.ColWidths[2] := 100;
     GridFields.Cells[0, 0] := 'Campo Firebird';
     GridFields.Cells[1, 0] := 'Tipo Do Campo';
-    GridFields.Cells[2, 0] := 'Not Nulls';
-    GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
+    GridFields.Cells[2, 0] := 'Nº Campo Dataflex';
     //Limpando Tabela
     LblTable.Caption := '';
     GridFields.RowCount := 2;
@@ -121,18 +119,17 @@ begin
     if TDAO.Count <> 0 then
     begin
       LblTable.Caption := TDAO.Table;
-      SetLength(Fields, TDAO.Count);
-      Fields := TDAO.GetFieldsNames;
-      SetLength(Types, TDAO.Count);
-      Types := TDAO.GetFieldsTypes;
-      SetLength(NotNulls, TDAO.Count);
-      NotNulls := TDAO.GetFieldsNotNulls;
+      SetLength(Campos, TDAO.Count);
+      Campos := TDAO.GetFieldsNames;
+      SetLength(Tipos, TDAO.Count);
+      Tipos := TDAO.GetFieldsTypes;
+      SetLength(Nulos, TDAO.Count);
+      Nulos := TDAO.GetFieldsNull;
       GridFields.RowCount := TDAO.Count + 1;
       for Cont := 0 to TDAO.Count - 1 do
       begin
-        GridFields.Cells[0, Cont + 1] := Fields[Cont];
-        GridFields.Cells[1, Cont + 1] := Types[Cont];
-        GridFields.Cells[2, Cont + 1] := StrToInt(NotNulls[Cont]);
+        GridFields.Cells[0, Cont + 1] := Campos[Cont];
+        GridFields.Cells[1, Cont + 1] := Tipos[Cont];
       end;
     end
     else

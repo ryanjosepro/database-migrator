@@ -23,7 +23,7 @@ type
     TxtRowsLimit: TEdit;
     LblRowsLimit: TLabel;
     ActOpenFile: TAction;
-    BtnOpenFile: TSpeedButton;
+    SpeedButton1: TSpeedButton;
     OpenFile: TFileOpenDialog;
     procedure ActConfigFieldsExecute(Sender: TObject);
     procedure ActSelectExecute(Sender: TObject);
@@ -31,6 +31,8 @@ type
     procedure FormActivate(Sender: TObject);
   private
     procedure FillGrid;
+  public
+    { Public declarations }
   end;
 
 var
@@ -68,6 +70,8 @@ var
   Datas: TStringMatrix;
   ContRow, ContCol, TotRows: integer;
 begin
+  //TotRows := StrToInt(TxtRowsLimit.Text);
+
   if Trim(TxtRowsLimit.Text) = '' then
   begin
     TotRows := 0;

@@ -114,6 +114,7 @@ begin
   TConfigs.SetFilePath('');
 end;
 
+
 { TMyThread }
 
 constructor TMyThread.Create;
@@ -132,14 +133,23 @@ begin
   WindowMain.BtnStart.Enabled := false;
   inherited;
   MigrationEnabled := true;
+  //Cria uma lista de strings;
   Rows := TStringList.Create;
+  //Pega as linhas do arquivo;
   Rows.LoadFromFile(WindowMain.OpenFile.FileName);
+  //Manda as linhas pra classe de tratamento;
   DataFlex := TDataFlex.Create(Rows);
+  //Define o tamanho da matriz;
   SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
+  //Atribui a matriz para uma variável;
   Datas := DataFlex.ToMatrix;
+  //Try para liberação de objetos;
   try
+    //Try para tratamento de erros;
     try
+      //Limpa o log de saída;
       WindowMain.TxtLog.Clear;
+      //Percorre cada linha da matriz;
       if WindowConfigs.RadioBtnAllRows.Checked then
       begin
         TotRows := DataFlex.GetRows;
@@ -160,12 +170,17 @@ begin
       begin
         if MigrationEnabled then
         begin
+          //Envia uma linha com dados para o DAO;
           TDAO.Insert(Datas[ContRow], WindowFields.GetOrder);
+          //Limpa a variável de saída;
           OutStr := '';
+          //Percorre cada dado da linha da matriz;
           for ContCol := 0 to DataFlex.GetCols - 1 do
           begin
+            //Atribui á variável de saída os dados da linha;
             OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
           end;
+          //Envia á variável de saída para o log;
           WindowMain.Log('Inserted -> ' + OutStr);
         end
         else

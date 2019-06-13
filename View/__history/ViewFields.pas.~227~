@@ -105,12 +105,10 @@ var
   NotNulls: TIntegerArray;
 begin
   try
-    GridFields.ColWidths[1] := 100;
-    GridFields.ColWidths[2] := 65;
+    GridFields.ColWidths[2] := 100;
     GridFields.Cells[0, 0] := 'Campo Firebird';
     GridFields.Cells[1, 0] := 'Tipo Do Campo';
-    GridFields.Cells[2, 0] := 'Not Nulls';
-    GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
+    GridFields.Cells[2, 0] := 'Nº Campo Dataflex';
     //Limpando Tabela
     LblTable.Caption := '';
     GridFields.RowCount := 2;
@@ -131,8 +129,7 @@ begin
       for Cont := 0 to TDAO.Count - 1 do
       begin
         GridFields.Cells[0, Cont + 1] := Fields[Cont];
-        GridFields.Cells[1, Cont + 1] := Types[Cont];
-        GridFields.Cells[2, Cont + 1] := StrToInt(NotNulls[Cont]);
+        GridFields.Cells[1, Cont + 1] := Types[Cont] + TUtils.Iff(NotNulls[Cont] = 1, ' - Not Null', '');
       end;
     end
     else
