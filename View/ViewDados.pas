@@ -54,7 +54,7 @@ begin
   if OpenFile.Execute then
   begin
     LblFileName.Caption := OpenFile.FileName;
-    TConfigs.SetFilePath(OpenFile.FileName);
+    TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
   end;
 end;
 
@@ -80,7 +80,7 @@ begin
   end;
 
   Rows := TStringList.Create;
-  Rows.LoadFromFile(TConfigs.GetFilePath);
+  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
   DataFlex := TDataFlex.Create(Rows);
   SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
   Datas := DataFlex.ToMatrix;
@@ -117,11 +117,10 @@ end;
 
 procedure TWindowDados.FormActivate(Sender: TObject);
 begin
-  LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetFilePath;
+  LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
 end;
 
-procedure TWindowDados.TxtRowsLimitKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
+procedure TWindowDados.TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key.ToString = '13' then
   begin

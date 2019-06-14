@@ -15,6 +15,10 @@ type
     QuerySQL: TFDQuery;
     QueryTable: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
+
+  public
+    class procedure SetParams(UserName, Password, Database: string);
+
   end;
 
 var
@@ -28,9 +32,16 @@ implementation
 
 procedure TConnFactory.DataModuleCreate(Sender: TObject);
 begin
-  Conn.Params.UserName := TConfigs.GetUserName;
-  Conn.Params.Password := TConfigs.GetPassword;
-  Conn.Params.Database := TConfigs.GetDatabase;
+  Conn.Params.UserName := TConfigs.GetConfig('DB', 'UserName');
+  Conn.Params.Password := TConfigs.GetConfig('DB', 'Password');
+  Conn.Params.Database := TConfigs.GetConfig('DB', 'Database');
+end;
+
+class procedure TConnFactory.SetParams(UserName, Password, Database: string);
+begin
+  ConnFactory.Conn.Params.UserName := UserName;
+  ConnFactory.Conn.Params.Password := Password;
+  ConnFactory.Conn.Params.Database := Database;
 end;
 
 end.

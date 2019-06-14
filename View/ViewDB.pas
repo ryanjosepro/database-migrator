@@ -53,14 +53,12 @@ end;
 
 procedure TWindowDB.ActSaveExecute(Sender: TObject);
 begin
-  TConfigs.SetUserName(TxtUserName.Text);
-  TConfigs.SetPassWord(TxtPassword.Text);
-  TConfigs.SetDatabase(TxtDatabase.Text);
-  TConfigs.SetTable(TxtTable.Text);
+  TConfigs.SetConfig('DB', 'UserName', TxtUserName.Text);
+  TConfigs.SetConfig('DB', 'Password', TxtPassword.Text);
+  TConfigs.SetConfig('DB', 'Database', TxtDatabase.Text);
+  TConfigs.SetConfig('DB', 'Table', TxtTable.Text);
 
-  ConnFactory.Conn.Params.UserName := TxtUserName.Text;
-  ConnFactory.Conn.Params.Password := TxtPassword.Text;
-  ConnFactory.Conn.Params.Database := TxtDatabase.Text;
+  ConnFactory.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
   DidChange := false;
   Close;
@@ -74,9 +72,7 @@ begin
   CurrPassword := ConnFactory.Conn.Params.Password;
   CurrDatabase := ConnFactory.Conn.Params.Database;
 
-  ConnFactory.Conn.Params.UserName := TxtUserName.Text;
-  ConnFactory.Conn.Params.Password := TxtPassword.Text;
-  ConnFactory.Conn.Params.Database := TxtDatabase.Text;
+  ConnFactory.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
   try
     try
       ConnFactory.Conn.Connected := true;
@@ -85,9 +81,7 @@ begin
       ShowMessage('Erro de conexão: ' + E.ToString);
     end;
   finally
-    ConnFactory.Conn.Params.UserName := CurrUserName;
-    ConnFactory.Conn.Params.Password := CurrPassword;
-    ConnFactory.Conn.Params.Database := CurrDatabase;
+    ConnFactory.SetParams(CurrUserName, CurrPassword, CurrDatabase);
   end;
 end;
 
@@ -98,10 +92,10 @@ end;
 
 procedure TWindowDB.FormActivate(Sender: TObject);
 begin
-  TxtUserName.Text := TConfigs.GetUserName;
-  TxtPassword.Text := TConfigs.GetPassword;
-  TxtDatabase.Text := TConfigs.GetDatabase;
-  TxtTable.Text := TConfigs.GetTable;
+  TxtUserName.Text := TConfigs.GetConfig('DB', 'UserName');
+  TxtPassword.Text := TConfigs.GetConfig('DB', 'Password');
+  TxtDatabase.Text := TConfigs.GetConfig('DB', 'Database');
+  TxtTable.Text := TConfigs.GetConfig('DB', 'Table');
   DidChange := false;
 end;
 

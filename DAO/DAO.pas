@@ -42,7 +42,7 @@ end;
 
 class function TDAO.Table: string;
 begin
-  Result := TConfigs.GetTable;
+  Result := TConfigs.GetConfig('DB', 'Table');
 end;
 
 class procedure TDAO.Insert(Datas: TStringDynArray; Order: TIntegerArray);
