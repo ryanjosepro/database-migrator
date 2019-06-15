@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, System.Variants, Winapi.Windows, Winapi.Messages, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, shlObj,
-  Arrays, MyUtils, DAO;
+  Arrays, MyUtils, Fields, DAO;
 
 type
   TWindowFields = class(TForm)
@@ -78,6 +78,11 @@ begin
     begin
       Writeln(Arq, GridFields.Cells[3, Cont]);
     end;
+    Writeln(Arq, '{$DEFAULTS$}');
+    for Cont := 1 to GridFields.RowCount - 1 do
+    begin
+      Writeln(Arq, GridFields.Cells[4, Cont]);
+    end;
     CloseFile(Arq);
   end;
 end;
@@ -85,20 +90,33 @@ end;
 //TO COMMENT
 procedure TWindowFields.ActImportExecute(Sender: TObject);
 var
+  Arq: TStringList;
   Rows: TStringList;
   Cont: integer;
 begin
+  Arq := TStringList.Create;
   Rows := TStringList.Create;
   try
     if OpenFile.Execute then
     begin
-      Rows.LoadFromFile(OpenFile.FileName);
+      Arq.LoadFromFile(OpenFile.FileName);
+
+      Rows := TFields.GetOrder(Arq);
       GridFields.Cols[3].Clear;
       GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
       for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
       begin
         GridFields.Cells[3, Cont + 1] := Rows[Cont];
       end;
+
+      Rows := TFields.GetDefaults(Arq);
+      GridFields.Cols[4].Clear;
+      GridFields.Cells[4, 0] := 'Valor Padrão';
+      for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
+      begin
+        GridFields.Cells[4, Cont + 1] := Rows[Cont];
+      end;
+
     end;
   finally
     FreeAndNil(Rows);
@@ -202,7 +220,7 @@ begin
   begin
     if GridFields.Cells[4, Cont + 1].IsEmpty then
     begin
-      Result[Cont] := null;
+      Result[Cont] := '';
     end
     else
     begin

@@ -12,7 +12,8 @@ uses
   ViewConfigs in 'View\ViewConfigs.pas' {WindowConfigs},
   Configs in 'Code\Configs.pas',
   DataFlex in 'Code\DataFlex.pas',
-  Arrays in 'Code\Arrays.pas';
+  Arrays in 'Code\Arrays.pas',
+  Fields in 'Code\Fields.pas';
 
 {$R *.res}
 

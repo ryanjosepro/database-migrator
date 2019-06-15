@@ -52,8 +52,8 @@ procedure TWindowDados.ActOpenFileExecute(Sender: TObject);
 begin
   if OpenFile.Execute then
   begin
-    LblFileName.Caption := OpenFile.FileName;
     TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+    LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
   end;
 end;
 

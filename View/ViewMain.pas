@@ -38,6 +38,7 @@ type
     procedure BtnStopClick(Sender: TObject);
     procedure BtnStartClick(Sender: TObject);
     procedure ActConfigsExecute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   end;
 
   TMyThread = class(TThread)
@@ -61,7 +62,7 @@ PROGRAMATION RULES
 -To create variables, objects and components always in english;
 -To comment everything that you can;
 -Forms Order -> ViewMain - ViewConfigs - ViewDB - ViewFields - ViewDados;
--Units Order -> Arrays - MyUtils - Configs - DataFlex - DAO - ConnectionFactory;
+-Units Order -> Arrays - MyUtils - Configs - DataFlex - Fields - DAO - ConnectionFactory;
 -Default Uses -> System.SysUtils, System.Classes, System.Types;
 
 PROGRAMATION RULES
@@ -100,7 +101,7 @@ end;
 
 procedure TWindowMain.BtnStartClick(Sender: TObject);
 begin
-  if WindowMain.OpenFile.FileName = '' then
+  if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
   begin
     if OpenFile.Execute then
     begin
@@ -121,6 +122,11 @@ end;
 procedure TWindowMain.Log(Msg: string);
 begin
   TxtLog.Lines.Add(Msg);
+end;
+
+procedure TWindowMain.FormActivate(Sender: TObject);
+begin
+  TConfigs.SetConfig('TEMP', 'FilePath', '');
 end;
 
 procedure TWindowMain.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -148,7 +154,7 @@ begin
   inherited;
   MigrationEnabled := true;
   Rows := TStringList.Create;
-  Rows.LoadFromFile(WindowMain.OpenFile.FileName);
+  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
   DataFlex := TDataFlex.Create(Rows);
   SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
   Datas := DataFlex.ToMatrix;
@@ -171,11 +177,11 @@ begin
         end;
       end;
 
-      for ContRow := 0 to TotRows do
+      for ContRow := 0 to TotRows - 1 do
       begin
         if MigrationEnabled then
         begin
-          TDAO.Insert(Datas[ContRow], WindowFields.GetOrder);
+          TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
           OutStr := '';
           for ContCol := 0 to DataFlex.GetCols - 1 do
           begin

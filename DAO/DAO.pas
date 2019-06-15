@@ -23,7 +23,7 @@ type
 
     class function Table: string;
 
-    class procedure Insert(Datas: TStringDynArray; Order: TIntegerArray);
+    class procedure Insert(Datas: TStringDynArray; Order: TIntegerArray; Defaults: TStringArray);
 
     class function GetFieldsNames: TStringArray;
     class function GetFieldsTypes: TStringArray;
@@ -72,7 +72,7 @@ begin
 end;
 
 //TO COMMENT
-class procedure TDAO.Insert(Datas: TStringDynArray; Order: TIntegerArray);
+class procedure TDAO.Insert(Datas: TStringDynArray; Order: TIntegerArray; Defaults: TStringArray);
 var
   Cont: Integer;
   Tipos: TIntegerArray;
@@ -102,6 +102,23 @@ begin
         QuerySQL.FieldByName(Fields[Cont]).AsDateTime := StrToDateTime(Datas[Order[Cont] - 1]);
       37:
         QuerySQL.FieldByName(Fields[Cont]).AsString := Datas[Order[Cont] - 1];
+      end;
+    end
+    else if Defaults[Cont] <> '' then
+    begin
+      case Tipos[Cont] of
+      7, 8:
+        QuerySQL.FieldByName(Fields[Cont]).AsInteger := Defaults[Cont].ToInteger;
+      12:
+        QuerySQL.FieldByName(Fields[Cont]).AsDateTime := StrToDate(Defaults[Cont]);
+      14:
+        QuerySQL.FieldByName(Fields[Cont]).AsWideString := Defaults[Cont];
+      16:
+        QuerySQL.FieldByName(Fields[Cont]).AsFloat := Defaults[Cont].ToDouble;
+      35:
+        QuerySQL.FieldByName(Fields[Cont]).AsDateTime := StrToDateTime(Defaults[Cont]);
+      37:
+        QuerySQL.FieldByName(Fields[Cont]).AsString := Defaults[Cont];
       end;
     end;
   end;

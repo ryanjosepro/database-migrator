@@ -2,7 +2,8 @@ object WindowMain: TWindowMain
   Left = 0
   Top = 0
   Hint = 'Configura'#231#245'es'
-  BorderStyle = bsDialog
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = 'Migrator'
   ClientHeight = 570
   ClientWidth = 524
@@ -51,6 +52,7 @@ object WindowMain: TWindowMain
     0000FFFF00008001000000000000000000000000000000000000C0030000}
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnActivate = FormActivate
   OnClose = FormClose
   DesignSize = (
     524
@@ -741,7 +743,7 @@ object WindowMain: TWindowMain
     Left = 464
     Top = 496
     Bitmap = {
-      494C01010500D8004C0140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010500D800540140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       0200000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
