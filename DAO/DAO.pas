@@ -3,12 +3,15 @@ unit DAO;
 interface
 
 uses
-  System.SysUtils, System.Variants, System.Classes, System.Types, FireDAC.Comp.Client,
-  Vcl.Dialogs, ConnectionFactory, MyUtils;
+  System.SysUtils, System.Classes, System.Types, System.Variants, FireDAC.Comp.Client,
+  Arrays, Configs, ConnectionFactory;
 
 type
 
   TDAO = class
+  private
+    class procedure Select;
+
   public
     class function QueryTable: TFDQuery;
     class function QuerySQL: TFDQuery;
@@ -28,7 +31,6 @@ type
     class function GetFieldsNotNulls: TIntegerArray;
 
     class function Count: integer;
-
   end;
 
 implementation
@@ -69,6 +71,7 @@ begin
   Result := TConfigs.GetConfig('DB', 'Table');
 end;
 
+//TO COMMENT
 class procedure TDAO.Insert(Datas: TStringDynArray; Order: TIntegerArray);
 var
   Cont: Integer;
@@ -105,13 +108,12 @@ begin
   QuerySQL.Post;
 end;
 
+//TO COMMENT
 class function TDAO.GetFieldsNames: TStringArray;
 var
   Cont: integer;
 begin
-  QueryTable.Close;
-  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
-  QueryTable.Open;
+  Select;
   if Count <> 0 then
   begin
     SetLength(Result, Count);
@@ -129,13 +131,12 @@ begin
   end;
 end;
 
+//TO COMMENT
 class function TDAO.GetFieldsTypes: TStringArray;
 var
   Cont: integer;
 begin
-  QueryTable.Close;
-  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
-  QueryTable.Open;
+  Select;
   if Count <> 0 then
   begin
     SetLength(Result, Count);
@@ -153,13 +154,12 @@ begin
   end;
 end;
 
+//TO COMMENT
 class function TDAO.GetFieldsTypesNumber: TIntegerArray;
 var
   Cont: integer;
 begin
-  QueryTable.Close;
-  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
-  QueryTable.Open;
+  Select;
   if Count <> 0 then
   begin
     SetLength(Result, Count);
@@ -177,13 +177,12 @@ begin
   end;
 end;
 
+//TO COMMENT
 class function TDAO.GetFieldsNotNulls: TIntegerArray;
 var
   Cont: integer;
 begin
-  QueryTable.Close;
-  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
-  QueryTable.Open;
+  Select;
   if Count <> 0 then
   begin
     SetLength(Result, Count);
@@ -201,11 +200,16 @@ begin
   end;
 end;
 
-class function TDAO.Count: integer;
+class procedure TDAO.Select;
 begin
   QueryTable.Close;
   QueryTable.ParamByName('TABLE_NAME').AsString := Table;
   QueryTable.Open;
+end;
+
+class function TDAO.Count: integer;
+begin
+  Select;
   Result := QueryTable.RowsAffected;
 end;
 

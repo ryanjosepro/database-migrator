@@ -1,0 +1,22 @@
+unit Configs;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Variants, System.StrUtils, System.Types, Vcl.Forms, IniFiles;
+
+type
+
+TConfigs = class
+  strict private
+    class function Source: string;
+
+  public
+    class function GetConfig(const Section, Name: string): string;
+    class procedure SetConfig(const Section, Name, Value: string);
+
+  end;
+
+implementation
+
+end.

@@ -3,9 +3,10 @@ unit ViewDados;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids, System.Actions, Vcl.ActnList,
-  System.ImageList, Vcl.ImgList, Vcl.Buttons, DAO, MyUtils, Vcl.ExtCtrls;
+  System.ImageList, Vcl.ImgList, Vcl.Buttons, Vcl.ExtCtrls,
+  ViewFields, Arrays, Configs, DataFlex;
 
 type
   TWindowDados = class(TForm)
@@ -41,8 +42,6 @@ var
 implementation
 
 {$R *.dfm}
-
-uses ViewFields;
 
 procedure TWindowDados.ActConfigFieldsExecute(Sender: TObject);
 begin

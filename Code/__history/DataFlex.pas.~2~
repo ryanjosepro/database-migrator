@@ -1,0 +1,32 @@
+unit DataFlex;
+
+interface
+
+type
+
+TDataFlex = class
+strict private
+  //Atributos
+  StrList: TStringList;
+  Rows: integer;
+  Cols: integer;
+
+public
+  //Constutor
+  constructor Create(StrList: TStringList);
+
+  //De String -> Array, separa os campos
+  function Cut(Str: string): TStringDynArray;
+
+  //Gets
+  function GetRows: integer;
+  function GetCols: integer;
+
+  //Transforma a stringlist em uma matriz
+  function ToMatrix: TStringMatrix;
+
+end;
+
+implementation
+
+end.

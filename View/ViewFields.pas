@@ -3,9 +3,10 @@ unit ViewFields;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  System.SysUtils, System.Classes, System.Types, System.Variants, Winapi.Windows, Winapi.Messages, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
-  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, DAO, MyUtils, ViewDados, shlObj;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, shlObj,
+  Arrays, MyUtils, DAO;
 
 type
   TWindowFields = class(TForm)
@@ -47,6 +48,15 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TWindowFields.GridTitles;
+begin
+  GridFields.Cells[0, 0] := 'Campo Firebird';
+  GridFields.Cells[1, 0] := 'Tipo Do Campo';
+  GridFields.Cells[2, 0] := 'Not Nulls';
+  GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
+  GridFields.Cells[4, 0] := 'Valor Padrão';
+end;
 
 procedure TWindowFields.ActClearFieldsExecute(Sender: TObject);
 begin
@@ -95,6 +105,7 @@ begin
   end;
 end;
 
+//TO COMMENT
 procedure TWindowFields.ActOrdFieldsExecute(Sender: TObject);
 var
   Cont: integer;
@@ -180,15 +191,7 @@ begin
   end;
 end;
 
-procedure TWindowFields.GridTitles;
-begin
-  GridFields.Cells[0, 0] := 'Campo Firebird';
-  GridFields.Cells[1, 0] := 'Tipo Do Campo';
-  GridFields.Cells[2, 0] := 'Not Nulls';
-  GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
-  GridFields.Cells[4, 0] := 'Valor Padrão';
-end;
-
+//TO COMMENT
 function TWindowFields.GetDefauts: TStringArray;
 var
   Cont: integer;

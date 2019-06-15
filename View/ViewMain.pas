@@ -3,9 +3,10 @@ unit ViewMain;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics, Vcl.Controls,
-  Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList, System.ImageList,
-  Vcl.ImgList, Vcl.ExtDlgs, ViewDB, ViewFields, ViewDados, ViewConfigs, DAO, MyUtils;
+  System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList,
+  System.ImageList, Vcl.ImgList, Vcl.ExtDlgs,
+  ViewDB, ViewFields, ViewDados, ViewConfigs, Arrays, Configs, MyUtils, DataFlex, DAO;
 
 type
   TWindowMain = class(TForm)
@@ -56,9 +57,12 @@ implementation
 {
 PROGRAMATION RULES
 
--To keep code always clean and organized
--To create variables, objects, components always in english
--To comment everything that you can
+-To keep code always clean and organized;
+-To create variables, objects and components always in english;
+-To comment everything that you can;
+-Forms Order -> ViewMain - ViewConfigs - ViewDB - ViewFields - ViewDados;
+-Units Order -> Arrays - MyUtils - Configs - DataFlex - DAO - ConnectionFactory;
+-Default Uses -> System.SysUtils, System.Classes, System.Types;
 
 PROGRAMATION RULES
 }

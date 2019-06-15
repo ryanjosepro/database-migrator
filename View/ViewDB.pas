@@ -3,9 +3,10 @@ unit ViewDB;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms,Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons,
-  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, MyUtils, DAO;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList,
+  Configs, DAO;
 
 type
   TWindowDB = class(TForm)

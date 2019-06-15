@@ -1,0 +1,33 @@
+unit MyUtils;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Variants, System.StrUtils, System.Types, Vcl.Forms, IniFiles;
+
+type
+  TIntegerArray = array of integer;
+  TStringArray = array of string;
+  TStringMatrix = array of TStringDynArray;
+
+  TUtils = class
+  public
+    class function Iff(cond: boolean; v1, v2: variant): variant;
+
+  end;
+
+implementation
+
+class function TUtils.Iff(Cond: boolean; V1, V2: variant): variant;
+begin
+  if Cond then
+  begin
+    Result := V1;
+  end
+  else
+  begin
+    Result := V2;
+  end;
+end;
+
+end.
