@@ -123,14 +123,13 @@ object WindowFields: TWindowFields
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing]
     ScrollBars = ssVertical
     TabOrder = 0
-    ExplicitWidth = 441
     RowHeights = (
       24
       24)
   end
   object Actions: TActionList
     Images = Images
-    Left = 376
+    Left = 448
     Top = 568
     object ActExport: TAction
       Hint = 'Exportar Configura'#231#227'o'
@@ -156,10 +155,10 @@ object WindowFields: TWindowFields
   object Images: TImageList
     Height = 22
     Width = 22
-    Left = 416
+    Left = 496
     Top = 568
     Bitmap = {
-      494C010104000800F80016001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800000116001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000580000002C0000000100200000000000803C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

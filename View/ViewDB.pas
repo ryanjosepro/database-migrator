@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms,Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons,
-  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, ConnectionFactory, MyUtils;
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, MyUtils, DAO;
 
 type
   TWindowDB = class(TForm)
@@ -58,7 +58,7 @@ begin
   TConfigs.SetConfig('DB', 'Database', TxtDatabase.Text);
   TConfigs.SetConfig('DB', 'Table', TxtTable.Text);
 
-  ConnFactory.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
+  TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
   DidChange := false;
   Close;
@@ -68,20 +68,18 @@ procedure TWindowDB.ActTestConnExecute(Sender: TObject);
 var
   CurrUserName, CurrPassword, CurrDatabase: string;
 begin
-  CurrUserName := ConnFactory.Conn.Params.UserName;
-  CurrPassword := ConnFactory.Conn.Params.Password;
-  CurrDatabase := ConnFactory.Conn.Params.Database;
+  TDAO.GetParams(CurrUserName, CurrPassword, CurrDatabase);
 
-  ConnFactory.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
+  TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
   try
     try
-      ConnFactory.Conn.Connected := true;
+      TDAO.TestConn;
       ShowMessage('Conexão Ok!');
     except on E: Exception do
       ShowMessage('Erro de conexão: ' + E.ToString);
     end;
   finally
-    ConnFactory.SetParams(CurrUserName, CurrPassword, CurrDatabase);
+    TDAO.SetParams(CurrUserName, CurrPassword, CurrDatabase);
   end;
 end;
 

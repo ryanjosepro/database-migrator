@@ -13,6 +13,11 @@ type
     class function QueryTable: TFDQuery;
     class function QuerySQL: TFDQuery;
 
+    class procedure GetParams(var UserName, Password, Database: string);
+    class procedure SetParams(UserName, Password, Database: string);
+
+    class procedure TestConn;
+
     class function Table: string;
 
     class procedure Insert(Datas: TStringDynArray; Order: TIntegerArray);
@@ -38,6 +43,25 @@ end;
 class function TDAO.QuerySQL: TFDQuery;
 begin
   Result := ConnFactory.QuerySQL;
+end;
+
+class procedure TDAO.GetParams(var UserName, Password, Database: string);
+begin
+  UserName := ConnFactory.Conn.Params.UserName;
+  Password := ConnFactory.Conn.Params.Password;
+  Database := ConnFactory.Conn.Params.Database;
+end;
+
+class procedure TDAO.SetParams(UserName, Password, Database: string);
+begin
+  ConnFactory.Conn.Params.UserName := UserName;
+  ConnFactory.Conn.Params.Password := Password;
+  ConnFactory.Conn.Params.Database := Database;
+end;
+
+class procedure TDAO.TestConn;
+begin
+  ConnFactory.Conn.Connected := true;
 end;
 
 class function TDAO.Table: string;

@@ -54,6 +54,7 @@ begin
   GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
 end;
 
+//TO COMMENT
 procedure TWindowFields.ActExportExecute(Sender: TObject);
 var
   Arq: TextFile;
@@ -71,6 +72,7 @@ begin
   end;
 end;
 
+//TO COMMENT
 procedure TWindowFields.ActImportExecute(Sender: TObject);
 var
   Rows: TStringList;
@@ -103,6 +105,7 @@ begin
   end;
 end;
 
+//TO COMMENT
 procedure TWindowFields.FormActivate(Sender: TObject);
 var
   Cont: integer;
@@ -157,6 +160,7 @@ begin
   end;
 end;
 
+//TO COMMENT
 function TWindowFields.GetOrder: TIntegerArray;
 var
   Cont: integer;

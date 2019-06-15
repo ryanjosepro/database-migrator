@@ -63,6 +63,7 @@ begin
   FillGrid;
 end;
 
+//TO COMMENT
 procedure TWindowDados.FillGrid;
 var
   Rows: TStringList;
