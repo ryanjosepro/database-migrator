@@ -74,8 +74,8 @@ procedure TWindowMain.ActOpenFileExecute(Sender: TObject);
 begin
   if OpenFile.Execute then
   begin
-    ActOpenFile.Hint := OpenFile.FileName;
     TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+
   end;
 end;
 

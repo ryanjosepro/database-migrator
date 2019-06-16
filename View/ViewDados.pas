@@ -30,10 +30,10 @@ type
     procedure ActSelectExecute(Sender: TObject);
     procedure ActOpenFileExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure TxtRowsLimitKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
+    procedure TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     procedure FillGrid;
+    procedure CleanGrid;
   end;
 
 var
@@ -54,12 +54,22 @@ begin
   begin
     TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
     LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
+    CleanGrid;
   end;
 end;
 
 procedure TWindowDados.ActSelectExecute(Sender: TObject);
 begin
   FillGrid;
+end;
+
+procedure TWindowDados.CleanGrid;
+begin
+  GridDatas.RowCount := 2;
+  GridDatas.ColCount := 2;
+  GridDatas.Rows[0].Clear;
+  GridDatas.Cols[0].Clear;
+  GridDatas.Cols[1].Clear;
 end;
 
 //TO COMMENT
