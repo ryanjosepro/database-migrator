@@ -31,7 +31,6 @@ type
     ActTruncFB: TAction;
     BtnConfigTable: TSpeedButton;
     ActConfigTable: TAction;
-    SpeedButton1: TSpeedButton;
     procedure FormActivate(Sender: TObject);
     procedure ActExportExecute(Sender: TObject);
     procedure ActImportExecute(Sender: TObject);

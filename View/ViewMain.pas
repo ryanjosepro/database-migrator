@@ -11,7 +11,6 @@ uses
 type
   TWindowMain = class(TForm)
     LblTitle1: TLabel;
-    LblTitle2: TLabel;
     LblTitle3: TLabel;
     TxtLog: TMemo;
     BtnStart: TSpeedButton;
@@ -34,12 +33,13 @@ type
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
     procedure ActDadosExecute(Sender: TObject);
-    procedure Log(Msg: string);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure BtnStopClick(Sender: TObject);
     procedure BtnStartClick(Sender: TObject);
     procedure ActConfigsExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+  private
+    procedure Log(Msg: string);
   end;
 
   TMyThread = class(TThread)

@@ -2,11 +2,11 @@ object WindowMain: TWindowMain
   Left = 0
   Top = 0
   Hint = 'Configura'#231#245'es'
-  BorderIcons = [biSystemMenu, biMinimize]
+  Anchors = [akTop]
   BorderStyle = bsSingle
   Caption = 'Migrator'
-  ClientHeight = 590
-  ClientWidth = 524
+  ClientHeight = 653
+  ClientWidth = 514
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -55,8 +55,8 @@ object WindowMain: TWindowMain
   OnActivate = FormActivate
   OnClose = FormClose
   DesignSize = (
-    524
-    590)
+    514
+    653)
   PixelsPerInch = 96
   TextHeight = 13
   object LblTitle1: TLabel
@@ -72,27 +72,12 @@ object WindowMain: TWindowMain
     Font.Style = []
     ParentFont = False
   end
-  object LblTitle2: TLabel
-    AlignWithMargins = True
-    Left = 199
-    Top = -15
-    Width = 121
-    Height = 59
-    Alignment = taCenter
-    AutoSize = False
-    Caption = #8594
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -47
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-  end
   object LblTitle3: TLabel
-    Left = 384
+    Left = 375
     Top = 8
     Width = 67
     Height = 24
+    Anchors = [akTop, akRight]
     Caption = 'Firebird'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -100,12 +85,14 @@ object WindowMain: TWindowMain
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ExplicitLeft = 384
   end
   object BtnStart: TSpeedButton
-    Left = 215
-    Top = 38
-    Width = 90
-    Height = 36
+    Left = 161
+    Top = 8
+    Width = 193
+    Height = 49
+    Anchors = [akTop]
     Caption = 'Come'#231'ar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBackground
@@ -114,6 +101,7 @@ object WindowMain: TWindowMain
     Font.Style = []
     ParentFont = False
     OnClick = BtnStartClick
+    ExplicitLeft = 376
   end
   object BtnOpenFile: TSpeedButton
     Left = 67
@@ -132,11 +120,12 @@ object WindowMain: TWindowMain
     ShowHint = True
   end
   object BtnDatabase: TSpeedButton
-    Left = 395
+    Left = 386
     Top = 38
     Width = 48
     Height = 48
     Action = ActConfigDB
+    Anchors = [akTop, akRight]
     Flat = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -146,13 +135,15 @@ object WindowMain: TWindowMain
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 395
   end
   object BtnFields: TSpeedButton
-    Left = 395
+    Left = 386
     Top = 101
     Width = 48
     Height = 48
     Action = ActConfigFields
+    Anchors = [akTop, akRight]
     Flat = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -162,6 +153,7 @@ object WindowMain: TWindowMain
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 395
   end
   object BtnDatas: TSpeedButton
     Left = 67
@@ -180,10 +172,11 @@ object WindowMain: TWindowMain
     ShowHint = True
   end
   object BtnStop: TSpeedButton
-    Left = 232
-    Top = 80
-    Width = 57
+    Left = 209
+    Top = 63
+    Width = 97
     Height = 33
+    Anchors = [akTop]
     Caption = 'Parar'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
@@ -192,13 +185,15 @@ object WindowMain: TWindowMain
     Font.Style = []
     ParentFont = False
     OnClick = BtnStopClick
+    ExplicitLeft = 424
   end
   object BtnConfigs: TSpeedButton
-    Left = 232
+    Left = 231
     Top = 119
     Width = 57
     Height = 50
     Action = ActConfigs
+    Anchors = [akTop]
     Flat = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -208,36 +203,42 @@ object WindowMain: TWindowMain
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 448
   end
   object TxtLog: TMemo
     Left = 8
     Top = 175
-    Width = 508
-    Height = 386
+    Width = 498
+    Height = 449
     TabStop = False
     Anchors = [akLeft, akTop, akRight, akBottom]
     ReadOnly = True
     ScrollBars = ssBoth
     TabOrder = 0
     WordWrap = False
+    ExplicitWidth = 508
+    ExplicitHeight = 386
   end
   object ProgressBar: TProgressBar
     Left = 8
-    Top = 565
-    Width = 508
+    Top = 627
+    Width = 499
     Height = 17
+    Anchors = [akLeft, akRight, akBottom]
     Step = 1
     TabOrder = 1
+    ExplicitTop = 565
+    ExplicitWidth = 508
   end
   object Images: TImageList
     BlendColor = clWhite
     BkColor = clWhite
     Height = 64
     Width = 64
-    Left = 464
-    Top = 496
+    Left = 880
+    Top = 552
     Bitmap = {
-      494C010105005C01800140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010105005C01840140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -4470,8 +4471,8 @@ object WindowMain: TWindowMain
   end
   object Actions: TActionList
     Images = Images
-    Left = 424
-    Top = 496
+    Left = 832
+    Top = 552
     object ActOpenFile: TAction
       Hint = 'Arquivo Dataflex'
       ImageIndex = 0
@@ -4511,6 +4512,6 @@ object WindowMain: TWindowMain
       end>
     Options = []
     Left = 24
-    Top = 496
+    Top = 560
   end
 end
