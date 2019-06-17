@@ -5,7 +5,7 @@ object WindowMain: TWindowMain
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Migrator'
-  ClientHeight = 570
+  ClientHeight = 590
   ClientWidth = 524
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -56,7 +56,7 @@ object WindowMain: TWindowMain
   OnClose = FormClose
   DesignSize = (
     524
-    570)
+    590)
   PixelsPerInch = 96
   TextHeight = 13
   object LblTitle1: TLabel
@@ -213,7 +213,7 @@ object WindowMain: TWindowMain
     Left = 8
     Top = 175
     Width = 508
-    Height = 387
+    Height = 386
     TabStop = False
     Anchors = [akLeft, akTop, akRight, akBottom]
     ReadOnly = True
@@ -221,15 +221,23 @@ object WindowMain: TWindowMain
     TabOrder = 0
     WordWrap = False
   end
+  object ProgressBar: TProgressBar
+    Left = 8
+    Top = 565
+    Width = 508
+    Height = 17
+    Step = 1
+    TabOrder = 1
+  end
   object Images: TImageList
-    BlendColor = clWindow
+    BlendColor = clWhite
     BkColor = clWhite
     Height = 64
     Width = 64
     Left = 464
     Top = 496
     Bitmap = {
-      494C010105005C017C0140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010105005C01800140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF

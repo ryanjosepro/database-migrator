@@ -59,14 +59,6 @@ object WindowConfigs: TWindowConfigs
       TabOrder = 2
       OnClick = RadioBtnLimitRowsClick
     end
-    object CheckBoxKeep: TCheckBox
-      Left = 288
-      Top = 80
-      Width = 49
-      Height = 17
-      Caption = 'Manter'
-      TabOrder = 3
-    end
   end
   object Panel2: TPanel
     Left = 8

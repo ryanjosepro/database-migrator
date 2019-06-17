@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, System.Variants, Winapi.Windows, Winapi.Messages, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, shlObj,
-  Arrays, MyUtils, Fields, DAO;
+  Arrays, MyUtils, Configs, Fields, DAO;
 
 type
   TWindowFields = class(TForm)
@@ -26,15 +26,24 @@ type
     ActOrdFields: TAction;
     BtnOrdFields: TSpeedButton;
     BtnClearFields: TSpeedButton;
-    ActClearFields: TAction;
+    ActCleanFields: TAction;
+    BtnTruncFB: TSpeedButton;
+    ActTruncFB: TAction;
+    BtnConfigTable: TSpeedButton;
+    ActConfigTable: TAction;
+    SpeedButton1: TSpeedButton;
     procedure FormActivate(Sender: TObject);
     procedure ActExportExecute(Sender: TObject);
     procedure ActImportExecute(Sender: TObject);
     procedure ActOrdFieldsExecute(Sender: TObject);
-    procedure ActClearFieldsExecute(Sender: TObject);
+    procedure ActCleanFieldsExecute(Sender: TObject);
+    procedure ActTruncFBExecute(Sender: TObject);
+    procedure ActConfigTableExecute(Sender: TObject);
 
   private
     procedure GridTitles;
+    procedure CleanGrid;
+    procedure FillGrid;
 
   public
     function GetOrder: TIntegerArray;
@@ -58,10 +67,67 @@ begin
   GridFields.Cells[4, 0] := 'Valor Padrão';
 end;
 
-procedure TWindowFields.ActClearFieldsExecute(Sender: TObject);
+procedure TWindowFields.CleanGrid;
+begin
+  GridFields.RowCount := 2;
+  GridFields.Rows[1].Clear;
+end;
+
+procedure TWindowFields.FillGrid;
+var
+  Cont: integer;
+  Fields, Types: TStringArray;
+  NotNulls: TIntegerArray;
+begin
+  try
+    try
+      if TDAO.Count <> 0 then
+      begin
+        LblTable.Caption := TDAO.Table;
+        SetLength(Fields, TDAO.Count);
+        Fields := TDAO.GetFieldsNames;
+        SetLength(Types, TDAO.Count);
+        Types := TDAO.GetFieldsTypes;
+        SetLength(NotNulls, TDAO.Count);
+        NotNulls := TDAO.GetFieldsNotNulls;
+        GridFields.RowCount := TDAO.Count + 1;
+        for Cont := 0 to TDAO.Count - 1 do
+        begin
+          GridFields.Cells[0, Cont + 1] := Fields[Cont];
+          GridFields.Cells[1, Cont + 1] := Types[Cont];
+          GridFields.Cells[2, Cont + 1] := TUtils.Iff(NotNulls[Cont] = 1, 'Not Null', '');
+        end;
+      end
+      else
+      begin
+        CleanGrid;
+      end;
+    Except
+      CleanGrid;
+    end;
+  finally
+    LblTotFields.Caption := 'Total Campos Firebird: ' + TDAO.Count.ToString;
+  end;
+end;
+
+procedure TWindowFields.ActCleanFieldsExecute(Sender: TObject);
 begin
   GridFields.Cols[3].Clear;
-  GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
+  GridFields.Cols[4].Clear;
+  GridTitles;
+end;
+
+procedure TWindowFields.ActConfigTableExecute(Sender: TObject);
+var
+  Table: string;
+begin
+  Table := InputBox('Configurar Tabela', 'Insira o nome da tabela', TConfigs.GetConfig('DB', 'Table')).Trim;
+  TConfigs.SetConfig('DB', 'Table', Table);
+  FillGrid;
+  if TDAO.Count <= 0 then
+  begin
+    ShowMessage('Selecione uma tabela válida!');
+  end;
 end;
 
 //TO COMMENT
@@ -70,6 +136,7 @@ var
   Arq: TextFile;
   Cont: integer;
 begin
+  SaveFile.FileName := 'Campos ' + TDAO.Table;
   if SaveFile.Execute then
   begin
     AssignFile(Arq, SaveFile.FileName);
@@ -101,7 +168,7 @@ begin
     begin
       Arq.LoadFromFile(OpenFile.FileName);
 
-      Rows := TFields.GetOrder(Arq);
+      Rows := TFields.ExtractOrder(Arq);
       GridFields.Cols[3].Clear;
       GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
       for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
@@ -109,7 +176,7 @@ begin
         GridFields.Cells[3, Cont + 1] := Rows[Cont];
       end;
 
-      Rows := TFields.GetDefaults(Arq);
+      Rows := TFields.ExtractDefaults(Arq);
       GridFields.Cols[4].Clear;
       GridFields.Cells[4, 0] := 'Valor Padrão';
       for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
@@ -136,57 +203,13 @@ end;
 
 //TO COMMENT
 procedure TWindowFields.FormActivate(Sender: TObject);
-var
-  Cont: integer;
-  Fields, Types: TStringArray;
-  NotNulls: TIntegerArray;
 begin
-  try
-    GridFields.ColWidths[1] := 100;
-    GridFields.ColWidths[2] := 50;
-    GridFields.ColWidths[3] := 100;
-    GridFields.ColWidths[4] := 100;
-    GridFields.Cells[0, 0] := 'Campo Firebird';
-    GridFields.Cells[1, 0] := 'Tipo Do Campo';
-    GridFields.Cells[2, 0] := 'Not Nulls';
-    GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
-    GridFields.Cells[4, 0] := 'Valor Padrão';
-
-    //Limpando Tabela
-    {
-    LblTable.Caption := '';
-    GridFields.RowCount := 2;
-    GridFields.Cells[0, 1] := '';
-    GridFields.Cells[1, 1] := '';
-    GridFields.Cells[2, 1] := '';
-    GridFields.Cells[3, 1] := '';
-    }
-    //Limpando Tabela
-
-    if TDAO.Count <> 0 then
-    begin
-      LblTable.Caption := TDAO.Table;
-      SetLength(Fields, TDAO.Count);
-      Fields := TDAO.GetFieldsNames;
-      SetLength(Types, TDAO.Count);
-      Types := TDAO.GetFieldsTypes;
-      SetLength(NotNulls, TDAO.Count);
-      NotNulls := TDAO.GetFieldsNotNulls;
-      GridFields.RowCount := TDAO.Count + 1;
-      for Cont := 0 to TDAO.Count - 1 do
-      begin
-        GridFields.Cells[0, Cont + 1] := Fields[Cont];
-        GridFields.Cells[1, Cont + 1] := Types[Cont];
-        GridFields.Cells[2, Cont + 1] := TUtils.Iff(NotNulls[Cont] = 1, 'Not Null', '');
-      end;
-    end
-    else
-    begin
-      ShowMessage('Selecione uma tabela!');
-    end;
-  finally
-    LblTotFields.Caption := 'Total Campos Firebird: ' + TDAO.Count.ToString;
-  end;
+  GridFields.ColWidths[1] := 100;
+  GridFields.ColWidths[2] := 50;
+  GridFields.ColWidths[3] := 100;
+  GridFields.ColWidths[4] := 100;
+  GridTitles;
+  FillGrid;
 end;
 
 //TO COMMENT
@@ -226,6 +249,14 @@ begin
     begin
       Result[Cont] := GridFields.Cells[4, Cont + 1];
     end;
+  end;
+end;
+
+procedure TWindowFields.ActTruncFBExecute(Sender: TObject);
+begin
+  if MessageDlg('Deseja apagar todos os dados da tabela ' + TDAO.Table + '?', mtConfirmation, mbYesNo, 2) = 6 then
+  begin
+    TDAO.Truncate;
   end;
 end;
 

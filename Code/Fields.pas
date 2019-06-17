@@ -8,15 +8,15 @@ uses
 type
   TFields = class
   public
-    class function GetOrder(StrList: TStringList): TStringList;
-    class function GetDefaults(StrList: TStringList): TStringList;
+    class function ExtractOrder(StrList: TStringList): TStringList;
+    class function ExtractDefaults(StrList: TStringList): TStringList;
   end;
 
 implementation
 
 { TFields }
 
-class function TFields.GetOrder(StrList: TStringList): TStringList;
+class function TFields.ExtractOrder(StrList: TStringList): TStringList;
 var
   Cont: integer;
 begin
@@ -34,7 +34,7 @@ begin
   end;
 end;
 
-class function TFields.GetDefaults(StrList: TStringList): TStringList;
+class function TFields.ExtractDefaults(StrList: TStringList): TStringList;
 var
   Cont: integer;
 begin

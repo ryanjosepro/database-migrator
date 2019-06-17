@@ -31,6 +31,7 @@ type
     procedure ActOpenFileExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     procedure FillGrid;
     procedure CleanGrid;
@@ -45,7 +46,7 @@ implementation
 
 procedure TWindowDados.ActConfigFieldsExecute(Sender: TObject);
 begin
-  WindowFields.ShowModal;
+  WindowFields.Show;
 end;
 
 procedure TWindowDados.ActOpenFileExecute(Sender: TObject);
@@ -60,7 +61,14 @@ end;
 
 procedure TWindowDados.ActSelectExecute(Sender: TObject);
 begin
-  FillGrid;
+  if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
+  begin
+    ShowMessage('Selecione um arquivo!');
+  end
+  else
+  begin
+    FillGrid;
+  end;
 end;
 
 procedure TWindowDados.CleanGrid;
@@ -128,6 +136,11 @@ end;
 procedure TWindowDados.FormActivate(Sender: TObject);
 begin
   LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
+end;
+
+procedure TWindowDados.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  WindowFields.Close;
 end;
 
 procedure TWindowDados.TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

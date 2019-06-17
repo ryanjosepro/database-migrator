@@ -15,7 +15,6 @@ type
     PanelRows: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
-    CheckBoxKeep: TCheckBox;
     procedure RadioBtnAllRowsClick(Sender: TObject);
     procedure RadioBtnLimitRowsClick(Sender: TObject);
   end;

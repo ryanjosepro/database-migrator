@@ -17,8 +17,6 @@ type
     TxtPassword: TEdit;
     LblDatabase: TLabel;
     TxtDatabase: TEdit;
-    LblTable: TLabel;
-    TxtTable: TEdit;
     BtnSave: TSpeedButton;
     BtnTestConn: TSpeedButton;
     OpenFile: TFileOpenDialog;
@@ -57,7 +55,6 @@ begin
   TConfigs.SetConfig('DB', 'UserName', TxtUserName.Text);
   TConfigs.SetConfig('DB', 'Password', TxtPassword.Text);
   TConfigs.SetConfig('DB', 'Database', TxtDatabase.Text);
-  TConfigs.SetConfig('DB', 'Table', TxtTable.Text);
 
   TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
@@ -94,7 +91,6 @@ begin
   TxtUserName.Text := TConfigs.GetConfig('DB', 'UserName');
   TxtPassword.Text := TConfigs.GetConfig('DB', 'Password');
   TxtDatabase.Text := TConfigs.GetConfig('DB', 'Database');
-  TxtTable.Text := TConfigs.GetConfig('DB', 'Table');
   DidChange := false;
 end;
 
@@ -102,7 +98,7 @@ procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if DidChange then
   begin
-    case MessageDlg('Deseja salvar as configurações?', mtInformation, mbYesNoCancel,  2) of
+    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel,  2) of
       6: ActSaveExecute(BtnSave);
       2: Action := TCloseAction.caNone;
     end;

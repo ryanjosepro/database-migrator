@@ -31,6 +31,9 @@ type
     class function GetFieldsNotNulls: TIntegerArray;
 
     class function Count: integer;
+
+    class procedure Truncate;
+
   end;
 
 implementation
@@ -87,7 +90,7 @@ begin
   QuerySQL.Insert;
   for Cont := 0 to Count - 1 do
   begin
-    if Order[Cont] <> -1 then
+    if (Order[Cont] <> -1) and (Trim(Datas[Order[Cont] - 1]) <> '') then
     begin
       case Tipos[Cont] of
       7, 8:
@@ -228,6 +231,14 @@ class function TDAO.Count: integer;
 begin
   Select;
   Result := QueryTable.RowsAffected;
+end;
+
+class procedure TDAO.Truncate;
+begin
+  QuerySQL.SQL.Clear;
+  QuerySQL.SQL.Add('delete from ' + Table +' where id > 0');
+  QuerySQL.ExecSQL;
+  QuerySQL.SQL.Clear;
 end;
 
 end.

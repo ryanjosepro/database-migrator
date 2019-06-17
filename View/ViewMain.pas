@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList,
-  System.ImageList, Vcl.ImgList, Vcl.ExtDlgs,
+  System.ImageList, Vcl.ImgList, Vcl.ExtDlgs, Vcl.ComCtrls,
   ViewDB, ViewFields, ViewDados, ViewConfigs, Arrays, Configs, MyUtils, DataFlex, DAO;
 
 type
@@ -29,6 +29,7 @@ type
     BtnStop: TSpeedButton;
     BtnConfigs: TSpeedButton;
     ActConfigs: TAction;
+    ProgressBar: TProgressBar;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
@@ -75,7 +76,6 @@ begin
   if OpenFile.Execute then
   begin
     TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
-
   end;
 end;
 
@@ -105,6 +105,7 @@ begin
   begin
     if OpenFile.Execute then
     begin
+      TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
       TMyThread.Create;
     end;
   end
@@ -160,39 +161,52 @@ begin
   Datas := DataFlex.ToMatrix;
   try
     try
-      WindowMain.TxtLog.Clear;
-      if WindowConfigs.RadioBtnAllRows.Checked then
+      if TDAO.Count <= 0 then
       begin
-        TotRows := DataFlex.GetRows;
+        ShowMessage('Selecione uma tabela válida!');
       end
-      else if WindowConfigs.RadioBtnLimitRows.Checked then
+      else
       begin
-        if StrToInt(WindowConfigs.TxtLimitRows.Text) > DataFlex.GetRows then
+        WindowMain.TxtLog.Clear;
+        if WindowConfigs.RadioBtnAllRows.Checked then
         begin
           TotRows := DataFlex.GetRows;
         end
-        else
+        else if WindowConfigs.RadioBtnLimitRows.Checked then
         begin
-          TotRows := StrToInt(WindowConfigs.TxtLimitRows.Text);
-        end;
-      end;
-
-      for ContRow := 0 to TotRows - 1 do
-      begin
-        if MigrationEnabled then
-        begin
-          TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
-          OutStr := '';
-          for ContCol := 0 to DataFlex.GetCols - 1 do
+          if StrToInt(WindowConfigs.TxtLimitRows.Text) > DataFlex.GetRows then
           begin
-            OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
+            TotRows := DataFlex.GetRows;
+          end
+          else
+          begin
+            TotRows := StrToInt(WindowConfigs.TxtLimitRows.Text);
           end;
-          WindowMain.Log('Inserted -> ' + OutStr);
-        end
-        else
+        end;
+
+        WindowMain.ProgressBar.Position := 0;
+        WindowMain.ProgressBar.Max := TotRows;
+
+        for ContRow := 0 to TotRows - 1 do
         begin
-          WindowMain.Log('STOPED!');
-          break;
+          if MigrationEnabled then
+          begin
+            TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
+            OutStr := '';
+            for ContCol := 0 to DataFlex.GetCols - 1 do
+            begin
+              OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
+            end;
+            WindowMain.Log('Inserted -> ' + OutStr);
+            //Progress
+            WindowMain.ProgressBar.StepIt;
+            //Progress
+          end
+          else
+          begin
+            WindowMain.Log('STOPED!');
+            break;
+          end;
         end;
       end;
     except on E: Exception do
