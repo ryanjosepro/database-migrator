@@ -15,20 +15,20 @@ type
     TxtLog: TMemo;
     BtnStart: TSpeedButton;
     BtnOpenFile: TSpeedButton;
+    BtnDatabase: TSpeedButton;
+    BtnFields: TSpeedButton;
+    OpenFile: TFileOpenDialog;
+    BtnDatas: TSpeedButton;
+    BtnStop: TSpeedButton;
+    BtnConfigs: TSpeedButton;
+    ProgressBar: TProgressBar;
     Images: TImageList;
     Actions: TActionList;
     ActOpenFile: TAction;
-    BtnDatabase: TSpeedButton;
     ActConfigDB: TAction;
-    BtnFields: TSpeedButton;
     ActConfigFields: TAction;
-    OpenFile: TFileOpenDialog;
-    BtnDatas: TSpeedButton;
     ActDados: TAction;
-    BtnStop: TSpeedButton;
-    BtnConfigs: TSpeedButton;
     ActConfigs: TAction;
-    ProgressBar: TProgressBar;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
@@ -76,6 +76,8 @@ begin
   if OpenFile.Execute then
   begin
     TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+    ActOpenFile.ImageIndex := 5;
+    BtnOpenFile.Action := ActOpenFile;
   end;
 end;
 
@@ -97,6 +99,11 @@ end;
 procedure TWindowMain.ActDadosExecute(Sender: TObject);
 begin
   WindowDados.ShowModal;
+  if TConfigs.GetConfig('TEMP', 'FilePath').Trim <> '' then
+  begin
+    ActOpenFile.ImageIndex := 5;
+    BtnOpenFile.Action := ActOpenFile;
+  end;
 end;
 
 procedure TWindowMain.BtnStartClick(Sender: TObject);
@@ -106,11 +113,19 @@ begin
     if OpenFile.Execute then
     begin
       TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+      ActOpenFile.ImageIndex := 5;
+    BtnOpenFile.Action := ActOpenFile;
+      BtnStart.Enabled := false;
+      BtnStop.Enabled := true;
+      MigrationEnabled := true;
       TMyThread.Create;
     end;
   end
   else
   begin
+    BtnStart.Enabled := false;
+    BtnStop.Enabled := true;
+    MigrationEnabled := true;
     TMyThread.Create;
   end;
 end;
@@ -151,9 +166,7 @@ var
   ContRow, ContCol, TotRows: integer;
   OutStr: string;
 begin
-  WindowMain.BtnStart.Enabled := false;
   inherited;
-  MigrationEnabled := true;
   Rows := TStringList.Create;
   Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
   DataFlex := TDataFlex.Create(Rows);
@@ -164,6 +177,10 @@ begin
       if TDAO.Count <= 0 then
       begin
         ShowMessage('Selecione uma tabela válida!');
+      end
+      else if WindowFields.IsClean then
+      begin
+        ShowMessage('Configure os campos!');
       end
       else
       begin
@@ -191,29 +208,35 @@ begin
         begin
           if MigrationEnabled then
           begin
-            TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
-            OutStr := '';
-            for ContCol := 0 to DataFlex.GetCols - 1 do
-            begin
-              OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
+            try
+              TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
+              OutStr := '';
+              for ContCol := 0 to DataFlex.GetCols - 1 do
+              begin
+                OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
+              end;
+              WindowMain.Log('Inserido -> ' + OutStr);
+              //Progress
+              WindowMain.ProgressBar.StepIt;
+              //Progress
+            except on E: Exception do
+              WindowMain.Log('Erro -> ');
             end;
-            WindowMain.Log('Inserted -> ' + OutStr);
-            //Progress
-            WindowMain.ProgressBar.StepIt;
-            //Progress
           end
           else
           begin
-            WindowMain.Log('STOPED!');
+            WindowMain.Log('PARADO!');
             break;
           end;
         end;
       end;
     except on E: Exception do
-      ShowMessage(E.ToString);
+      ShowMessage('Erro -> Dado: ' + (ContRow + 1).ToString + ' -> ' + E.ToString);
     end;
   finally
     WindowMain.BtnStart.Enabled := true;
+    WindowMain.BtnStop.Enabled := false;
+    MigrationEnabled := false;
     FreeAndNil(Rows);
     FreeAndNil(DataFlex);
   end;

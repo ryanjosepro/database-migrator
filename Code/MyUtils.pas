@@ -9,7 +9,8 @@ type
 
   TUtils = class
   public
-    class function Iff(cond: boolean; v1, v2: variant): variant;
+    class function Iff(Cond: boolean; v1, v2: variant): variant;
+    class function ArrayToStr(Ary
 
   end;
 

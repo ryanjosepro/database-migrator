@@ -47,6 +47,7 @@ type
   public
     function GetOrder: TIntegerArray;
     function GetDefauts: TStringArray;
+    function IsClean: boolean;
 
   end;
 
@@ -64,6 +65,23 @@ begin
   GridFields.Cells[2, 0] := 'Not Nulls';
   GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
   GridFields.Cells[4, 0] := 'Valor Padrão';
+end;
+
+function TWindowFields.IsClean: boolean;
+var
+  Cont: integer;
+  Clean: boolean;
+begin
+  Clean := true;
+  for Cont := 1 to GridFields.RowCount - 1 do
+  begin
+    Clean := Clean and GridFields.Cells[3, Cont].IsEmpty;
+  end;
+  for Cont := 1 to GridFields.RowCount - 1 do
+  begin
+    Clean := Clean and GridFields.Cells[4, Cont].IsEmpty;
+  end;
+  Result := Clean;
 end;
 
 procedure TWindowFields.CleanGrid;
@@ -90,7 +108,7 @@ begin
         SetLength(NotNulls, TDAO.Count);
         NotNulls := TDAO.GetFieldsNotNulls;
         GridFields.RowCount := TDAO.Count + 1;
-        for Cont := 0 to TDAO.Count - 1 do
+        for Cont := 0 to GridFields.RowCount - 2 do
         begin
           GridFields.Cells[0, Cont + 1] := Fields[Cont];
           GridFields.Cells[1, Cont + 1] := Types[Cont];
@@ -170,7 +188,7 @@ begin
       Rows := TFields.ExtractOrder(Arq);
       GridFields.Cols[3].Clear;
       GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
-      for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
+      for  Cont := 0 to TUtils.Iff(Rows.Count < GridFields.RowCount - 1, Rows.Count, GridFields.RowCount - 1) - 1 do
       begin
         GridFields.Cells[3, Cont + 1] := Rows[Cont];
       end;
@@ -178,7 +196,7 @@ begin
       Rows := TFields.ExtractDefaults(Arq);
       GridFields.Cols[4].Clear;
       GridFields.Cells[4, 0] := 'Valor Padrão';
-      for  Cont := 0 to TUtils.Iff(Rows.Count > GridFields.RowCount, GridFields.RowCount, Rows.Count) - 1 do
+      for  Cont := 0 to TUtils.Iff(Rows.Count < GridFields.RowCount - 1, Rows.Count, GridFields.RowCount - 1) - 1 do
       begin
         GridFields.Cells[4, Cont + 1] := Rows[Cont];
       end;
@@ -194,9 +212,9 @@ procedure TWindowFields.ActOrdFieldsExecute(Sender: TObject);
 var
   Cont: integer;
 begin
-  for Cont := 0 to GridFields.RowCount - 1 do
+  for Cont := 1 to GridFields.RowCount do
   begin
-    GridFields.Cells[3, Cont + 1] := IntToStr(Cont + 1);
+    GridFields.Cells[3, Cont] := IntToStr(Cont);
   end;
 end;
 
@@ -218,7 +236,7 @@ var
 begin
   GridFields.RowCount := TDAO.Count + 1;
   SetLength(Result, TDAO.Count);
-  for Cont := 0 to TDAO.Count - 1 do
+  for Cont := 0 to GridFields.RowCount - 2 do
   begin
     if (GridFields.Cells[3, Cont + 1].IsEmpty) or (StrToInt(GridFields.Cells[3, Cont + 1]) <= 0) then
     begin
@@ -238,7 +256,7 @@ var
 begin
   GridFields.RowCount := TDAO.Count + 1;
   SetLength(Result, TDAO.Count);
-  for Cont := 0 to TDAO.Count do
+  for Cont := 0 to GridFields.RowCount - 2 do
   begin
     if GridFields.Cells[4, Cont + 1].IsEmpty then
     begin

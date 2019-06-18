@@ -54,6 +54,8 @@ begin
   if OpenFile.Execute then
   begin
     TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+    ActOpenFile.ImageIndex := 2;
+    BtnOpenFile.Action := ActOpenFile;
     LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
     CleanGrid;
   end;
@@ -135,7 +137,12 @@ end;
 
 procedure TWindowDados.FormActivate(Sender: TObject);
 begin
-  LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
+  if TConfigs.GetConfig('TEMP', 'FilePath').Trim <> '' then
+  begin
+    LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
+    ActOpenFile.ImageIndex := 2;
+    BtnOpenFile.Action := ActOpenFile;
+  end;
 end;
 
 procedure TWindowDados.FormClose(Sender: TObject; var Action: TCloseAction);
