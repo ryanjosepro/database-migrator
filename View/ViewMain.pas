@@ -146,8 +146,28 @@ begin
 end;
 
 procedure TWindowMain.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+  Answer: integer;
 begin
-  TConfigs.SetConfig('TEMP', 'FilePath', '');
+  if MigrationEnabled then
+  begin
+    Answer := MessageDlg('Deseja cancelar a migração?', mtWarning, mbYesNo, mrNo);
+
+    if Answer = mrYes then
+    begin
+      MigrationEnabled := false;
+      TConfigs.SetConfig('TEMP', 'FilePath', '');
+    end
+    else if Answer = mrNo then
+    begin
+      Action := caNone;
+    end;
+
+  end
+  else
+  begin
+    TConfigs.SetConfig('TEMP', 'FilePath', '');
+  end;
 end;
 
 { TMyThread }
@@ -185,19 +205,20 @@ begin
       else
       begin
         WindowMain.TxtLog.Clear;
-        if WindowConfigs.RadioBtnAllRows.Checked then
+
+        if TConfigs.GetConfig('GENERAL', 'DatasLimit') = '-1' then
         begin
           TotRows := DataFlex.GetRows;
         end
-        else if WindowConfigs.RadioBtnLimitRows.Checked then
+        else
         begin
-          if StrToInt(WindowConfigs.TxtLimitRows.Text) > DataFlex.GetRows then
+          if TConfigs.GetConfig('GENERAL', 'DatasLimit').ToInteger > DataFlex.GetRows then
           begin
             TotRows := DataFlex.GetRows;
           end
           else
           begin
-            TotRows := StrToInt(WindowConfigs.TxtLimitRows.Text);
+            TotRows := TConfigs.GetConfig('GENERAL', 'DatasLimit').ToInteger;
           end;
         end;
 
@@ -208,20 +229,11 @@ begin
         begin
           if MigrationEnabled then
           begin
-            try
-              TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
-              OutStr := '';
-              for ContCol := 0 to DataFlex.GetCols - 1 do
-              begin
-                OutStr := OutStr + Datas[ContRow][ContCol] + ' - ';
-              end;
-              WindowMain.Log('Inserido -> ' + OutStr);
-              //Progress
-              WindowMain.ProgressBar.StepIt;
-              //Progress
-            except on E: Exception do
-              WindowMain.Log('Erro -> ');
-            end;
+            TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
+            WindowMain.Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
+            //Progress
+            WindowMain.ProgressBar.StepIt;
+            //Progress
           end
           else
           begin
@@ -231,7 +243,7 @@ begin
         end;
       end;
     except on E: Exception do
-      ShowMessage('Erro -> Dado: ' + (ContRow + 1).ToString + ' -> ' + E.ToString);
+      WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + E.ToString);
     end;
   finally
     WindowMain.BtnStart.Enabled := true;

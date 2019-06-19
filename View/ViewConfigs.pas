@@ -4,39 +4,61 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls,
+  Vcl.Buttons, System.Actions, Vcl.ActnList,
+  MyUtils, Configs;
 
 type
   TWindowConfigs = class(TForm)
-    LblLimitRows: TLabel;
-    RadioBtnAllRows: TRadioButton;
-    RadioBtnLimitRows: TRadioButton;
-    TxtLimitRows: TEdit;
-    PanelRows: TPanel;
-    Panel2: TPanel;
-    Panel3: TPanel;
-    procedure RadioBtnAllRowsClick(Sender: TObject);
-    procedure RadioBtnLimitRowsClick(Sender: TObject);
+    LblDatasLimit: TLabel;
+    RadioAllDatas: TRadioButton;
+    RadioDatasLimit: TRadioButton;
+    TxtDatasLimit: TEdit;
+    PageConfigs: TPageControl;
+    TabDados: TTabSheet;
+    TabFirebird: TTabSheet;
+    CheckTruncFB: TCheckBox;
+    BtnTestConn: TSpeedButton;
+    BtnSave: TSpeedButton;
+    Actions: TActionList;
+    ActSave: TAction;
+    ActDiscard: TAction;
+    procedure RadioAllDatasClick(Sender: TObject);
+    procedure RadioDatasLimitClick(Sender: TObject);
+    procedure ActDiscardExecute(Sender: TObject);
+    procedure ActSaveExecute(Sender: TObject);
   end;
 
 var
   WindowConfigs: TWindowConfigs;
+  DidChange: boolean;
 
 implementation
 
 {$R *.dfm}
 
-procedure TWindowConfigs.RadioBtnAllRowsClick(Sender: TObject);
+procedure TWindowConfigs.ActSaveExecute(Sender: TObject);
 begin
-  RadioBtnLimitRows.Checked := false;
-  TxtLimitRows.Enabled := false;
+  TConfigs.SetConfig('GENERAL', 'DatasLimit', TUtils.Iff(RadioAllDatas.Checked or (StrToInt(TxtDatasLimit.Text) < 0), '-1', TxtDatasLimit.Text));
+  TConfigs.SetConfig('GENERAL', 'TruncFB', TUtils.Iff(CheckTruncFB.Checked, '1', '0'));
 end;
 
-procedure TWindowConfigs.RadioBtnLimitRowsClick(Sender: TObject);
+procedure TWindowConfigs.ActDiscardExecute(Sender: TObject);
 begin
-  RadioBtnAllRows.Checked := false;
-  TxtLimitRows.Enabled := true;
-  TxtLimitRows.SetFocus;
+  //
+end;
+
+procedure TWindowConfigs.RadioAllDatasClick(Sender: TObject);
+begin
+  RadioDatasLimit.Checked := false;
+  TxtDatasLimit.Enabled := false;
+end;
+
+procedure TWindowConfigs.RadioDatasLimitClick(Sender: TObject);
+begin
+  RadioAllDatas.Checked := false;
+  TxtDatasLimit.Enabled := true;
+  TxtDatasLimit.SetFocus;
 end;
 
 end.

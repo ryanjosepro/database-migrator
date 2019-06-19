@@ -2798,8 +2798,6 @@ object WindowMain: TWindowMain
     ScrollBars = ssBoth
     TabOrder = 0
     WordWrap = False
-    ExplicitWidth = 498
-    ExplicitHeight = 449
   end
   object ProgressBar: TProgressBar
     Left = 8
@@ -2809,8 +2807,6 @@ object WindowMain: TWindowMain
     Anchors = [akLeft, akRight, akBottom]
     Step = 1
     TabOrder = 1
-    ExplicitTop = 627
-    ExplicitWidth = 499
   end
   object OpenFile: TFileOpenDialog
     FavoriteLinks = <>
@@ -2835,7 +2831,7 @@ object WindowMain: TWindowMain
     Left = 449
     Top = 544
     Bitmap = {
-      494C010106005C01B00140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010106005C01BC0140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF

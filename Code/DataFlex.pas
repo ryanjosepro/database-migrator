@@ -15,19 +15,19 @@ type
     Rows: integer;
     Cols: integer;
 
-public
-  //Constutor
-  constructor Create(StrList: TStringList);
+  public
+    //Constutor
+    constructor Create(StrList: TStringList);
 
-  //De String -> Array, separa os campos
-  function Cut(Str: string): TStringDynArray;
+    //De String -> Array, separa os campos
+    function Cut(Str: string): TStringDynArray;
 
-  //Gets
-  function GetRows: integer;
-  function GetCols: integer;
+    //Gets
+    function GetRows: integer;
+    function GetCols: integer;
 
-  //Transforma a stringlist em uma matriz
-  function ToMatrix: TStringMatrix;
+    //Transforma a stringlist em uma matriz
+    function ToMatrix: TStringMatrix;
 
 end;
 

@@ -1,0 +1,258 @@
+unit ViewMain;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList,
+  System.ImageList, Vcl.ImgList, Vcl.ExtDlgs, Vcl.ComCtrls,
+  ViewDB, ViewFields, ViewDados, ViewConfigs, Arrays, Configs, MyUtils, DataFlex, DAO;
+
+type
+  TWindowMain = class(TForm)
+    LblTitle1: TLabel;
+    LblTitle3: TLabel;
+    TxtLog: TMemo;
+    BtnStart: TSpeedButton;
+    BtnOpenFile: TSpeedButton;
+    BtnDatabase: TSpeedButton;
+    BtnFields: TSpeedButton;
+    OpenFile: TFileOpenDialog;
+    BtnDatas: TSpeedButton;
+    BtnStop: TSpeedButton;
+    BtnConfigs: TSpeedButton;
+    ProgressBar: TProgressBar;
+    Images: TImageList;
+    Actions: TActionList;
+    ActOpenFile: TAction;
+    ActConfigDB: TAction;
+    ActConfigFields: TAction;
+    ActDados: TAction;
+    ActConfigs: TAction;
+    procedure ActOpenFileExecute(Sender: TObject);
+    procedure ActConfigDBExecute(Sender: TObject);
+    procedure ActConfigFieldsExecute(Sender: TObject);
+    procedure ActDadosExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BtnStopClick(Sender: TObject);
+    procedure BtnStartClick(Sender: TObject);
+    procedure ActConfigsExecute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+  private
+    procedure Log(Msg: string);
+  end;
+
+  TMyThread = class(TThread)
+  protected
+    procedure Execute; override;
+  public
+    constructor Create;
+  end;
+
+
+var
+  WindowMain: TWindowMain;
+  MigrationEnabled: boolean = false;
+
+implementation
+
+{
+PROGRAMATION RULES
+
+-To keep code always clean and organized;
+-To create variables, objects and components always in english;
+-To comment everything that you can;
+-Forms Order -> ViewMain - ViewConfigs - ViewDB - ViewFields - ViewDados;
+-Units Order -> Arrays - MyUtils - Configs - DataFlex - Fields - DAO - ConnectionFactory;
+-Default Uses -> System.SysUtils, System.Classes, System.Types;
+
+PROGRAMATION RULES
+}
+
+{$R *.dfm}
+
+procedure TWindowMain.ActOpenFileExecute(Sender: TObject);
+begin
+  if OpenFile.Execute then
+  begin
+    TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+    ActOpenFile.ImageIndex := 5;
+    BtnOpenFile.Action := ActOpenFile;
+  end;
+end;
+
+procedure TWindowMain.ActConfigDBExecute(Sender: TObject);
+begin
+  WindowDB.ShowModal;
+end;
+
+procedure TWindowMain.ActConfigFieldsExecute(Sender: TObject);
+begin
+  WindowFields.ShowModal;
+end;
+
+procedure TWindowMain.ActConfigsExecute(Sender: TObject);
+begin
+  WindowConfigs.ShowModal;
+end;
+
+procedure TWindowMain.ActDadosExecute(Sender: TObject);
+begin
+  WindowDados.ShowModal;
+  if TConfigs.GetConfig('TEMP', 'FilePath').Trim <> '' then
+  begin
+    ActOpenFile.ImageIndex := 5;
+    BtnOpenFile.Action := ActOpenFile;
+  end;
+end;
+
+procedure TWindowMain.BtnStartClick(Sender: TObject);
+begin
+  if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
+  begin
+    if OpenFile.Execute then
+    begin
+      TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+      ActOpenFile.ImageIndex := 5;
+    BtnOpenFile.Action := ActOpenFile;
+      BtnStart.Enabled := false;
+      BtnStop.Enabled := true;
+      MigrationEnabled := true;
+      TMyThread.Create;
+    end;
+  end
+  else
+  begin
+    BtnStart.Enabled := false;
+    BtnStop.Enabled := true;
+    MigrationEnabled := true;
+    TMyThread.Create;
+  end;
+end;
+
+procedure TWindowMain.BtnStopClick(Sender: TObject);
+begin
+  MigrationEnabled := false;
+end;
+
+procedure TWindowMain.Log(Msg: string);
+begin
+  TxtLog.Lines.Add(Msg);
+end;
+
+procedure TWindowMain.FormActivate(Sender: TObject);
+begin
+  TConfigs.SetConfig('TEMP', 'FilePath', '');
+end;
+
+procedure TWindowMain.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+  Answer: integer;
+begin
+  if MigrationEnabled then
+  begin
+    Answer := MessageDlg('Deseja cancelar a migração?', mtWarning, mbYesNo, mrNo);
+
+    if Answer = mrYes then
+    begin
+      MigrationEnabled := false;
+      TConfigs.SetConfig('TEMP', 'FilePath', '');
+    end
+    else if Answer = mrNo then
+    begin
+      Action := caNone;
+    end;
+
+  end
+  else
+  begin
+    TConfigs.SetConfig('TEMP', 'FilePath', '');
+  end;
+end;
+
+{ TMyThread }
+
+constructor TMyThread.Create;
+begin
+  inherited Create(false);
+end;
+
+//TO COMMENT
+procedure TMyThread.Execute;
+var
+  Rows: TStringList;
+  DataFlex: TDataFlex;
+  Datas: TStringMatrix;
+  ContRow, ContCol, TotRows: integer;
+  OutStr: string;
+begin
+  inherited;
+  Rows := TStringList.Create;
+  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+  DataFlex := TDataFlex.Create(Rows);
+  SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
+  Datas := DataFlex.ToMatrix;
+  try
+    try
+      if TDAO.Count <= 0 then
+      begin
+        ShowMessage('Selecione uma tabela válida!');
+      end
+      else if WindowFields.IsClean then
+      begin
+        ShowMessage('Configure os campos!');
+      end
+      else
+      begin
+        WindowMain.TxtLog.Clear;
+        TotRows := TUtils.Iff(TConfigs.GetConfig('GENERAL', 'DatasLimit', ''));
+        {
+        if WindowConfigs.RadioBtnAllDatas.Checked then
+        begin
+          TotRows := DataFlex.GetRows;
+        end
+        else if WindowConfigs.RadioBtnDatasLimit.Checked then
+        begin
+          if StrToInt(WindowConfigs.TxtDatasLimit.Text) > DataFlex.GetRows then
+          begin
+            TotRows := DataFlex.GetRows;
+          end
+          else
+          begin
+            TotRows := StrToInt(WindowConfigs.TxtDatasLimit.Text);
+          end;
+        end;
+        }
+        WindowMain.ProgressBar.Position := 0;
+        WindowMain.ProgressBar.Max := TotRows;
+
+        for ContRow := 0 to TotRows - 1 do
+        begin
+          if MigrationEnabled then
+          begin
+            TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
+            WindowMain.Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
+            //Progress
+            WindowMain.ProgressBar.StepIt;
+            //Progress
+          end
+          else
+          begin
+            WindowMain.Log('PARADO!');
+            break;
+          end;
+        end;
+      end;
+    except on E: Exception do
+      WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + E.ToString);
+    end;
+  finally
+    WindowMain.BtnStart.Enabled := true;
+    WindowMain.BtnStop.Enabled := false;
+    MigrationEnabled := false;
+    FreeAndNil(Rows);
+    FreeAndNil(DataFlex);
+  end;
+end;
+
+end.

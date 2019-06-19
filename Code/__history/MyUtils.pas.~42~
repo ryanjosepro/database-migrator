@@ -1,0 +1,49 @@
+unit MyUtils;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Types, System.Variants,
+  Arrays;
+
+type
+
+  TUtils = class
+  public
+    class function Iff(Cond: boolean; v1, v2: variant): variant;
+    class function ArrayToStr(StrArray: TStringArray; Separator: string): string;
+
+  end;
+
+implementation
+
+class function TUtils.ArrayToStr(StrArray: TStringArray; Separator: string): string;
+var
+  Cont: integer;
+begin
+  for Cont := 0 to Length(StrArray) - 1 do
+  begin
+    if Cont = Length(StrArray) - 1 then
+    begin
+      Result := Result + StrArray[Cont] + ';';
+    end
+    else
+    begin
+      Result := Result + StrArray[Cont] + ' - ';
+    end;
+  end;
+end;
+
+class function TUtils.Iff(Cond: boolean; V1, V2: variant): variant;
+begin
+  if Cond then
+  begin
+    Result := V1;
+  end
+  else
+  begin
+    Result := V2;
+  end;
+end;
+
+end.

@@ -98,9 +98,9 @@ procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if DidChange then
   begin
-    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel,  2) of
-      6: ActSaveExecute(BtnSave);
-      2: Action := TCloseAction.caNone;
+    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel, mrCancel) of
+      mrYes: ActSaveExecute(BtnSave);
+      mrCancel: Action := TCloseAction.caNone;
     end;
   end
   else
