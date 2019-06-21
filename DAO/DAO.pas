@@ -23,7 +23,7 @@ type
 
     class function Table: string;
 
-    class procedure Insert(Datas: TStringDynArray; Order: TIntegerArray; Defaults: TStringArray);
+    class procedure Insert(Datas: TStringArray; Order: TIntegerArray; Defaults: TStringArray);
 
     class function GetFieldsNames: TStringArray;
     class function GetFieldsTypes: TStringArray;
@@ -75,7 +75,7 @@ begin
 end;
 
 //TO COMMENT
-class procedure TDAO.Insert(Datas: TStringDynArray; Order: TIntegerArray; Defaults: TStringArray);
+class procedure TDAO.Insert(Datas: TStringArray; Order: TIntegerArray; Defaults: TStringArray);
 var
   Cont: Integer;
   Tipos: TIntegerArray;

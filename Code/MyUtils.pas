@@ -10,8 +10,9 @@ type
 
   TUtils = class
   public
-    class function Iff(Cond: boolean; v1, v2: variant): variant;
-    class function ArrayToStr(StrArray: TStringDynArray; Separator: string = ' - '; StrFinal: string = ';'): string;
+    class function Iff(Cond: boolean; V1, V2: variant): variant;
+    class function IfClean(Cond, Value: string): string;
+    class function ArrayToStr(StrArray: TStringArray; Separator: string = ' - '; StrFinal: string = ';'): string;
 
   end;
 
@@ -29,7 +30,19 @@ begin
   end;
 end;
 
-class function TUtils.ArrayToStr(StrArray: TStringDynArray; Separator: string = ' - '; StrFinal: string = ';'): string;
+class function TUtils.IfClean(Cond, Value: string): string;
+begin
+  if Cond.Trim = '' then
+  begin
+    Result := Value;
+  end
+  else
+  begin
+    Result := Cond;
+  end;
+end;
+
+class function TUtils.ArrayToStr(StrArray: TStringArray; Separator: string = ' - '; StrFinal: string = ';'): string;
 var
   Cont: integer;
 begin

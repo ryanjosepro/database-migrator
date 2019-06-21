@@ -13,12 +13,14 @@ object WindowConfigs: TWindowConfigs
   Font.Style = []
   OldCreateOrder = False
   Position = poMainFormCenter
+  OnActivate = FormActivate
+  OnClose = FormClose
   DesignSize = (
     338
     366)
   PixelsPerInch = 96
   TextHeight = 13
-  object BtnTestConn: TSpeedButton
+  object BtnDiscard: TSpeedButton
     Left = 139
     Top = 338
     Width = 89
@@ -39,31 +41,52 @@ object WindowConfigs: TWindowConfigs
     Top = 8
     Width = 322
     Height = 324
-    ActivePage = TabDados
+    ActivePage = TabMigration
     TabOrder = 0
-    object TabDados: TTabSheet
-      Caption = 'Dados'
-      object LblDatasLimit: TLabel
+    object TabMigration: TTabSheet
+      Caption = 'Migra'#231#227'o'
+      object GroupCommit: TRadioGroup
         Left = 3
-        Top = 3
-        Width = 88
-        Height = 13
-        Caption = 'Limite de migra'#231#227'o'
+        Top = 0
+        Width = 308
+        Height = 73
+        Caption = 'Commitar'
+        Columns = 2
+        ItemIndex = 0
+        Items.Strings = (
+          'No Final'
+          'A cada:')
+        TabOrder = 2
+        OnClick = GroupCommitClick
       end
-      object RadioAllDatas: TRadioButton
-        Left = 3
-        Top = 22
-        Width = 49
-        Height = 17
-        Caption = 'Todas'
-        Checked = True
+      object TxtCommit: TEdit
+        Left = 222
+        Top = 32
+        Width = 82
+        Height = 21
+        AutoSelect = False
+        AutoSize = False
+        Enabled = False
+        NumbersOnly = True
         TabOrder = 0
-        TabStop = True
-        OnClick = RadioAllDatasClick
       end
-      object TxtDatasLimit: TEdit
-        Left = 172
-        Top = 20
+      object GroupLimit: TRadioGroup
+        Left = 3
+        Top = 72
+        Width = 308
+        Height = 73
+        Caption = 'Limite de Migra'#231#227'o'
+        Columns = 2
+        ItemIndex = 0
+        Items.Strings = (
+          'Todas'
+          'Limite:')
+        TabOrder = 3
+        OnClick = GroupLimitClick
+      end
+      object TxtLimit: TEdit
+        Left = 222
+        Top = 102
         Width = 82
         Height = 21
         AutoSelect = False
@@ -71,15 +94,6 @@ object WindowConfigs: TWindowConfigs
         Enabled = False
         NumbersOnly = True
         TabOrder = 1
-      end
-      object RadioDatasLimit: TRadioButton
-        Left = 117
-        Top = 22
-        Width = 49
-        Height = 17
-        Caption = 'Limite:'
-        TabOrder = 2
-        OnClick = RadioDatasLimitClick
       end
     end
     object TabFirebird: TTabSheet
@@ -90,8 +104,9 @@ object WindowConfigs: TWindowConfigs
         Top = 3
         Width = 308
         Height = 17
-        Caption = 'Truncar tabela firebird ao iniciar'
+        Caption = 'Truncar tabela firebird ao iniciar migra'#231#227'o'
         TabOrder = 0
+        OnClick = CheckTruncFBClick
       end
     end
   end

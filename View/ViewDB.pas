@@ -26,12 +26,20 @@ type
     BtnDBFile: TSpeedButton;
     ActSave: TAction;
     ActTestConn: TAction;
+    SpeedButton1: TSpeedButton;
+    TxtPort: TEdit;
+    LblPort: TLabel;
+    ActDiscard: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure EditsChange(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure ActDBFileExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
     procedure ActTestConnExecute(Sender: TObject);
+    procedure ActDiscardExecute(Sender: TObject);
+
+  private
+    procedure LoadConfigs;
   end;
 
 var
@@ -50,16 +58,23 @@ begin
   end;
 end;
 
+procedure TWindowDB.ActDiscardExecute(Sender: TObject);
+begin
+  DidChange := false;
+  CloseModal;
+end;
+
 procedure TWindowDB.ActSaveExecute(Sender: TObject);
 begin
-  TConfigs.SetConfig('DB', 'UserName', TxtUserName.Text);
-  TConfigs.SetConfig('DB', 'Password', TxtPassword.Text);
-  TConfigs.SetConfig('DB', 'Database', TxtDatabase.Text);
+    TConfigs.SetConfig('DB', 'UserName', TxtUserName.Text);
+    TConfigs.SetConfig('DB', 'Password', TxtPassword.Text);
+    TConfigs.SetConfig('DB', 'Database', TxtDatabase.Text);
 
-  TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
+    TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
-  DidChange := false;
-  Close;
+    DidChange := false;
+
+    Close;
 end;
 
 procedure TWindowDB.ActTestConnExecute(Sender: TObject);
@@ -88,9 +103,7 @@ end;
 
 procedure TWindowDB.FormActivate(Sender: TObject);
 begin
-  TxtUserName.Text := TConfigs.GetConfig('DB', 'UserName');
-  TxtPassword.Text := TConfigs.GetConfig('DB', 'Password');
-  TxtDatabase.Text := TConfigs.GetConfig('DB', 'Database');
+  LoadConfigs;
   DidChange := false;
 end;
 
@@ -98,15 +111,25 @@ procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if DidChange then
   begin
-    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel, mrCancel) of
-      mrYes: ActSaveExecute(BtnSave);
-      mrCancel: Action := TCloseAction.caNone;
+    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel, 0, mbCancel) of
+    mrYes:
+      ActSaveExecute(BtnSave);
+    mrCancel:
+      Action := TCloseAction.caNone;
     end;
   end
   else
   begin
     DidChange := false;
   end;
+end;
+
+procedure TWindowDB.LoadConfigs;
+begin
+  TxtUserName.Text := TConfigs.GetConfig('DB', 'UserName');
+  TxtPassword.Text := TConfigs.GetConfig('DB', 'Password');
+  TxtDatabase.Text := TConfigs.GetConfig('DB', 'Database');
+  TxtPort.Text := TConfigs.GetConfig('DB', 'Port')
 end;
 
 end.

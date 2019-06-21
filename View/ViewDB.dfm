@@ -4,7 +4,7 @@ object WindowDB: TWindowDB
   BorderStyle = bsDialog
   Caption = 'Migrator - Banco de Dados'
   ClientHeight = 225
-  ClientWidth = 277
+  ClientWidth = 297
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,7 +16,7 @@ object WindowDB: TWindowDB
   OnActivate = FormActivate
   OnClose = FormClose
   DesignSize = (
-    277
+    297
     225)
   PixelsPerInch = 96
   TextHeight = 13
@@ -62,9 +62,9 @@ object WindowDB: TWindowDB
   object LblUserName: TLabel
     Left = 8
     Top = 47
-    Width = 43
+    Width = 48
     Height = 16
-    Caption = 'Usu'#225'rio'
+    Caption = 'Usu'#225'rio:'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -99,34 +99,53 @@ object WindowDB: TWindowDB
     ParentFont = False
   end
   object BtnSave: TSpeedButton
-    Left = 175
+    Left = 198
     Top = 194
     Width = 92
     Height = 23
     Action = ActSave
     Anchors = [akLeft, akBottom]
-    ExplicitTop = 171
   end
   object BtnTestConn: TSpeedButton
-    Left = 80
+    Left = 8
     Top = 194
     Width = 89
     Height = 23
     Action = ActTestConn
     Anchors = [akLeft, akBottom]
-    ExplicitTop = 171
   end
   object BtnDBFile: TSpeedButton
-    Left = 244
+    Left = 266
     Top = 106
     Width = 23
     Height = 22
     Action = ActDBFile
   end
+  object SpeedButton1: TSpeedButton
+    Left = 103
+    Top = 194
+    Width = 89
+    Height = 23
+    Action = ActDiscard
+    Anchors = [akLeft, akBottom]
+  end
+  object LblPort: TLabel
+    Left = 8
+    Top = 137
+    Width = 35
+    Height = 16
+    Caption = 'Porta:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
   object TxtDatabase: TEdit
-    Left = 80
+    Left = 57
     Top = 104
-    Width = 161
+    Width = 203
     Height = 24
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -138,9 +157,9 @@ object WindowDB: TWindowDB
     OnChange = EditsChange
   end
   object TxtUserName: TEdit
-    Left = 80
+    Left = 57
     Top = 44
-    Width = 187
+    Width = 232
     Height = 24
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -152,9 +171,9 @@ object WindowDB: TWindowDB
     OnChange = EditsChange
   end
   object TxtPassword: TEdit
-    Left = 80
+    Left = 57
     Top = 74
-    Width = 187
+    Width = 232
     Height = 24
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -164,6 +183,21 @@ object WindowDB: TWindowDB
     ParentFont = False
     PasswordChar = '*'
     TabOrder = 1
+    OnChange = EditsChange
+  end
+  object TxtPort: TEdit
+    Left = 57
+    Top = 134
+    Width = 232
+    Height = 24
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    PasswordChar = '*'
+    TabOrder = 3
     OnChange = EditsChange
   end
   object OpenFile: TFileOpenDialog
@@ -186,6 +220,10 @@ object WindowDB: TWindowDB
       Caption = 'Salvar'
       OnExecute = ActSaveExecute
     end
+    object ActDiscard: TAction
+      Caption = 'Descartar'
+      OnExecute = ActDiscardExecute
+    end
     object ActTestConn: TAction
       Caption = 'Testar Conex'#227'o'
       OnExecute = ActTestConnExecute
@@ -196,7 +234,7 @@ object WindowDB: TWindowDB
     BkColor = clWhite
     Left = 240
     Bitmap = {
-      494C010101000800580010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C0101010008005C0010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

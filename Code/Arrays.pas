@@ -8,7 +8,7 @@ uses
 type
   TIntegerArray = array of integer;
   TStringArray = array of string;
-  TStringMatrix = array of TStringDynArray;
+  TStringMatrix = array of TStringArray;
 
 implementation
 
