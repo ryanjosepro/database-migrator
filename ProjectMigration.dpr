@@ -8,12 +8,12 @@ uses
   ViewDB in 'View\ViewDB.pas' {WindowDB},
   ViewFields in 'View\ViewFields.pas' {WindowFields},
   DAO in 'DAO\DAO.pas',
-  ViewDados in 'View\ViewDados.pas' {WindowDados},
   ViewConfigs in 'View\ViewConfigs.pas' {WindowConfigs},
   Configs in 'Code\Configs.pas',
   DataFlex in 'Code\DataFlex.pas',
   Arrays in 'Code\Arrays.pas',
-  Fields in 'Code\Fields.pas';
+  Fields in 'Code\Fields.pas',
+  ViewDatas in 'View\ViewDatas.pas' {WindowDatas};
 
 {$R *.res}
 
@@ -25,7 +25,7 @@ begin
   Application.CreateForm(TConnFactory, ConnFactory);
   Application.CreateForm(TWindowDB, WindowDB);
   Application.CreateForm(TWindowFields, WindowFields);
-  Application.CreateForm(TWindowDados, WindowDados);
   Application.CreateForm(TWindowConfigs, WindowConfigs);
+  Application.CreateForm(TWindowDatas, WindowDatas);
   Application.Run;
 end.

@@ -47,7 +47,7 @@ var
 begin
   SetLength(StrArray, Length(SplitString(Str, Separator)));
   StrArray := SplitString(Str, Separator);
-
+  SetLength(Result, Length(StrArray));
   for Cont := 0 to Length(StrArray) - 1 do
   begin
     Result[Cont] := StrArray[Cont];

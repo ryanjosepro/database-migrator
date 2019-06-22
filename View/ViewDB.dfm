@@ -121,7 +121,7 @@ object WindowDB: TWindowDB
     Height = 22
     Action = ActDBFile
   end
-  object SpeedButton1: TSpeedButton
+  object BtnDiscard: TSpeedButton
     Left = 103
     Top = 194
     Width = 89
@@ -196,7 +196,6 @@ object WindowDB: TWindowDB
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    PasswordChar = '*'
     TabOrder = 3
     OnChange = EditsChange
   end
@@ -234,7 +233,7 @@ object WindowDB: TWindowDB
     BkColor = clWhite
     Left = 240
     Bitmap = {
-      494C0101010008005C0010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800600010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

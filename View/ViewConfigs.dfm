@@ -41,7 +41,7 @@ object WindowConfigs: TWindowConfigs
     Top = 8
     Width = 322
     Height = 324
-    ActivePage = TabMigration
+    ActivePage = TabFirebird
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'

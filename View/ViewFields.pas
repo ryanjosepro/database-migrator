@@ -153,7 +153,7 @@ var
   Arq: TextFile;
   Cont: integer;
 begin
-  SaveFile.FileName := 'Campos ' + TDAO.Table;
+  SaveFile.FileName := 'ConfigCampos' + TDAO.Table;
   if SaveFile.Execute then
   begin
     AssignFile(Arq, SaveFile.FileName);

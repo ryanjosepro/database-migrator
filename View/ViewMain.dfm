@@ -74,7 +74,7 @@ object WindowMain: TWindowMain
     ParentFont = False
   end
   object LblTitle3: TLabel
-    Left = 378
+    Left = 381
     Top = 8
     Width = 67
     Height = 24
@@ -86,7 +86,6 @@ object WindowMain: TWindowMain
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ExplicitLeft = 384
   end
   object BtnStart: TSpeedButton
     Left = 163
@@ -2254,7 +2253,7 @@ object WindowMain: TWindowMain
     ExplicitLeft = 424
   end
   object BtnConfigs: TSpeedButton
-    Left = 229
+    Left = 231
     Top = 119
     Width = 57
     Height = 50
@@ -2830,7 +2829,7 @@ object WindowMain: TWindowMain
     Left = 449
     Top = 544
     Bitmap = {
-      494C010106005C01C40140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010106005C01CC0140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF

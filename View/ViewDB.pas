@@ -26,7 +26,7 @@ type
     BtnDBFile: TSpeedButton;
     ActSave: TAction;
     ActTestConn: TAction;
-    SpeedButton1: TSpeedButton;
+    BtnDiscard: TSpeedButton;
     TxtPort: TEdit;
     LblPort: TLabel;
     ActDiscard: TAction;
@@ -61,7 +61,7 @@ end;
 procedure TWindowDB.ActDiscardExecute(Sender: TObject);
 begin
   DidChange := false;
-  CloseModal;
+  Close;
 end;
 
 procedure TWindowDB.ActSaveExecute(Sender: TObject);

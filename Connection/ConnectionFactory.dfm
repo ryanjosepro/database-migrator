@@ -9,21 +9,25 @@ object ConnFactory: TConnFactory
       'User_Name=sysdba'
       'Password=masterkey')
     LoginPrompt = False
+    Transaction = Trans
     Left = 24
     Top = 16
   end
   object Trans: TFDTransaction
+    Options.AutoStop = False
     Connection = Conn
     Left = 104
     Top = 16
   end
   object QuerySQL: TFDQuery
     Connection = Conn
+    Transaction = Trans
     Left = 24
     Top = 80
   end
   object QueryTable: TFDQuery
     Connection = Conn
+    Transaction = Trans
     FetchOptions.AssignedValues = [evRowsetSize, evRecordCountMode]
     FetchOptions.RowsetSize = 200
     SQL.Strings = (

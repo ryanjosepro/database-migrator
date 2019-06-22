@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.ExtDlgs, Vcl.ComCtrls,
-  ViewDB, ViewFields, ViewDados, ViewConfigs, Arrays, Configs, MyUtils, DataFlex, DAO;
+  ViewDB, ViewFields, ViewDatas, ViewConfigs, Arrays, Configs, MyUtils, DataFlex, DAO;
 
 type
   TWindowMain = class(TForm)
@@ -57,7 +57,7 @@ var
 implementation
 
 {
-PROGRAMATION RULES
+--> PROJECT DEFAULTS <--
 
 -To keep code always clean and organized;
 -To create variables, objects and components always in english;
@@ -69,7 +69,9 @@ PROGRAMATION RULES
 
 -Default Uses -> System.SysUtils, System.Classes, System.Types;
 
-PROGRAMATION RULES
+--> PROJECT IDEAS <--
+
+-To put a DataFlex file modify option on ViewDatas;
 }
 
 {$R *.dfm}
@@ -101,7 +103,7 @@ end;
 
 procedure TWindowMain.ActDadosExecute(Sender: TObject);
 begin
-  WindowDados.ShowModal;
+  WindowDatas.ShowModal;
   if TConfigs.GetConfig('TEMP', 'FilePath').Trim <> '' then
   begin
     ActOpenFile.ImageIndex := 5;
@@ -146,6 +148,7 @@ end;
 procedure TWindowMain.FormActivate(Sender: TObject);
 begin
   TConfigs.SetConfig('TEMP', 'FilePath', '');
+  WindowState := TUtils.Iff(TConfigs.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);
 end;
 
 procedure TWindowMain.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -160,6 +163,7 @@ begin
     begin
       MigrationEnabled := false;
       TConfigs.SetConfig('TEMP', 'FilePath', '');
+      TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
     end
     else if Answer = mrNo then
     begin
@@ -170,6 +174,7 @@ begin
   else
   begin
     TConfigs.SetConfig('TEMP', 'FilePath', '');
+    TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
   end;
 end;
 
@@ -186,7 +191,7 @@ var
   Rows: TStringList;
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
-  ContRow, ContCol, TotRows: integer;
+  ContRow, ContCol, TotRows, Commit, Step: integer;
   OutStr: string;
 begin
   //Chama do método sobreposto na classe mãe
@@ -201,7 +206,7 @@ begin
   Datas := DataFlex.ToMatrix;
   try
     try
-      //Verifica se o firebird está devidamente configurado
+      //Verifica se o Firebird está devidamente configurado
       if TDAO.Count <= 0 then
       begin
         ShowMessage('Selecione uma tabela válida!');
@@ -213,26 +218,51 @@ begin
       else
       begin
         WindowMain.TxtLog.Clear;
+        //Configura o passo de commit
+        if TConfigs.GetConfig('GENERAL', 'Commit').ToInteger = -1 then
+        begin
+          Commit := DataFlex.GetRows;
+        end
+        else
+        begin
+          if TConfigs.GetConfig('GENERAL', 'Commit').ToInteger > DataFlex.GetRows then
+          begin
+            Commit := DataFlex.GetRows;
+          end
+          else
+          begin
+            Commit := TConfigs.GetConfig('GENERAL', 'Commit').ToInteger;
+          end;
+        end;
+
         //Configura o limite de migração
-        if TConfigs.GetConfig('GENERAL', 'DatasLimit').ToInteger = -1 then
+        if TConfigs.GetConfig('GENERAL', 'Limit').ToInteger = -1 then
         begin
           TotRows := DataFlex.GetRows;
         end
         else
         begin
-          if TConfigs.GetConfig('GENERAL', 'DatasLimit').ToInteger > DataFlex.GetRows then
+          if TConfigs.GetConfig('GENERAL', 'Limit').ToInteger > DataFlex.GetRows then
           begin
             TotRows := DataFlex.GetRows;
           end
           else
           begin
-            TotRows := TConfigs.GetConfig('GENERAL', 'DatasLimit').ToInteger;
+            TotRows := TConfigs.GetConfig('GENERAL', 'Limit').ToInteger;
           end;
+        end;
+
+        //Trunca tabela Firebird
+        if TConfigs.GetConfig('GENERAL', 'TruncFB').ToInteger = 1 then
+        begin
+          TDAO.Truncate;
         end;
 
         //Ajusta a barra de carregamento
         WindowMain.ProgressBar.Position := 0;
         WindowMain.ProgressBar.Max := TotRows;
+
+        Step := Commit;
 
         //Passa por cada linha Dataflex
         for ContRow := 0 to TotRows - 1 do
@@ -246,15 +276,23 @@ begin
             WindowMain.Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
             //Atualiza a barra de carregamento
             WindowMain.ProgressBar.StepIt;
+            if ContRow + 1 = Step then
+            begin
+              TDAO.Commit;
+              WindowMain.Log('COMITADO!');
+              Step := Step + Commit;
+            end;
           end
           else
           begin
+            //Quando a migração é interrompida
             WindowMain.Log('PARADO!');
             break;
           end;
         end;
       end;
     except on E: Exception do
+      //Tratamento de erros no log
       WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + E.ToString);
     end;
   finally

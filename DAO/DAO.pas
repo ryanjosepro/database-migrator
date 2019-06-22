@@ -10,12 +10,13 @@ type
 
   TDAO = class
   private
-    class procedure Select;
-
-  public
+    class function Connection: TFDConnection;
     class function QueryTable: TFDQuery;
     class function QuerySQL: TFDQuery;
+    class procedure Select;
 
+
+  public
     class procedure GetParams(var UserName, Password, Database: string);
     class procedure SetParams(UserName, Password, Database: string);
 
@@ -34,11 +35,18 @@ type
 
     class procedure Truncate;
 
+    class procedure Commit;
+
   end;
 
 implementation
 
 { TDAO }
+
+class function TDAO.Connection: TFDConnection;
+begin
+  Result := ConnFactory.Conn;
+end;
 
 class function TDAO.QueryTable: TFDQuery;
 begin
@@ -52,21 +60,21 @@ end;
 
 class procedure TDAO.GetParams(var UserName, Password, Database: string);
 begin
-  UserName := ConnFactory.Conn.Params.UserName;
-  Password := ConnFactory.Conn.Params.Password;
-  Database := ConnFactory.Conn.Params.Database;
+  UserName := Connection.Params.UserName;
+  Password := Connection.Params.Password;
+  Database := Connection.Params.Database;
 end;
 
 class procedure TDAO.SetParams(UserName, Password, Database: string);
 begin
-  ConnFactory.Conn.Params.UserName := UserName;
-  ConnFactory.Conn.Params.Password := Password;
-  ConnFactory.Conn.Params.Database := Database;
+  Connection.Params.UserName := UserName;
+  Connection.Params.Password := Password;
+  Connection.Params.Database := Database;
 end;
 
 class procedure TDAO.TestConn;
 begin
-  ConnFactory.Conn.Connected := true;
+  Connection.Connected := true;
 end;
 
 class function TDAO.Table: string;
@@ -238,7 +246,13 @@ begin
   QuerySQL.SQL.Clear;
   QuerySQL.SQL.Add('delete from ' + Table +' where id > 0');
   QuerySQL.ExecSQL;
+  Commit;
   QuerySQL.SQL.Clear;
+end;
+
+class procedure TDAO.Commit;
+begin
+  Connection.Commit;
 end;
 
 end.
