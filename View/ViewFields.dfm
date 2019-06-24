@@ -152,7 +152,7 @@ object WindowFields: TWindowFields
     FixedColor = clWindow
     FixedCols = 3
     RowCount = 2
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goDrawFocusSelected, goEditing, goThumbTracking]
     ScrollBars = ssVertical
     TabOrder = 0
     RowHeights = (
@@ -200,7 +200,7 @@ object WindowFields: TWindowFields
     Left = 528
     Top = 568
     Bitmap = {
-      494C010106000800480116001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101060008004C0116001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000580000002C0000000100200000000000803C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

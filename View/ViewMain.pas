@@ -42,9 +42,10 @@ type
     procedure Log(Msg: string);
   end;
 
-  TMyThread = class(TThread)
+  TMigration = class(TThread)
   protected
     procedure Execute; override;
+    procedure Handle(Data: string; E: Exception);
   public
     constructor Create;
   end;
@@ -63,7 +64,7 @@ implementation
 -To create variables, objects and components always in english;
 -To comment everything that you can;
 
--Forms Order -> ViewMain - ViewDados - ViewConfigs - ViewFields - ViewDB;
+-Forms Order -> ViewMain - ViewDatas - ViewConfigs - ViewFields - ViewDB;
 
 -Units Order -> Arrays - MyUtils - DataFlex - Configs - Fields - DAO - ConnectionFactory;
 
@@ -123,7 +124,7 @@ begin
       BtnStart.Enabled := false;
       BtnStop.Enabled := true;
       MigrationEnabled := true;
-      TMyThread.Create;
+      TMigration.Create;
     end;
   end
   else
@@ -131,7 +132,7 @@ begin
     BtnStart.Enabled := false;
     BtnStop.Enabled := true;
     MigrationEnabled := true;
-    TMyThread.Create;
+    TMigration.Create;
   end;
 end;
 
@@ -180,18 +181,19 @@ end;
 
 { TMyThread }
 
-constructor TMyThread.Create;
+constructor TMigration.Create;
 begin
   inherited Create(false);
 end;
 
 //TO COMMENT
-procedure TMyThread.Execute;
+procedure TMigration.Execute;
 var
   Rows: TStringList;
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
-  ContRow, ContCol, TotRows, Commit, Step: integer;
+  ContRow, ContCol, Step: integer;
+  Commit, Limit, TruncFB: integer;
   OutStr: string;
 begin
   //Chama do método sobreposto na classe mãe
@@ -218,54 +220,27 @@ begin
       else
       begin
         WindowMain.TxtLog.Clear;
-        //Configura o passo de commit
-        if TConfigs.GetConfig('GENERAL', 'Commit').ToInteger = -1 then
-        begin
-          Commit := DataFlex.GetRows;
-        end
-        else
-        begin
-          if TConfigs.GetConfig('GENERAL', 'Commit').ToInteger > DataFlex.GetRows then
-          begin
-            Commit := DataFlex.GetRows;
-          end
-          else
-          begin
-            Commit := TConfigs.GetConfig('GENERAL', 'Commit').ToInteger;
-          end;
-        end;
 
-        //Configura o limite de migração
-        if TConfigs.GetConfig('GENERAL', 'Limit').ToInteger = -1 then
-        begin
-          TotRows := DataFlex.GetRows;
-        end
-        else
-        begin
-          if TConfigs.GetConfig('GENERAL', 'Limit').ToInteger > DataFlex.GetRows then
-          begin
-            TotRows := DataFlex.GetRows;
-          end
-          else
-          begin
-            TotRows := TConfigs.GetConfig('GENERAL', 'Limit').ToInteger;
-          end;
-        end;
+        //Busca as configurações
+        TConfigs.GetGeneral(Commit, Limit, TruncFB);
+
+        Commit := TUtils.Iff(Commit = -1, DataFlex.GetRows, TUtils.IfBigger(Commit, DataFlex.GetRows));
+        Limit := TUtils.Iff(Limit = -1, DataFlex.GetRows, TUtils.IfBigger(Limit, DataFlex.GetRows));
+
+        Step := Commit;
 
         //Trunca tabela Firebird
-        if TConfigs.GetConfig('GENERAL', 'TruncFB').ToInteger = 1 then
+        if TruncFB = 1 then
         begin
           TDAO.Truncate;
         end;
 
         //Ajusta a barra de carregamento
         WindowMain.ProgressBar.Position := 0;
-        WindowMain.ProgressBar.Max := TotRows;
-
-        Step := Commit;
+        WindowMain.ProgressBar.Max := Limit;
 
         //Passa por cada linha Dataflex
-        for ContRow := 0 to TotRows - 1 do
+        for ContRow := 0 to Limit - 1 do
         begin
           //Verifica se a migração não foi parada
           if MigrationEnabled then
@@ -290,10 +265,11 @@ begin
             break;
           end;
         end;
+        WindowMain.Log('MIGRAÇÃO FINALIZADA!');
       end;
     except on E: Exception do
-      //Tratamento de erros no log
-      WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + E.ToString);
+      //Tratamento de erros
+      Handle((ContRow + 1).ToString, E);
     end;
   finally
     WindowMain.BtnStart.Enabled := true;
@@ -302,6 +278,12 @@ begin
     FreeAndNil(Rows);
     FreeAndNil(DataFlex);
   end;
+end;
+
+procedure TMigration.Handle(Data: string; E: Exception);
+begin
+  WindowMain.Log('ERRO NO DADO ' + Data + ' -> ' + E.ToString);
+  TDAO.Rollback;
 end;
 
 end.

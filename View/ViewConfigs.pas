@@ -44,10 +44,14 @@ implementation
 {$R *.dfm}
 
 procedure TWindowConfigs.ActSaveExecute(Sender: TObject);
+var
+  Commit, Limit, TruncFB: integer;
 begin
-  TConfigs.SetConfig('GENERAL', 'Commit', TUtils.Iff(GroupCommit.ItemIndex = 0, '-1', TUtils.IfClean(TxtCommit.Text, '-1')));
-  TConfigs.SetConfig('GENERAL', 'Limit', TUtils.Iff(GroupLimit.ItemIndex = 0, '-1', TUtils.IfClean(TxtLimit.Text, '-1')));
-  TConfigs.SetConfig('GENERAL', 'TruncFB', TUtils.Iff(CheckTruncFB.Checked, '1', '0'));
+  Commit := TUtils.Iff(GroupCommit.ItemIndex = 0, -1, TUtils.IfEmpty(TxtCommit.Text, '-1').ToInteger);
+  Limit := TUtils.Iff(GroupLimit.ItemIndex = 0, -1, TUtils.IfEmpty(TxtLimit.Text, '-1').ToInteger);
+  TruncFB := TUtils.Iff(CheckTruncFB.Checked, 1, 0);
+
+  TConfigs.SetGeneral(Commit, Limit, TruncFB);
 
   DidChange := false;
 
@@ -86,9 +90,7 @@ procedure TWindowConfigs.LoadConfigs;
 var
   Commit, Limit, TruncFB: integer;
 begin
-  Commit := TUtils.IfClean(TConfigs.GetConfig('GENERAL', 'Commit'), '-1').ToInteger;
-  Limit := TUtils.IfClean(TConfigs.GetConfig('GENERAL', 'Limit'), '-1').ToInteger;
-  TruncFB := TUtils.IfClean(TConfigs.GetConfig('GENERAL', 'TruncFB'), '0').ToInteger;
+  TConfigs.GetGeneral(Commit, Limit, TruncFB);
 
   if Commit = -1 then
   begin
@@ -110,7 +112,7 @@ begin
     TxtLimit.Text := Limit.ToString;
   end;
 
-  CheckTruncFB.Checked := TruncFB = 1;
+  CheckTruncFB.Checked := (TruncFB = 1);
 
   PageConfigs.TabIndex := 0;
 end;

@@ -66,9 +66,8 @@ end;
 
 procedure TWindowDB.ActSaveExecute(Sender: TObject);
 begin
-    TConfigs.SetConfig('DB', 'UserName', TxtUserName.Text);
-    TConfigs.SetConfig('DB', 'Password', TxtPassword.Text);
-    TConfigs.SetConfig('DB', 'Database', TxtDatabase.Text);
+    TConfigs.SetDB(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text, TxtPort.Text
+    );
 
     TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
@@ -125,11 +124,14 @@ begin
 end;
 
 procedure TWindowDB.LoadConfigs;
+var
+  UserName, Password, Database, Port: string;
 begin
-  TxtUserName.Text := TConfigs.GetConfig('DB', 'UserName');
-  TxtPassword.Text := TConfigs.GetConfig('DB', 'Password');
-  TxtDatabase.Text := TConfigs.GetConfig('DB', 'Database');
-  TxtPort.Text := TConfigs.GetConfig('DB', 'Port')
+  TConfigs.GetDB(UserName, Password, Database, Port);
+  TxtUserName.Text := UserName;
+  TxtPassword.Text := Password;
+  TxtDatabase.Text := Database;
+  TxtPort.Text := Port;
 end;
 
 end.

@@ -37,6 +37,8 @@ type
 
     class procedure Commit;
 
+    class procedure Rollback;
+
   end;
 
 implementation
@@ -253,6 +255,11 @@ end;
 class procedure TDAO.Commit;
 begin
   Connection.Commit;
+end;
+
+class procedure TDAO.Rollback;
+begin
+  Connection.Rollback;
 end;
 
 end.

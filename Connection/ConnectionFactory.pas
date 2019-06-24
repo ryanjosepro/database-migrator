@@ -29,10 +29,13 @@ implementation
 {$R *.dfm}
 
 procedure TConnFactory.DataModuleCreate(Sender: TObject);
+var
+  UserName, Password, Database, Port: string;
 begin
-  Conn.Params.UserName := TConfigs.GetConfig('DB', 'UserName');
-  Conn.Params.Password := TConfigs.GetConfig('DB', 'Password');
-  Conn.Params.Database := TConfigs.GetConfig('DB', 'Database');
+  TConfigs.GetDB(UserName, Password, Database, Port);
+  Conn.Params.UserName := UserName;
+  Conn.Params.Password := Password;
+  Conn.Params.Database := Database;
 end;
 
 end.

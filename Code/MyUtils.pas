@@ -11,7 +11,8 @@ type
   TUtils = class
   public
     class function Iff(Cond: boolean; V1, V2: variant): variant;
-    class function IfClean(Cond, Value: string): string;
+    class function IfEmpty(Value, Replace: string): string;
+    class function IfBigger(Value, Replace: integer): integer;
     class function ArrayToStr(StrArray: TStringArray; Separator: string = ' - '; StrFinal: string = ';'): string;
 
   end;
@@ -30,15 +31,27 @@ begin
   end;
 end;
 
-class function TUtils.IfClean(Cond, Value: string): string;
+class function TUtils.IfBigger(Value, Replace: integer): integer;
 begin
-  if Cond.Trim = '' then
+  if Value < Replace then
   begin
     Result := Value;
   end
   else
   begin
-    Result := Cond;
+    Result := Replace;
+  end;
+end;
+
+class function TUtils.IfEmpty(Value, Replace: string): string;
+begin
+  if Value.Trim <> '' then
+  begin
+    Result := Value;
+  end
+  else
+  begin
+    Result := Replace;
   end;
 end;
 
