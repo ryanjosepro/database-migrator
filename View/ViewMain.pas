@@ -13,7 +13,7 @@ type
     LblTitle1: TLabel;
     LblTitle3: TLabel;
     TxtLog: TMemo;
-    BtnStart: TSpeedButton;
+    BtnMigrate: TSpeedButton;
     BtnOpenFile: TSpeedButton;
     BtnDatabase: TSpeedButton;
     BtnFields: TSpeedButton;
@@ -29,15 +29,17 @@ type
     ActConfigFields: TAction;
     ActDados: TAction;
     ActConfigs: TAction;
+    ActMigrate: TAction;
+    ActStop: TAction;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
     procedure ActDadosExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure BtnStopClick(Sender: TObject);
-    procedure BtnStartClick(Sender: TObject);
     procedure ActConfigsExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure ActMigrateExecute(Sender: TObject);
+    procedure ActStopExecute(Sender: TObject);
   private
     procedure Log(Msg: string);
   end;
@@ -87,6 +89,35 @@ begin
   end;
 end;
 
+procedure TWindowMain.ActMigrateExecute(Sender: TObject);
+begin
+  if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
+  begin
+    if OpenFile.Execute then
+    begin
+      TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+      ActOpenFile.ImageIndex := 5;
+      BtnOpenFile.Action := ActOpenFile;
+      ActMigrate.Enabled := false;
+      ActStop.Enabled := true;
+      MigrationEnabled := true;
+      TMigration.Create;
+    end;
+  end
+  else
+  begin
+    ActMigrate.Enabled := false;
+    ActStop.Enabled := true;
+    MigrationEnabled := true;
+    TMigration.Create;
+  end;
+end;
+
+procedure TWindowMain.ActStopExecute(Sender: TObject);
+begin
+  MigrationEnabled := false;
+end;
+
 procedure TWindowMain.ActConfigDBExecute(Sender: TObject);
 begin
   WindowDB.ShowModal;
@@ -110,35 +141,6 @@ begin
     ActOpenFile.ImageIndex := 5;
     BtnOpenFile.Action := ActOpenFile;
   end;
-end;
-
-procedure TWindowMain.BtnStartClick(Sender: TObject);
-begin
-  if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
-  begin
-    if OpenFile.Execute then
-    begin
-      TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
-      ActOpenFile.ImageIndex := 5;
-      BtnOpenFile.Action := ActOpenFile;
-      BtnStart.Enabled := false;
-      BtnStop.Enabled := true;
-      MigrationEnabled := true;
-      TMigration.Create;
-    end;
-  end
-  else
-  begin
-    BtnStart.Enabled := false;
-    BtnStop.Enabled := true;
-    MigrationEnabled := true;
-    TMigration.Create;
-  end;
-end;
-
-procedure TWindowMain.BtnStopClick(Sender: TObject);
-begin
-  MigrationEnabled := false;
 end;
 
 procedure TWindowMain.Log(Msg: string);
@@ -272,8 +274,8 @@ begin
       Handle((ContRow + 1).ToString, E);
     end;
   finally
-    WindowMain.BtnStart.Enabled := true;
-    WindowMain.BtnStop.Enabled := false;
+    WindowMain.ActMigrate.Enabled := true;
+    WindowMain.ActStop.Enabled := false;
     MigrationEnabled := false;
     FreeAndNil(Rows);
     FreeAndNil(DataFlex);

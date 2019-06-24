@@ -4,7 +4,7 @@ object WindowDatas: TWindowDatas
   BorderIcons = [biSystemMenu, biMaximize]
   Caption = 'Migrator - Dados'
   ClientHeight = 648
-  ClientWidth = 953
+  ClientWidth = 970
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -53,17 +53,18 @@ object WindowDatas: TWindowDatas
   OnActivate = FormActivate
   OnClose = FormClose
   DesignSize = (
-    953
+    970
     648)
   PixelsPerInch = 96
   TextHeight = 13
   object LblFileName: TLabel
     Left = 8
     Top = 8
-    Width = 88
+    Width = 105
     Height = 13
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Arquivo Dataflex: '
+    ExplicitWidth = 88
   end
   object LblTotRows: TLabel
     Left = 8
@@ -71,7 +72,7 @@ object WindowDatas: TWindowDatas
     Width = 241
     Height = 13
     AutoSize = False
-    Caption = 'Linhas:'
+    Caption = 'Dados:'
   end
   object LblTotCols: TLabel
     Left = 304
@@ -79,10 +80,10 @@ object WindowDatas: TWindowDatas
     Width = 241
     Height = 13
     AutoSize = False
-    Caption = 'Colunas:'
+    Caption = 'Campos'
   end
   object BtnFields: TSpeedButton
-    Left = 897
+    Left = 914
     Top = 0
     Width = 48
     Height = 48
@@ -97,9 +98,10 @@ object WindowDatas: TWindowDatas
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 897
   end
   object BtnOpenFile: TSpeedButton
-    Left = 843
+    Left = 860
     Top = 0
     Width = 48
     Height = 48
@@ -114,11 +116,130 @@ object WindowDatas: TWindowDatas
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 843
+  end
+  object BtnAlter: TSpeedButton
+    Left = 8
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActAlter
+  end
+  object BtnActCell: TSpeedButton
+    Left = 392
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActAddCell
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGreen
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object BtnDelCell: TSpeedButton
+    Left = 488
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActDelCell
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object BtnAddRow: TSpeedButton
+    Left = 584
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActAddRow
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGreen
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object BtnDelRow: TSpeedButton
+    Left = 680
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActDelRow
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object BtnAddCol: TSpeedButton
+    Left = 776
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActAddCol
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clGreen
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object BtnDelCol: TSpeedButton
+    Left = 872
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActDelCol
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object BtnCancel: TSpeedButton
+    Left = 296
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActCancel
+  end
+  object BtnSave: TSpeedButton
+    Left = 104
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActSave
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object BtnSaveAs: TSpeedButton
+    Left = 200
+    Top = 618
+    Width = 90
+    Height = 22
+    Action = ActSaveAs
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
   end
   object GridDatas: TStringGrid
     Left = 8
     Top = 104
-    Width = 937
+    Width = 954
     Height = 512
     Anchors = [akLeft, akTop, akRight, akBottom]
     ColCount = 2
@@ -126,19 +247,21 @@ object WindowDatas: TWindowDatas
     RowCount = 2
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goThumbTracking]
     TabOrder = 0
+    ExplicitWidth = 937
   end
   object PanelSearch: TPanel
     Left = 8
     Top = 47
-    Width = 937
+    Width = 954
     Height = 51
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
+    ExplicitWidth = 937
     DesignSize = (
-      937
+      954
       51)
     object BtnSelect: TSpeedButton
-      Left = 832
+      Left = 849
       Top = 0
       Width = 105
       Height = 51
@@ -151,6 +274,7 @@ object WindowDatas: TWindowDatas
       Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
+      ExplicitLeft = 832
     end
     object LblRowsLimit: TLabel
       Left = 8
@@ -177,7 +301,7 @@ object WindowDatas: TWindowDatas
     Left = 904
     Top = 568
     Bitmap = {
-      494C01010300D800B80140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800C00140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -2300,6 +2424,11 @@ object WindowDatas: TWindowDatas
     Images = Images
     Left = 856
     Top = 568
+    object ActOpenFile: TAction
+      Hint = 'Arquivo Dataflex'
+      ImageIndex = 1
+      OnExecute = ActOpenFileExecute
+    end
     object ActConfigFields: TAction
       Hint = 'Campos Firebird'
       ImageIndex = 0
@@ -2310,10 +2439,43 @@ object WindowDatas: TWindowDatas
       Hint = 'Mostrar os dados na tabela'
       OnExecute = ActSelectExecute
     end
-    object ActOpenFile: TAction
-      Hint = 'Arquivo Dataflex'
-      ImageIndex = 1
-      OnExecute = ActOpenFileExecute
+    object ActAlter: TAction
+      Caption = 'Alterar'
+    end
+    object ActCancel: TAction
+      Caption = 'Cancelar'
+      Enabled = False
+    end
+    object ActAddCell: TAction
+      Caption = 'Inserir C'#233'lula'
+      Enabled = False
+    end
+    object ActAddRow: TAction
+      Caption = 'Inserir Linha'
+      Enabled = False
+    end
+    object ActAddCol: TAction
+      Caption = 'Inserir Coluna'
+      Enabled = False
+    end
+    object ActDelCell: TAction
+      Caption = 'Remover C'#233'lula'
+      Enabled = False
+    end
+    object ActDelRow: TAction
+      Caption = 'Remover Linha'
+      Enabled = False
+    end
+    object ActDelCol: TAction
+      Caption = 'Remover Coluna'
+      Enabled = False
+    end
+    object ActSave: TAction
+      Caption = 'Salvar'
+      Enabled = False
+    end
+    object ActSaveAs: TAction
+      Caption = 'Salvar como'
     end
   end
   object OpenFile: TFileOpenDialog

@@ -87,20 +87,19 @@ object WindowMain: TWindowMain
     Font.Style = []
     ParentFont = False
   end
-  object BtnStart: TSpeedButton
+  object BtnMigrate: TSpeedButton
     Left = 163
     Top = 8
     Width = 193
     Height = 49
+    Action = ActMigrate
     Anchors = [akTop]
-    Caption = 'Come'#231'ar'
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBackground
+    Font.Color = clGreen
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    OnClick = BtnStartClick
     ExplicitLeft = 376
   end
   object BtnOpenFile: TSpeedButton
@@ -2240,16 +2239,14 @@ object WindowMain: TWindowMain
     Top = 63
     Width = 97
     Height = 33
+    Action = ActStop
     Anchors = [akTop]
-    Caption = 'Parar'
-    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    OnClick = BtnStopClick
     ExplicitLeft = 424
   end
   object BtnConfigs: TSpeedButton
@@ -2829,7 +2826,7 @@ object WindowMain: TWindowMain
     Left = 449
     Top = 544
     Bitmap = {
-      494C010106005C01D40140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010106005C01D80140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -7088,6 +7085,17 @@ object WindowMain: TWindowMain
       Hint = 'Configura'#231#245'es'
       ImageIndex = 4
       OnExecute = ActConfigsExecute
+    end
+    object ActMigrate: TAction
+      Caption = 'Migrar'
+      Hint = 'Migrar Dados'
+      OnExecute = ActMigrateExecute
+    end
+    object ActStop: TAction
+      Caption = 'Parar'
+      Enabled = False
+      Hint = 'Parar Migra'#231#227'o'
+      OnExecute = ActStopExecute
     end
   end
 end

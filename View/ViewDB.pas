@@ -27,8 +27,6 @@ type
     ActSave: TAction;
     ActTestConn: TAction;
     BtnDiscard: TSpeedButton;
-    TxtPort: TEdit;
-    LblPort: TLabel;
     ActDiscard: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure EditsChange(Sender: TObject);
@@ -66,8 +64,7 @@ end;
 
 procedure TWindowDB.ActSaveExecute(Sender: TObject);
 begin
-    TConfigs.SetDB(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text, TxtPort.Text
-    );
+    TConfigs.SetDB(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
     TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
@@ -125,13 +122,12 @@ end;
 
 procedure TWindowDB.LoadConfigs;
 var
-  UserName, Password, Database, Port: string;
+  UserName, Password, Database: string;
 begin
-  TConfigs.GetDB(UserName, Password, Database, Port);
+  TConfigs.GetDB(UserName, Password, Database);
   TxtUserName.Text := UserName;
   TxtPassword.Text := Password;
   TxtDatabase.Text := Database;
-  TxtPort.Text := Port;
 end;
 
 end.

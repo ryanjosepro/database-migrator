@@ -30,9 +30,9 @@ implementation
 
 procedure TConnFactory.DataModuleCreate(Sender: TObject);
 var
-  UserName, Password, Database, Port: string;
+  UserName, Password, Database: string;
 begin
-  TConfigs.GetDB(UserName, Password, Database, Port);
+  TConfigs.GetDB(UserName, Password, Database);
   Conn.Params.UserName := UserName;
   Conn.Params.Password := Password;
   Conn.Params.Database := Database;

@@ -18,8 +18,8 @@ type
     class procedure GetGeneral(var Commit, Limit, TruncFB: integer);
     class procedure SetGeneral(Commit, Limit, TruncFB: integer);
 
-    class procedure GetDB(var UserName, Password, Database, Port: string);
-    class procedure SetDB(UserName, Password, Database, Port: string);
+    class procedure GetDB(var UserName, Password, Database: string);
+    class procedure SetDB(UserName, Password, Database: string);
   end;
 
 implementation
@@ -73,20 +73,18 @@ end;
 
 { TDB }
 
-class procedure TConfigs.GetDB(var UserName, Password, Database, Port: string);
+class procedure TConfigs.GetDB(var UserName, Password, Database: string);
 begin
   UserName := TConfigs.GetConfig('DB', 'UserName');
   Password := TConfigs.GetConfig('DB', 'Password');
   Database := TConfigs.GetConfig('DB', 'Database');
-  Port := TConfigs.GetConfig('DB', 'Port');
 end;
 
-class procedure TConfigs.SetDB(UserName, Password, Database, Port: string);
+class procedure TConfigs.SetDB(UserName, Password, Database: string);
 begin
   TConfigs.SetConfig('DB', 'UserName', UserName);
   TConfigs.SetConfig('DB', 'Password', Password);
   TConfigs.SetConfig('DB', 'Database', Database);
-  TConfigs.SetConfig('DB', 'Port', Port);
 end;
 
 end.

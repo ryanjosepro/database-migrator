@@ -15,12 +15,13 @@ type
     Rows: integer;
     Cols: integer;
 
+  private
+    //De String -> Array, separa os campos
+    function Cut(Str, Separator: string): TStringArray;
+
   public
     //Constutor
     constructor Create(StrList: TStringList);
-
-    //De String -> Array, separa os campos
-    function Cut(Str, Separator: string): TStringArray;
 
     //Gets
     function GetRows: integer;
@@ -28,17 +29,9 @@ type
 
     //Transforma a stringlist em uma matriz
     function ToMatrix: TStringMatrix;
-
-end;
+  end;
 
 implementation
-
-constructor TDataFlex.Create(StrList: TStringList);
-begin
-  self.StrList := StrList;
-  self.Rows := StrList.Count;
-  self.Cols := Length(Cut(StrList[0], ';'));
-end;
 
 function TDataFlex.Cut(Str, Separator: string): TStringArray;
 var
@@ -52,6 +45,13 @@ begin
   begin
     Result[Cont] := StrArray[Cont];
   end;
+end;
+
+constructor TDataFlex.Create(StrList: TStringList);
+begin
+  self.StrList := StrList;
+  self.Rows := StrList.Count;
+  self.Cols := Length(Cut(StrList[0], ';'));
 end;
 
 function TDataFlex.GetRows: integer;
