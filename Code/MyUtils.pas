@@ -13,7 +13,8 @@ type
     class function Iff(Cond: boolean; V1, V2: variant): variant;
     class function IfEmpty(Value, Replace: string): string;
     class function IfBigger(Value, Replace: integer): integer;
-    class function ArrayToStr(StrArray: TStringArray; Separator: string = ' - '; StrFinal: string = ';'): string;
+    class function ArrayToStr(StrArray: TStringArray; Starts: integer = 0; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
+    class function ArrayToStr(StrArray: System.TArray<System.string>; Starts: integer = 0; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
 
   end;
 
@@ -55,12 +56,30 @@ begin
   end;
 end;
 
-class function TUtils.ArrayToStr(StrArray: TStringArray; Separator: string = ' - '; StrFinal: string = ';'): string;
+class function TUtils.ArrayToStr(StrArray: TStringArray; Starts: integer; Separator, StrFinal: string): string;
 var
   Cont: integer;
 begin
   Result := '';
-  for Cont := 0 to Length(StrArray) - 1 do
+  for Cont := TUtils.Iff(Starts > Length(StrArray), 0, Starts) to Length(StrArray) - 1 do
+  begin
+    if Cont = Length(StrArray) - 1 then
+    begin
+      Result := Result + StrArray[Cont] + StrFinal;
+    end
+    else
+    begin
+      Result := Result + StrArray[Cont] + Separator;
+    end;
+  end;
+end;
+
+class function TUtils.ArrayToStr(StrArray: System.TArray<System.string>; Starts: integer; Separator, StrFinal: string): string;
+var
+  Cont: integer;
+begin
+  Result := '';
+  for Cont := TUtils.Iff(Starts > Length(StrArray), 0, Starts) to Length(StrArray) - 1 do
   begin
     if Cont = Length(StrArray) - 1 then
     begin

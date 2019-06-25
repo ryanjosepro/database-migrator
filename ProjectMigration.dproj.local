@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <ProjectSortOrder AutoSort="0" SortType="0">
+	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Code"/>
     <File Path="Code\Arrays.pas"/>
     <File Path="Code\Configs.pas"/>

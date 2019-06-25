@@ -60,11 +60,10 @@ object WindowDatas: TWindowDatas
   object LblFileName: TLabel
     Left = 8
     Top = 8
-    Width = 105
+    Width = 88
     Height = 13
     Anchors = [akLeft, akTop, akRight]
     Caption = 'Arquivo Dataflex: '
-    ExplicitWidth = 88
   end
   object LblTotRows: TLabel
     Left = 8
@@ -124,6 +123,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActAlter
+    Anchors = [akBottom]
   end
   object BtnActCell: TSpeedButton
     Left = 392
@@ -131,6 +131,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActAddCell
+    Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGreen
     Font.Height = -11
@@ -144,6 +145,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActDelCell
+    Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -157,6 +159,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActAddRow
+    Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGreen
     Font.Height = -11
@@ -170,6 +173,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActDelRow
+    Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -183,6 +187,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActAddCol
+    Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clGreen
     Font.Height = -11
@@ -196,6 +201,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActDelCol
+    Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -11
@@ -209,6 +215,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActCancel
+    Anchors = [akBottom]
   end
   object BtnSave: TSpeedButton
     Left = 104
@@ -216,6 +223,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActSave
+    Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -229,6 +237,7 @@ object WindowDatas: TWindowDatas
     Width = 90
     Height = 22
     Action = ActSaveAs
+    Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -247,7 +256,6 @@ object WindowDatas: TWindowDatas
     RowCount = 2
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goThumbTracking]
     TabOrder = 0
-    ExplicitWidth = 937
   end
   object PanelSearch: TPanel
     Left = 8
@@ -256,7 +264,6 @@ object WindowDatas: TWindowDatas
     Height = 51
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
-    ExplicitWidth = 937
     DesignSize = (
       954
       51)
@@ -301,7 +308,7 @@ object WindowDatas: TWindowDatas
     Left = 904
     Top = 568
     Bitmap = {
-      494C01010300D800C00140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800C80140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -2441,6 +2448,7 @@ object WindowDatas: TWindowDatas
     end
     object ActAlter: TAction
       Caption = 'Alterar'
+      OnExecute = ActAlterExecute
     end
     object ActCancel: TAction
       Caption = 'Cancelar'

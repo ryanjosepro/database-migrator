@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.Buttons, Vcl.ExtCtrls,
-  ViewFields, Arrays, Configs, DataFlex;
+  ViewFields, Arrays, MyUtils, Configs, DataFlex;
 
 type
   TWindowDatas = class(TForm)
@@ -52,11 +52,12 @@ type
     procedure ActConfigFieldsExecute(Sender: TObject);
     procedure ActSelectExecute(Sender: TObject);
     procedure TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure ActAlterExecute(Sender: TObject);
 
   private
     procedure FillGrid;
     procedure CleanGrid;
-    procedure GridToData;
+    function GridToStrList: TStringList;
   end;
 
 var
@@ -118,13 +119,9 @@ begin
   end;
 end;
 
-procedure TWindowDatas.CleanGrid;
+procedure TWindowDatas.ActAlterExecute(Sender: TObject);
 begin
-  GridDatas.RowCount := 2;
-  GridDatas.ColCount := 2;
-  GridDatas.Rows[0].Clear;
-  GridDatas.Cols[0].Clear;
-  GridDatas.Cols[1].Clear;
+  GridDatas.Options := GridDatas.Options + [goEditing];
 end;
 
 //TO COMMENT
@@ -146,7 +143,7 @@ begin
 
   Rows := TStringList.Create;
   Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-  DataFlex := TDataFlex.Create(Rows);
+  DataFlex := TDataFlex.Create(Rows, ';');
   SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
   Datas := DataFlex.ToMatrix;
 
@@ -180,9 +177,24 @@ begin
   end;
 end;
 
-procedure TWindowDatas.GridToData;
+procedure TWindowDatas.CleanGrid;
 begin
+  GridDatas.RowCount := 2;
+  GridDatas.ColCount := 2;
+  GridDatas.Rows[0].Clear;
+  GridDatas.Cols[0].Clear;
+  GridDatas.Cols[1].Clear;
+end;
 
+function TWindowDatas.GridToStrList: TStringList;
+var
+  Cont: integer;
+begin
+  Result := TStringList.Create;
+  for Cont := 1 to GridDatas.RowCount - 1 do
+  begin
+    Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, ';', ''));
+  end;
 end;
 
 end.

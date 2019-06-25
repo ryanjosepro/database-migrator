@@ -204,7 +204,7 @@ begin
   Rows := TStringList.Create;
   Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
   //Passa as linhas data flex para a classe de tratamento
-  DataFlex := TDataFlex.Create(Rows);
+  DataFlex := TDataFlex.Create(Rows, ';');
   SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
   //Tranforma as linhas do arquivo em uma matriz com linhas e colunas
   Datas := DataFlex.ToMatrix;
