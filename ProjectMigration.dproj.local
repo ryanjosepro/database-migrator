@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-	<ProjectSortOrder AutoSort="0" SortType="0">
+  <ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Code"/>
     <File Path="Code\Arrays.pas"/>
     <File Path="Code\Configs.pas"/>
     <File Path="Code\DataFlex.pas"/>
-    <File Path="Code\Fields.pas"/>
     <File Path="Code\MyUtils.pas"/>
     <File Path="Connection"/>
     <File Path="Connection\ConnectionFactory.pas"/>
@@ -24,4 +23,7 @@
     <File Path="View\ViewMain.pas"/>
     <File Path="View\ViewMain.dfm"/>
   </ProjectSortOrder>
+  <Transactions>
+    <Transaction>2019/06/26 13:48:18.824,C:\Users\Denis Denon.PCX\Documents\Embarcadero\Studio\Projects\ProjectMigration\Code\Fields.pas=</Transaction>
+  </Transactions>
 </BorlandProject>

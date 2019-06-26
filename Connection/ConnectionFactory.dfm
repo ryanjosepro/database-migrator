@@ -25,7 +25,7 @@ object ConnFactory: TConnFactory
     Left = 24
     Top = 80
   end
-  object QueryTable: TFDQuery
+  object QueryFields: TFDQuery
     Connection = Conn
     Transaction = Trans
     FetchOptions.AssignedValues = [evRowsetSize, evRecordCountMode]

@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, System.Variants, Winapi.Windows, Winapi.Messages, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, shlObj,
-  Arrays, MyUtils, Configs, Fields, DAO;
+  Arrays, MyUtils, Configs, DAO;
 
 type
   TWindowFields = class(TForm)
@@ -100,7 +100,7 @@ begin
     try
       if TDAO.Count <> 0 then
       begin
-        LblTable.Caption := TDAO.Table;
+        LblTable.Caption := TConfigs.GetConfig('DB', 'Table');
         SetLength(Fields, TDAO.Count);
         Fields := TDAO.GetFieldsNames;
         SetLength(Types, TDAO.Count);
@@ -153,7 +153,7 @@ var
   Arq: TextFile;
   Cont: integer;
 begin
-  SaveFile.FileName := 'ConfigCampos' + TDAO.Table;
+  SaveFile.FileName := 'ConfigCampos' + TConfigs.GetConfig('DB', 'Table');
   if SaveFile.Execute then
   begin
     AssignFile(Arq, SaveFile.FileName);
@@ -185,7 +185,7 @@ begin
     begin
       Arq.LoadFromFile(OpenFile.FileName);
 
-      Rows := TFields.ExtractOrder(Arq);
+      Rows := TUtils.Extract(Arq, 0, '{$DEFAULTS$}');
       GridFields.Cols[3].Clear;
       GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
       for  Cont := 0 to TUtils.Iff(Rows.Count < GridFields.RowCount - 1, Rows.Count, GridFields.RowCount - 1) - 1 do
@@ -193,14 +193,13 @@ begin
         GridFields.Cells[3, Cont + 1] := Rows[Cont];
       end;
 
-      Rows := TFields.ExtractDefaults(Arq);
+      Rows := TUtils.Extract(Arq, '{$DEFAULTS$}', Arq.Count - 1);
       GridFields.Cols[4].Clear;
       GridFields.Cells[4, 0] := 'Valor Padrão';
       for  Cont := 0 to TUtils.Iff(Rows.Count < GridFields.RowCount - 1, Rows.Count, GridFields.RowCount - 1) - 1 do
       begin
         GridFields.Cells[4, Cont + 1] := Rows[Cont];
       end;
-
     end;
   finally
     FreeAndNil(Rows);
@@ -271,7 +270,7 @@ end;
 
 procedure TWindowFields.ActTruncFBExecute(Sender: TObject);
 begin
-  case MessageDlg('Deseja apagar todos os dados da tabela ' + TDAO.Table + '?', mtConfirmation, mbYesNo, 0, mbNo) of
+  case MessageDlg('Deseja apagar todos os dados da tabela ' + TConfigs.GetConfig('DB', 'Table') + '?', mtConfirmation, mbYesNo, 0, mbNo) of
   mrYes:
     TDAO.Truncate;
   end;

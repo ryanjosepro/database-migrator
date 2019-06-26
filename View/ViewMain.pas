@@ -66,15 +66,17 @@ implementation
 -To create variables, objects and components always in english;
 -To comment everything that you can;
 
--Forms Order -> ViewMain - ViewDatas - ViewConfigs - ViewFields - ViewDB;
+-Forms Order -> ViewMain - ViewConfigs - ViewDatas - ViewFields - ViewDB;
 
--Units Order -> Arrays - MyUtils - DataFlex - Configs - Fields - DAO - ConnectionFactory;
+-Units Order -> Arrays - MyUtils - Configs - DataFlex - DAO - ConnectionFactory;
 
 -Default Uses -> System.SysUtils, System.Classes, System.Types;
 
---> PROJECT IDEAS <--
+--> TO DO <--
 
 -To put a DataFlex file modify option on ViewDatas;
+-To improve DataFlex class;
+-To reduce codes on View units;
 }
 
 {$R *.dfm}

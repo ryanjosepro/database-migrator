@@ -11,18 +11,15 @@ type
   TDAO = class
   private
     class function Connection: TFDConnection;
-    class function QueryTable: TFDQuery;
+    class function QueryFields: TFDQuery;
     class function QuerySQL: TFDQuery;
-    class procedure Select;
+    class function Table: string;
 
+    class procedure Select;
 
   public
     class procedure GetParams(var UserName, Password, Database: string);
     class procedure SetParams(UserName, Password, Database: string);
-
-    class procedure TestConn;
-
-    class function Table: string;
 
     class procedure Insert(Datas: TStringArray; Order: TIntegerArray; Defaults: TStringArray);
 
@@ -31,12 +28,10 @@ type
     class function GetFieldsTypesNumber: TIntegerArray;
     class function GetFieldsNotNulls: TIntegerArray;
 
+    class procedure TestConn;
     class function Count: integer;
-
     class procedure Truncate;
-
     class procedure Commit;
-
     class procedure Rollback;
 
   end;
@@ -45,21 +40,39 @@ implementation
 
 { TDAO }
 
+//Retorna a conexão no DataModel
 class function TDAO.Connection: TFDConnection;
 begin
   Result := ConnFactory.Conn;
 end;
 
-class function TDAO.QueryTable: TFDQuery;
+//Retorna a Query dos campos firebird
+class function TDAO.QueryFields: TFDQuery;
 begin
-  Result := ConnFactory.QueryTable;
+  Result := ConnFactory.QueryFields
 end;
 
+//Retorna a Query para comandos específicos
 class function TDAO.QuerySQL: TFDQuery;
 begin
   Result := ConnFactory.QuerySQL;
 end;
 
+//Retorna a tabela definida nas configurações
+class function TDAO.Table: string;
+begin
+  Result := TConfigs.GetConfig('DB', 'Table');
+end;
+
+//Seleciona os campos na QueryFields
+class procedure TDAO.Select;
+begin
+  QueryFields.Close;
+  QueryFields.ParamByName('TABLE_NAME').AsString := Table;
+  QueryFields.Open;
+end;
+
+//Retorna os parâmetros do Connection por referência
 class procedure TDAO.GetParams(var UserName, Password, Database: string);
 begin
   UserName := Connection.Params.UserName;
@@ -67,6 +80,7 @@ begin
   Database := Connection.Params.Database;
 end;
 
+//Define os parâmetros do Connection
 class procedure TDAO.SetParams(UserName, Password, Database: string);
 begin
   Connection.Params.UserName := UserName;
@@ -74,17 +88,14 @@ begin
   Connection.Params.Database := Database;
 end;
 
+//Ativa o Connection para testar a conexão
 class procedure TDAO.TestConn;
 begin
   Connection.Connected := true;
 end;
 
-class function TDAO.Table: string;
-begin
-  Result := TConfigs.GetConfig('DB', 'Table');
-end;
-
 //TO COMMENT
+//Insere os dados no banco
 class procedure TDAO.Insert(Datas: TStringArray; Order: TIntegerArray; Defaults: TStringArray);
 var
   Cont: Integer;
@@ -139,6 +150,7 @@ begin
 end;
 
 //TO COMMENT
+//Retorna o nome dos campos
 class function TDAO.GetFieldsNames: TStringArray;
 var
   Cont: integer;
@@ -147,11 +159,11 @@ begin
   if Count <> 0 then
   begin
     SetLength(Result, Count);
-    QueryTable.First;
+    QueryFields.First;
     for Cont := 0 to Count - 1 do
     begin
-      Result[Cont] := QueryTable.FieldByName('FIELD_NAME').AsString;
-      QueryTable.Next;
+      Result[Cont] := QueryFields.FieldByName('FIELD_NAME').AsString;
+      QueryFields.Next;
     end;
   end
   else
@@ -162,6 +174,7 @@ begin
 end;
 
 //TO COMMENT
+//Retorna o tipo dos campos
 class function TDAO.GetFieldsTypes: TStringArray;
 var
   Cont: integer;
@@ -170,11 +183,11 @@ begin
   if Count <> 0 then
   begin
     SetLength(Result, Count);
-    QueryTable.First;
+    QueryFields.First;
     for Cont := 0 to Count - 1 do
     begin
-      Result[Cont] := QueryTable.FieldByName('FIELD_TYPE').AsString;
-      QueryTable.Next;
+      Result[Cont] := QueryFields.FieldByName('FIELD_TYPE').AsString;
+      QueryFields.Next;
     end;
   end
   else
@@ -185,6 +198,7 @@ begin
 end;
 
 //TO COMMENT
+//Retorna o tipo dos campos por numero
 class function TDAO.GetFieldsTypesNumber: TIntegerArray;
 var
   Cont: integer;
@@ -193,11 +207,11 @@ begin
   if Count <> 0 then
   begin
     SetLength(Result, Count);
-    QueryTable.First;
+    QueryFields.First;
     for Cont := 0 to Count - 1 do
     begin
-      Result[Cont] := QueryTable.FieldByName('FIELD_NUMBER').AsInteger;
-      QueryTable.Next;
+      Result[Cont] := QueryFields.FieldByName('FIELD_NUMBER').AsInteger;
+      QueryFields.Next;
     end;
   end
   else
@@ -208,6 +222,7 @@ begin
 end;
 
 //TO COMMENT
+//Retorna os campos Not Null
 class function TDAO.GetFieldsNotNulls: TIntegerArray;
 var
   Cont: integer;
@@ -216,11 +231,11 @@ begin
   if Count <> 0 then
   begin
     SetLength(Result, Count);
-    QueryTable.First;
+    QueryFields.First;
     for Cont := 0 to Count - 1 do
     begin
-      Result[Cont] := QueryTable.FieldByName('FIELD_NULL').AsInteger;
-      QueryTable.Next;
+      Result[Cont] := QueryFields.FieldByName('FIELD_NULL').AsInteger;
+      QueryFields.Next;
     end;
   end
   else
@@ -230,19 +245,14 @@ begin
   end;
 end;
 
-class procedure TDAO.Select;
-begin
-  QueryTable.Close;
-  QueryTable.ParamByName('TABLE_NAME').AsString := Table;
-  QueryTable.Open;
-end;
-
+//Retorna quantos campos há na QueryFields
 class function TDAO.Count: integer;
 begin
   Select;
-  Result := QueryTable.RowsAffected;
+  Result := QueryFields.RowsAffected;
 end;
 
+//Apaga todos os dados da tabela
 class procedure TDAO.Truncate;
 begin
   QuerySQL.SQL.Clear;
@@ -252,11 +262,13 @@ begin
   QuerySQL.SQL.Clear;
 end;
 
+//Aplica todas as alterações
 class procedure TDAO.Commit;
 begin
   Connection.Commit;
 end;
 
+//Defaz todas as alterações
 class procedure TDAO.Rollback;
 begin
   Connection.Rollback;

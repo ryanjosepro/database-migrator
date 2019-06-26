@@ -14,7 +14,7 @@ type
     Conn: TFDConnection;
     Trans: TFDTransaction;
     QuerySQL: TFDQuery;
-    QueryTable: TFDQuery;
+    QueryFields: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
 
   end;
