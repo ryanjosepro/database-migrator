@@ -107,7 +107,6 @@ begin
     begin
       Action := caNone;
     end;
-
   end
   else
   begin

@@ -53,10 +53,21 @@ type
     procedure ActSelectExecute(Sender: TObject);
     procedure TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ActAlterExecute(Sender: TObject);
+    procedure ActSaveAsExecute(Sender: TObject);
+    procedure ActCancelExecute(Sender: TObject);
+    procedure ActAddCellExecute(Sender: TObject);
+    procedure ActAddRowExecute(Sender: TObject);
+    procedure ActAddColExecute(Sender: TObject);
+    procedure ActDelCellExecute(Sender: TObject);
+    procedure ActDelRowExecute(Sender: TObject);
+    procedure ActDelColExecute(Sender: TObject);
+    procedure ActSaveExecute(Sender: TObject);
 
   private
     procedure FillGrid;
     procedure CleanGrid;
+    procedure EnableButtons;
+    procedure DisableButtons;
     function GridToStrList: TStringList;
   end;
 
@@ -75,6 +86,7 @@ begin
     LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
     ActOpenFile.ImageIndex := 2;
     BtnOpenFile.Action := ActOpenFile;
+    EnableButtons;
   end;
 end;
 
@@ -94,6 +106,7 @@ begin
     BtnOpenFile.Action := ActOpenFile;
     LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
     CleanGrid;
+    EnableButtons;
   end;
 end;
 
@@ -129,6 +142,60 @@ end;
 procedure TWindowDatas.ActAlterExecute(Sender: TObject);
 begin
   GridDatas.Options := GridDatas.Options + [goEditing];
+  ActAlter.Enabled := false;
+  ActSave.Enabled := true;
+  ActCancel.Enabled := true;
+end;
+
+procedure TWindowDatas.ActSaveExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TWindowDatas.ActSaveAsExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TWindowDatas.ActCancelExecute(Sender: TObject);
+begin
+  GridDatas.Options := GridDatas.Options - [goEditing];
+  ActCancel.Enabled := false;
+  ActSave.Enabled := false;
+  ActAlter.Enabled := true;
+  GridDatas.Row := 1;
+  GridDatas.Col := 1;
+  FillGrid;
+end;
+
+procedure TWindowDatas.ActAddCellExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TWindowDatas.ActDelCellExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TWindowDatas.ActAddRowExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TWindowDatas.ActDelRowExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TWindowDatas.ActAddColExecute(Sender: TObject);
+begin
+  //
+end;
+
+procedure TWindowDatas.ActDelColExecute(Sender: TObject);
+begin
+  //
 end;
 
 //Insere os dados do arquivo Dataflex na Grid
@@ -192,6 +259,28 @@ begin
   GridDatas.Rows[0].Clear;
   GridDatas.Cols[0].Clear;
   GridDatas.Cols[1].Clear;
+end;
+
+procedure TWindowDatas.EnableButtons;
+begin
+  ActSelect.Enabled := true;
+  ActAlter.Enabled := true;
+  ActSaveAs.Enabled := true;
+end;
+
+procedure TWindowDatas.DisableButtons;
+begin
+  ActSelect.Enabled := false;
+  ActAlter.Enabled := false;
+  ActSave.Enabled := false;
+  ActSaveAs.Enabled := false;
+  ActCancel.Enabled := false;
+  ActAddCell.Enabled := false;
+  ActDelCell.Enabled := false;
+  ActAddRow.Enabled := false;
+  ActDelRow.Enabled := false;
+  ActAddCol.Enabled := false;
+  ActDelCol.Enabled := false;
 end;
 
 //Retorna os dados da Grid em linhas numa StringList

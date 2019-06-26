@@ -124,6 +124,7 @@ object WindowDatas: TWindowDatas
     Height = 22
     Action = ActAlter
     Anchors = [akBottom]
+    Enabled = False
   end
   object BtnActCell: TSpeedButton
     Left = 392
@@ -238,6 +239,7 @@ object WindowDatas: TWindowDatas
     Height = 22
     Action = ActSaveAs
     Anchors = [akBottom]
+    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -274,6 +276,7 @@ object WindowDatas: TWindowDatas
       Height = 51
       Action = ActSelect
       Anchors = [akTop, akRight]
+      Enabled = False
       Flat = True
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -308,7 +311,7 @@ object WindowDatas: TWindowDatas
     Left = 904
     Top = 568
     Bitmap = {
-      494C01010300D800D00140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800D40140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -2450,40 +2453,49 @@ object WindowDatas: TWindowDatas
       Caption = 'Alterar'
       OnExecute = ActAlterExecute
     end
+    object ActSave: TAction
+      Caption = 'Salvar'
+      Enabled = False
+      OnExecute = ActSaveExecute
+    end
+    object ActSaveAs: TAction
+      Caption = 'Salvar como'
+      OnExecute = ActSaveAsExecute
+    end
     object ActCancel: TAction
       Caption = 'Cancelar'
       Enabled = False
+      OnExecute = ActCancelExecute
     end
     object ActAddCell: TAction
       Caption = 'Inserir C'#233'lula'
       Enabled = False
+      OnExecute = ActAddCellExecute
     end
     object ActAddRow: TAction
       Caption = 'Inserir Linha'
       Enabled = False
+      OnExecute = ActAddRowExecute
     end
     object ActAddCol: TAction
       Caption = 'Inserir Coluna'
       Enabled = False
+      OnExecute = ActAddColExecute
     end
     object ActDelCell: TAction
       Caption = 'Remover C'#233'lula'
       Enabled = False
+      OnExecute = ActDelCellExecute
     end
     object ActDelRow: TAction
       Caption = 'Remover Linha'
       Enabled = False
+      OnExecute = ActDelRowExecute
     end
     object ActDelCol: TAction
       Caption = 'Remover Coluna'
       Enabled = False
-    end
-    object ActSave: TAction
-      Caption = 'Salvar'
-      Enabled = False
-    end
-    object ActSaveAs: TAction
-      Caption = 'Salvar como'
+      OnExecute = ActDelColExecute
     end
   end
   object OpenFile: TFileOpenDialog
