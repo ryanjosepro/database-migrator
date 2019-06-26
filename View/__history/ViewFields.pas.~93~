@@ -170,7 +170,6 @@ begin
   end;
 end;
 
-//Coloca os titulos na Grid
 procedure TWindowFields.GridTitles;
 begin
   GridFields.Cells[0, 0] := 'Campo Firebird';
@@ -180,7 +179,6 @@ begin
   GridFields.Cells[4, 0] := 'Valor Padrão';
 end;
 
-//Insere os dados na tabela
 procedure TWindowFields.FillGrid;
 var
   Cont: integer;
@@ -218,14 +216,12 @@ begin
   end;
 end;
 
-//Limpas todos os campos da tabela
 procedure TWindowFields.CleanGrid;
 begin
   GridFields.RowCount := 2;
   GridFields.Rows[1].Clear;
 end;
 
-//Retorna a ordem de campos dataflex definida na Grid
 function TWindowFields.GetOrder: TIntegerArray;
 var
   Cont: integer;
@@ -245,7 +241,6 @@ begin
   end;
 end;
 
-//Retorna os defaults definidos na Grid
 function TWindowFields.GetDefauts: TStringArray;
 var
   Cont: integer;
@@ -265,7 +260,6 @@ begin
   end;
 end;
 
-//Verifica se os campos dataflex e os defaults estão vazios
 function TWindowFields.IsClean: boolean;
 var
   Cont: integer;
@@ -282,5 +276,6 @@ begin
   end;
   Result := Clean;
 end;
+
 
 end.

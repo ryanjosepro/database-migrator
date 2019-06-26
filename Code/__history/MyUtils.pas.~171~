@@ -65,7 +65,7 @@ begin
   end;
 end;
 
-//Transforma um array em uma string
+//Tranforma um array em uma string
 class function TUtils.ArrayToStr(StrArray: TStringArray; Starts: integer; Separator, StrFinal: string): string;
 var
   Cont: integer;
@@ -102,7 +102,6 @@ begin
   end;
 end;
 
-//Extrai uma parte de uma StringList
 class function TUtils.Extract(StrList: TStringList; Starts, Ends: integer): TStringList;
 var
   Cont: integer;

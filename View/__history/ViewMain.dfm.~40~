@@ -5,7 +5,7 @@ object WindowMain: TWindowMain
   Anchors = [akTop]
   Caption = 'Migrator'
   ClientHeight = 639
-  ClientWidth = 510
+  ClientWidth = 517
   Color = clBtnFace
   Constraints.MinHeight = 340
   Constraints.MinWidth = 520
@@ -56,7 +56,7 @@ object WindowMain: TWindowMain
   OnActivate = FormActivate
   OnClose = FormClose
   DesignSize = (
-    510
+    517
     639)
   PixelsPerInch = 96
   TextHeight = 13
@@ -74,7 +74,7 @@ object WindowMain: TWindowMain
     ParentFont = False
   end
   object LblTitle3: TLabel
-    Left = 374
+    Left = 381
     Top = 8
     Width = 67
     Height = 24
@@ -86,10 +86,9 @@ object WindowMain: TWindowMain
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ExplicitLeft = 381
   end
   object BtnMigrate: TSpeedButton
-    Left = 159
+    Left = 163
     Top = 8
     Width = 193
     Height = 49
@@ -636,7 +635,7 @@ object WindowMain: TWindowMain
     OnClick = ActOpenFileExecute
   end
   object BtnDatabase: TSpeedButton
-    Left = 382
+    Left = 389
     Top = 38
     Width = 48
     Height = 48
@@ -1170,7 +1169,7 @@ object WindowMain: TWindowMain
     ExplicitLeft = 395
   end
   object BtnFields: TSpeedButton
-    Left = 382
+    Left = 389
     Top = 101
     Width = 48
     Height = 48
@@ -2236,7 +2235,7 @@ object WindowMain: TWindowMain
     OnClick = ActDadosExecute
   end
   object BtnStop: TSpeedButton
-    Left = 207
+    Left = 211
     Top = 63
     Width = 97
     Height = 33
@@ -2251,7 +2250,7 @@ object WindowMain: TWindowMain
     ExplicitLeft = 424
   end
   object BtnConfigs: TSpeedButton
-    Left = 227
+    Left = 231
     Top = 119
     Width = 57
     Height = 50
@@ -2782,12 +2781,11 @@ object WindowMain: TWindowMain
     ParentShowHint = False
     ShowHint = True
     OnClick = ActConfigsExecute
-    ExplicitLeft = 231
   end
   object TxtLog: TMemo
     Left = 8
     Top = 175
-    Width = 494
+    Width = 501
     Height = 435
     TabStop = False
     Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2795,17 +2793,15 @@ object WindowMain: TWindowMain
     ScrollBars = ssBoth
     TabOrder = 0
     WordWrap = False
-    ExplicitWidth = 501
   end
   object ProgressBar: TProgressBar
     Left = 8
     Top = 613
-    Width = 495
+    Width = 502
     Height = 17
     Anchors = [akLeft, akRight, akBottom]
     Step = 1
     TabOrder = 1
-    ExplicitWidth = 502
   end
   object OpenFile: TFileOpenDialog
     FavoriteLinks = <>
@@ -2830,7 +2826,7 @@ object WindowMain: TWindowMain
     Left = 449
     Top = 544
     Bitmap = {
-      494C010106005C01E40140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010106005C01E00140004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF

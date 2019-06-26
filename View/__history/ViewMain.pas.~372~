@@ -295,7 +295,6 @@ begin
   end;
 end;
 
-//Tratamento de erros da migração
 procedure TMigration.Handle(Data: string; E: Exception);
 begin
   WindowMain.Log('ERRO NO DADO ' + Data + ' -> ' + E.ToString);

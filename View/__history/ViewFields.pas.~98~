@@ -265,7 +265,6 @@ begin
   end;
 end;
 
-//Verifica se os campos dataflex e os defaults estão vazios
 function TWindowFields.IsClean: boolean;
 var
   Cont: integer;
@@ -282,5 +281,6 @@ begin
   end;
   Result := Clean;
 end;
+
 
 end.

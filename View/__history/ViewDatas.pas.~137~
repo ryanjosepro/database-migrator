@@ -97,7 +97,7 @@ begin
   end;
 end;
 
-//Abre a configuração de campos
+//Abre a ViewFields
 procedure TWindowDatas.ActConfigFieldsExecute(Sender: TObject);
 begin
   WindowFields.Show;

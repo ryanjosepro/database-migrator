@@ -97,7 +97,7 @@ begin
   end;
 end;
 
-//Abre a configuração de campos
+//Abre a ViewFields
 procedure TWindowDatas.ActConfigFieldsExecute(Sender: TObject);
 begin
   WindowFields.Show;
@@ -131,7 +131,7 @@ begin
   GridDatas.Options := GridDatas.Options + [goEditing];
 end;
 
-//Insere os dados do arquivo Dataflex na Grid
+//
 procedure TWindowDatas.FillGrid;
 var
   Rows: TStringList;
@@ -184,7 +184,6 @@ begin
   end;
 end;
 
-//Limpa os dados da Grid
 procedure TWindowDatas.CleanGrid;
 begin
   GridDatas.RowCount := 2;
@@ -194,7 +193,6 @@ begin
   GridDatas.Cols[1].Clear;
 end;
 
-//Retorna os dados da Grid em linhas numa StringList
 function TWindowDatas.GridToStrList: TStringList;
 var
   Cont: integer;

@@ -73,7 +73,7 @@ begin
   end;
 end;
 
-//Busca o arquivo do banco de dados
+//Busca o arquivo
 procedure TWindowDB.ActDBFileExecute(Sender: TObject);
 begin
   if OpenFile.Execute then
@@ -82,14 +82,12 @@ begin
   end;
 end;
 
-//Descarta as alterações
 procedure TWindowDB.ActDiscardExecute(Sender: TObject);
 begin
   DidChange := false;
   Close;
 end;
 
-//Salva as alterações
 procedure TWindowDB.ActSaveExecute(Sender: TObject);
 begin
     TConfigs.SetDB(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
@@ -101,7 +99,6 @@ begin
     Close;
 end;
 
-//Testa a conexão
 procedure TWindowDB.ActTestConnExecute(Sender: TObject);
 var
   CurrUserName, CurrPassword, CurrDatabase: string;
@@ -121,13 +118,11 @@ begin
   end;
 end;
 
-//Quando alguma coisa é alterada
 procedure TWindowDB.EditsChange(Sender: TObject);
 begin
   DidChange := true;
 end;
 
-//Carrega as configurações definidas
 procedure TWindowDB.LoadConfigs;
 var
   UserName, Password, Database: string;

@@ -121,13 +121,12 @@ begin
   end;
 end;
 
-//Quando alguma coisa é alterada
+//
 procedure TWindowDB.EditsChange(Sender: TObject);
 begin
   DidChange := true;
 end;
 
-//Carrega as configurações definidas
 procedure TWindowDB.LoadConfigs;
 var
   UserName, Password, Database: string;

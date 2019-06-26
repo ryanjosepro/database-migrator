@@ -39,7 +39,7 @@ begin
   end;
 end;
 
-//Retorna o menor valor
+//Retorna o
 class function TUtils.IfLess(Value, Value2: integer): integer;
 begin
   if Value < Value2 then
@@ -52,7 +52,6 @@ begin
   end;
 end;
 
-//Retorna um substituto se o valor for vazio
 class function TUtils.IfEmpty(Value, Replace: string): string;
 begin
   if Value.Trim <> '' then
@@ -65,7 +64,6 @@ begin
   end;
 end;
 
-//Transforma um array em uma string
 class function TUtils.ArrayToStr(StrArray: TStringArray; Starts: integer; Separator, StrFinal: string): string;
 var
   Cont: integer;
@@ -102,7 +100,6 @@ begin
   end;
 end;
 
-//Extrai uma parte de uma StringList
 class function TUtils.Extract(StrList: TStringList; Starts, Ends: integer): TStringList;
 var
   Cont: integer;

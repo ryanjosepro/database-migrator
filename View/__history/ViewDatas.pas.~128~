@@ -97,13 +97,12 @@ begin
   end;
 end;
 
-//Abre a configuração de campos
+//Abre a ViewFields
 procedure TWindowDatas.ActConfigFieldsExecute(Sender: TObject);
 begin
   WindowFields.Show;
 end;
 
-//Verifica se há arquivo selecionado e chama o FillGrid
 procedure TWindowDatas.ActSelectExecute(Sender: TObject);
 begin
   if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
@@ -116,7 +115,6 @@ begin
   end;
 end;
 
-//Quando o enter é pressionado no TxtRowsLimit
 procedure TWindowDatas.TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
   if Key.ToString = '13' then
@@ -125,13 +123,11 @@ begin
   end;
 end;
 
-//Ativa o modo de edição da Grid
 procedure TWindowDatas.ActAlterExecute(Sender: TObject);
 begin
   GridDatas.Options := GridDatas.Options + [goEditing];
 end;
 
-//Insere os dados do arquivo Dataflex na Grid
 procedure TWindowDatas.FillGrid;
 var
   Rows: TStringList;
@@ -139,12 +135,6 @@ var
   Datas: TStringMatrix;
   ContRow, ContCol, TotRows: integer;
 begin
-  Rows := TStringList.Create;
-  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-  DataFlex := TDataFlex.Create(Rows, ';');
-  SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
-  Datas := DataFlex.ToMatrix;
-
   if Trim(TxtRowsLimit.Text) = '' then
   begin
     TotRows := 0;
@@ -153,6 +143,12 @@ begin
   begin
     TotRows := StrToInt(TxtRowsLimit.Text);
   end;
+
+  Rows := TStringList.Create;
+  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+  DataFlex := TDataFlex.Create(Rows, ';');
+  SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
+  Datas := DataFlex.ToMatrix;
 
   if (TotRows > DataFlex.GetRows) or (TotRows = 0) then
   begin
@@ -184,7 +180,6 @@ begin
   end;
 end;
 
-//Limpa os dados da Grid
 procedure TWindowDatas.CleanGrid;
 begin
   GridDatas.RowCount := 2;
@@ -194,7 +189,6 @@ begin
   GridDatas.Cols[1].Clear;
 end;
 
-//Retorna os dados da Grid em linhas numa StringList
 function TWindowDatas.GridToStrList: TStringList;
 var
   Cont: integer;

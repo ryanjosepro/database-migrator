@@ -43,14 +43,12 @@ implementation
 
 {$R *.dfm}
 
-//Quando a janela é aberta
 procedure TWindowConfigs.FormActivate(Sender: TObject);
 begin
   LoadConfigs;
   DidChange := false;
 end;
 
-//Quando a janela é fechada
 procedure TWindowConfigs.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if DidChange then
@@ -68,43 +66,6 @@ begin
   end;
 end;
 
-//Quando algo no GroupCommit é alterado
-procedure TWindowConfigs.GroupCommitClick(Sender: TObject);
-begin
-  DidChange := true;
-  if GroupCommit.ItemIndex = 0 then
-  begin
-    TxtCommit.Enabled := false;
-  end
-  else
-  begin
-    TxtCommit.Enabled := true;
-    TxtCommit.SetFocus;
-  end;
-end;
-
-//QUanddo algo no GroupLimit é alterado
-procedure TWindowConfigs.GroupLimitClick(Sender: TObject);
-begin
-  DidChange := true;
-  if GroupLimit.ItemIndex = 0 then
-  begin
-    TxtLimit.Enabled := false;
-  end
-  else
-  begin
-    TxtLimit.Enabled := true;
-    TxtLimit.SetFocus;
-  end;
-end;
-
-//Quando o CheckTruncFB é alterado
-procedure TWindowConfigs.CheckTruncFBClick(Sender: TObject);
-begin
-  DidChange := true;
-end;
-
-//Salva todas as configurações
 procedure TWindowConfigs.ActSaveExecute(Sender: TObject);
 var
   Commit, Limit, TruncFB: integer;
@@ -120,14 +81,11 @@ begin
   Close;
 end;
 
-//Descarta todas as configurações
-procedure TWindowConfigs.ActDiscardExecute(Sender: TObject);
+procedure TWindowConfigs.CheckTruncFBClick(Sender: TObject);
 begin
-  DidChange := false;
-  Close;
+  DidChange := true;
 end;
 
-//Carregas as configurações definidas
 procedure TWindowConfigs.LoadConfigs;
 var
   Commit, Limit, TruncFB: integer;
@@ -157,6 +115,40 @@ begin
   CheckTruncFB.Checked := (TruncFB = 1);
 
   PageConfigs.TabIndex := 0;
+end;
+
+procedure TWindowConfigs.ActDiscardExecute(Sender: TObject);
+begin
+  DidChange := false;
+  Close;
+end;
+
+procedure TWindowConfigs.GroupCommitClick(Sender: TObject);
+begin
+  DidChange := true;
+  if GroupCommit.ItemIndex = 0 then
+  begin
+    TxtCommit.Enabled := false;
+  end
+  else
+  begin
+    TxtCommit.Enabled := true;
+    TxtCommit.SetFocus;
+  end;
+end;
+
+procedure TWindowConfigs.GroupLimitClick(Sender: TObject);
+begin
+  DidChange := true;
+  if GroupLimit.ItemIndex = 0 then
+  begin
+    TxtLimit.Enabled := false;
+  end
+  else
+  begin
+    TxtLimit.Enabled := true;
+    TxtLimit.SetFocus;
+  end;
 end;
 
 end.

@@ -127,7 +127,6 @@ begin
   Close;
 end;
 
-//Carregas as configurações definidas
 procedure TWindowConfigs.LoadConfigs;
 var
   Commit, Limit, TruncFB: integer;

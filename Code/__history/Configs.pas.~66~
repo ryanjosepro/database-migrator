@@ -26,13 +26,11 @@ implementation
 
 { TConfigs }
 
-//Caminho das configurações
 class function TConfigs.Source: string;
 begin
   Result := ExtractFilePath(Application.ExeName) + 'Config\Config.ini';
 end;
 
-//Busca uma configuração específica
 class function TConfigs.GetConfig(const Section, Name: string): string;
 var
   Arq: TIniFile;
@@ -45,7 +43,6 @@ begin
   end;
 end;
 
-//Define uma configuração específica
 class procedure TConfigs.SetConfig(const Section, Name, Value: string);
 var
   Arq: TIniFile;
@@ -58,7 +55,8 @@ begin
   end;
 end;
 
-//Configurações da seção GENERAL
+{ TGeneral }
+
 class procedure TConfigs.GetGeneral(var Commit, Limit, TruncFB: integer);
 begin
   Commit := TUtils.IfEmpty(TConfigs.GetConfig('GENERAL', 'Commit'), '-1').ToInteger;
@@ -73,7 +71,8 @@ begin
   TConfigs.SetConfig('GENERAL', 'TruncFB', TruncFB.ToString);
 end;
 
-//Configurãções da seção DB
+{ TDB }
+
 class procedure TConfigs.GetDB(var UserName, Password, Database: string);
 begin
   UserName := TConfigs.GetConfig('DB', 'UserName');

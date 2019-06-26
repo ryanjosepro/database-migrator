@@ -68,7 +68,6 @@ begin
   end;
 end;
 
-//Quando algo no GroupCommit é alterado
 procedure TWindowConfigs.GroupCommitClick(Sender: TObject);
 begin
   DidChange := true;
@@ -83,7 +82,6 @@ begin
   end;
 end;
 
-//QUanddo algo no GroupLimit é alterado
 procedure TWindowConfigs.GroupLimitClick(Sender: TObject);
 begin
   DidChange := true;
@@ -98,13 +96,11 @@ begin
   end;
 end;
 
-//Quando o CheckTruncFB é alterado
 procedure TWindowConfigs.CheckTruncFBClick(Sender: TObject);
 begin
   DidChange := true;
 end;
 
-//Salva todas as configurações
 procedure TWindowConfigs.ActSaveExecute(Sender: TObject);
 var
   Commit, Limit, TruncFB: integer;
@@ -120,14 +116,12 @@ begin
   Close;
 end;
 
-//Descarta todas as configurações
 procedure TWindowConfigs.ActDiscardExecute(Sender: TObject);
 begin
   DidChange := false;
   Close;
 end;
 
-//Carregas as configurações definidas
 procedure TWindowConfigs.LoadConfigs;
 var
   Commit, Limit, TruncFB: integer;

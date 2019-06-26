@@ -42,13 +42,12 @@ begin
   Result := self.Rows;
 end;
 
-//Retorna a quantidade de colunas
+//Retorna a quanti
 function TDataFlex.GetCols: integer;
 begin
   Result := self.Cols;
 end;
 
-//Retorna uma matrix com os dados
 function TDataFlex.ToMatrix: TStringMatrix;
 var
   Cont: integer;
@@ -60,7 +59,6 @@ begin
   end;
 end;
 
-//Passa uma string para array baseando-se no separador
 function TDataFlex.Cut(Text: string): TStringArray;
 var
   StrArray: TStringDynArray;

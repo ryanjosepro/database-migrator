@@ -48,32 +48,6 @@ implementation
 
 {$R *.dfm}
 
-//Quando a janela é aberta
-procedure TWindowDB.FormActivate(Sender: TObject);
-begin
-  LoadConfigs;
-  DidChange := false;
-end;
-
-//Quando a janela é fechada
-procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  if DidChange then
-  begin
-    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel, 0, mbCancel) of
-    mrYes:
-      ActSaveExecute(BtnSave);
-    mrCancel:
-      Action := TCloseAction.caNone;
-    end;
-  end
-  else
-  begin
-    DidChange := false;
-  end;
-end;
-
-//Busca o arquivo do banco de dados
 procedure TWindowDB.ActDBFileExecute(Sender: TObject);
 begin
   if OpenFile.Execute then
@@ -82,14 +56,12 @@ begin
   end;
 end;
 
-//Descarta as alterações
 procedure TWindowDB.ActDiscardExecute(Sender: TObject);
 begin
   DidChange := false;
   Close;
 end;
 
-//Salva as alterações
 procedure TWindowDB.ActSaveExecute(Sender: TObject);
 begin
     TConfigs.SetDB(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
@@ -101,7 +73,6 @@ begin
     Close;
 end;
 
-//Testa a conexão
 procedure TWindowDB.ActTestConnExecute(Sender: TObject);
 var
   CurrUserName, CurrPassword, CurrDatabase: string;
@@ -121,13 +92,34 @@ begin
   end;
 end;
 
-//Quando alguma coisa é alterada
 procedure TWindowDB.EditsChange(Sender: TObject);
 begin
   DidChange := true;
 end;
 
-//Carrega as configurações definidas
+procedure TWindowDB.FormActivate(Sender: TObject);
+begin
+  LoadConfigs;
+  DidChange := false;
+end;
+
+procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if DidChange then
+  begin
+    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel, 0, mbCancel) of
+    mrYes:
+      ActSaveExecute(BtnSave);
+    mrCancel:
+      Action := TCloseAction.caNone;
+    end;
+  end
+  else
+  begin
+    DidChange := false;
+  end;
+end;
+
 procedure TWindowDB.LoadConfigs;
 var
   UserName, Password, Database: string;

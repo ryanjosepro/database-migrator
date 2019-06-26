@@ -94,6 +94,7 @@ begin
   Connection.Connected := true;
 end;
 
+//TO COMMENT
 //Insere os dados no banco
 class procedure TDAO.Insert(Datas: TStringArray; Order: TIntegerArray; Defaults: TStringArray);
 var
@@ -148,6 +149,7 @@ begin
   QuerySQL.Post;
 end;
 
+//TO COMMENT
 //Retorna o nome dos campos
 class function TDAO.GetFieldsNames: TStringArray;
 var
@@ -171,6 +173,7 @@ begin
   end;
 end;
 
+//TO COMMENT
 //Retorna o tipo dos campos
 class function TDAO.GetFieldsTypes: TStringArray;
 var
@@ -194,6 +197,7 @@ begin
   end;
 end;
 
+//TO COMMENT
 //Retorna o tipo dos campos por numero
 class function TDAO.GetFieldsTypesNumber: TIntegerArray;
 var
@@ -217,6 +221,7 @@ begin
   end;
 end;
 
+//TO COMMENT
 //Retorna os campos Not Null
 class function TDAO.GetFieldsNotNulls: TIntegerArray;
 var
