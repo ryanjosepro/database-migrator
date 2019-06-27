@@ -6,6 +6,8 @@ object WindowDatas: TWindowDatas
   ClientHeight = 648
   ClientWidth = 970
   Color = clBtnFace
+  Constraints.MinHeight = 300
+  Constraints.MinWidth = 920
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -124,7 +126,6 @@ object WindowDatas: TWindowDatas
     Height = 22
     Action = ActAlter
     Anchors = [akBottom]
-    Enabled = False
   end
   object BtnActCell: TSpeedButton
     Left = 392
@@ -239,7 +240,6 @@ object WindowDatas: TWindowDatas
     Height = 22
     Action = ActSaveAs
     Anchors = [akBottom]
-    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -258,6 +258,7 @@ object WindowDatas: TWindowDatas
     RowCount = 2
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goThumbTracking]
     TabOrder = 0
+    OnSetEditText = GridDatasSetEditText
   end
   object PanelSearch: TPanel
     Left = 8
@@ -276,7 +277,6 @@ object WindowDatas: TWindowDatas
       Height = 51
       Action = ActSelect
       Anchors = [akTop, akRight]
-      Enabled = False
       Flat = True
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -311,7 +311,7 @@ object WindowDatas: TWindowDatas
     Left = 904
     Top = 568
     Bitmap = {
-      494C01010300D800D80140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800E00140004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -2446,11 +2446,13 @@ object WindowDatas: TWindowDatas
     end
     object ActSelect: TAction
       Caption = 'Selecionar'
+      Enabled = False
       Hint = 'Mostrar os dados na tabela'
       OnExecute = ActSelectExecute
     end
     object ActAlter: TAction
       Caption = 'Alterar'
+      Enabled = False
       OnExecute = ActAlterExecute
     end
     object ActSave: TAction
@@ -2460,6 +2462,7 @@ object WindowDatas: TWindowDatas
     end
     object ActSaveAs: TAction
       Caption = 'Salvar como'
+      Enabled = False
       OnExecute = ActSaveAsExecute
     end
     object ActCancel: TAction

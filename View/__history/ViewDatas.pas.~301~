@@ -65,12 +65,13 @@ type
     procedure GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
 
   private
-    procedure DisableMode;
-    procedure NormalMode;
-    procedure AlterMode;
     procedure FillGrid;
     procedure CleanGrid;
     function GridToStrList: TStringList;
+    procedure DisableMode;
+    procedure NormalMode;
+    procedure AlterMode;
+    procedure UpdateGrid;
   end;
 
 var
@@ -90,6 +91,11 @@ begin
     ActOpenFile.ImageIndex := 2;
     BtnOpenFile.Action := ActOpenFile;
     ActSelect.Enabled := true;
+    NormalMode;
+  end
+  else
+  begin
+    DisableMode;
   end;
 end;
 
@@ -100,10 +106,13 @@ begin
   begin
     case TMyDialogs.YesNoCancel('Deseja salvar as alterações?') of
     mrYes:
-
+      ActSaveExecute(BtnSave);
+    mrNo:
+      ActCancelExecute(BtnCancel);
+    mrCancel:
+      Action := caNone;
     end;
   end;
-  WindowFields.Close;
 end;
 
 //Abre o arquivo Dataflex
@@ -117,13 +126,14 @@ begin
     LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
     CleanGrid;
     ActSelect.Enabled := true;
+    DisableMode;
   end;
 end;
 
 //Abre a configuração de campos
 procedure TWindowDatas.ActConfigFieldsExecute(Sender: TObject);
 begin
-  WindowFields.Show;
+  WindowFields.ShowModal;
 end;
 
 //Verifica se há arquivo selecionado e chama o FillGrid
@@ -158,7 +168,6 @@ end;
 //Ativa o modo de edição da Grid
 procedure TWindowDatas.ActAlterExecute(Sender: TObject);
 begin
-  GridDatas.Options := GridDatas.Options + [goEditing];
   AlterMode;
 end;
 
@@ -179,9 +188,8 @@ end;
 //Cancela as alterações
 procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
-  GridDatas.Options := GridDatas.Options - [goEditing];
-  NormalMode;
 
+  NormalMode;
   if DidChange then
   begin
     DidChange := false;
@@ -189,33 +197,37 @@ begin
   end;
 end;
 
-//Adiciona uma nova célula na tabela
+//Adiciona uma nova célula na Grid
 procedure TWindowDatas.ActAddCellExecute(Sender: TObject);
 begin
   //
 end;
 
-//Remove a célula selecionada
+//Remove a célula selecionada na Grid
 procedure TWindowDatas.ActDelCellExecute(Sender: TObject);
 begin
   //
 end;
 
+//Adiona uma nova linha na Grid
 procedure TWindowDatas.ActAddRowExecute(Sender: TObject);
 begin
   //
 end;
 
+//Remove a linha selecionada na Grid
 procedure TWindowDatas.ActDelRowExecute(Sender: TObject);
 begin
   //
 end;
 
+//Adiciona uma nova coluna na Grid
 procedure TWindowDatas.ActAddColExecute(Sender: TObject);
 begin
   //
 end;
 
+//Remove a coluna selecionada na Grid
 procedure TWindowDatas.ActDelColExecute(Sender: TObject);
 begin
   //
@@ -296,6 +308,7 @@ begin
   end;
 end;
 
+//Modo Buttons desabilitados
 procedure TWindowDatas.DisableMode;
 begin
   ActAlter.Enabled := false;
@@ -308,8 +321,10 @@ begin
   ActDelRow.Enabled := false;
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
+  GridDatas.Options := GridDatas.Options - [goEditing];
 end;
 
+//Modo Buttons normais
 procedure TWindowDatas.NormalMode;
 begin
   ActAlter.Enabled := true;
@@ -322,8 +337,10 @@ begin
   ActDelRow.Enabled := false;
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
+  GridDatas.Options := GridDatas.Options - [goEditing];
 end;
 
+//Modo Buttons em alteração
 procedure TWindowDatas.AlterMode;
 begin
   ActAlter.Enabled := false;
@@ -336,6 +353,13 @@ begin
   ActDelRow.Enabled := true;
   ActAddCol.Enabled := true;
   ActDelCol.Enabled := true;
+  GridDatas.Options := GridDatas.Options + [goEditing];
+end;
+
+procedure TWindowDatas.UpdateGrid;
+begin
+  GridDatas.Row := GridDatas.RowCount - 1;
+  GridDatas.Col := GridDatas.ColCount - 1;
 end;
 
 end.
