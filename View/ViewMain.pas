@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.ExtDlgs, Vcl.ComCtrls,
-  ViewDB, ViewFields, ViewDatas, ViewConfigs, Arrays, Configs, MyUtils, DataFlex, DAO;
+  ViewDB, ViewFields, ViewDatas, ViewConfigs, Arrays, MyDialogs, Configs, MyUtils, DataFlex, DAO;
 
 type
   TWindowMain = class(TForm)
@@ -68,7 +68,7 @@ implementation
 
 -Forms Order -> ViewMain - ViewConfigs - ViewDatas - ViewFields - ViewDB;
 
--Units Order -> Arrays - MyUtils - Configs - DataFlex - DAO - ConnectionFactory;
+-Units Order -> Arrays - MyUtils - MyDialogs - Configs - DataFlex - DAO - ConnectionFactory;
 
 -Default Uses -> System.SysUtils, System.Classes, System.Types;
 
@@ -95,7 +95,7 @@ var
 begin
   if MigrationEnabled then
   begin
-    Answer := MessageDlg('Deseja cancelar a migração?', mtWarning, mbYesNo, 0, mbNo);
+    Answer := TMyDialogs.YesNo('Deseja cancelar a migração?');
 
     if Answer = mrYes then
     begin

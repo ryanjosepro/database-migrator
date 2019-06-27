@@ -12,7 +12,8 @@ uses
   Configs in 'Code\Configs.pas',
   DataFlex in 'Code\DataFlex.pas',
   Arrays in 'Code\Arrays.pas',
-  ViewDatas in 'View\ViewDatas.pas' {WindowDatas};
+  ViewDatas in 'View\ViewDatas.pas' {WindowDatas},
+  MyDialogs in 'Code\MyDialogs.pas';
 
 {$R *.res}
 

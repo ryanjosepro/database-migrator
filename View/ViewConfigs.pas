@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls,
   Vcl.Buttons, System.Actions, Vcl.ActnList,
-  MyUtils, Configs;
+  MyUtils, MyDialogs, Configs;
 
 type
   TWindowConfigs = class(TForm)
@@ -55,7 +55,7 @@ procedure TWindowConfigs.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if DidChange then
   begin
-    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel, 0, mbCancel) of
+    case TMyDialogs.YesNoCancel('Deseja salvar as alterações?') of
     mrYes:
       ActSaveExecute(BtnSave);
     mrCancel:

@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms,Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons,
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList,
-  Configs, DAO;
+  MyDialogs, Configs, DAO;
 
 type
   TWindowDB = class(TForm)
@@ -60,7 +60,7 @@ procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if DidChange then
   begin
-    case MessageDlg('Deseja salvar as configurações?', mtConfirmation, mbYesNoCancel, 0, mbCancel) of
+    case TMyDialogs.YesNoCancel('Deseja salvar as alterações?') of
     mrYes:
       ActSaveExecute(BtnSave);
     mrCancel:

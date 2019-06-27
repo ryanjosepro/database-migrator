@@ -1,0 +1,23 @@
+unit MyDialogs;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Types, Vcl.Dialogs;
+
+type
+  TMyDialogs = class
+  public
+    function YesNoCancel(Msg: string): integer;
+  end;
+
+implementation
+
+{ TMyDialogs }
+
+function TMyDialogs.YesNoCancel(Msg: string): integer;
+begin
+  MessageDlg(Msg, mtConfirmation, mbYesNoCancel, 0, mbCancel);
+end;
+
+end.
