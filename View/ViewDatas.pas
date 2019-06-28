@@ -46,6 +46,8 @@ type
     ActSave: TAction;
     ActSaveAs: TAction;
     BtnSaveAs: TSpeedButton;
+    SaveFile: TFileSaveDialog;
+    TxtFileName: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -69,9 +71,13 @@ type
     procedure CleanGrid;
     function GridToStrList: TStringList;
     procedure DisableMode;
+    procedure SelectMode;
     procedure NormalMode;
     procedure AlterMode;
     procedure UpdateGrid;
+    procedure Mudou;
+    procedure Done;
+
   end;
 
 var
@@ -84,20 +90,28 @@ implementation
 
 //Quando a janela é aberta
 procedure TWindowDatas.FormActivate(Sender: TObject);
+var
+  FilePath: string;
 begin
-  if TConfigs.GetConfig('TEMP', 'FilePath').Trim <> '' then
+  FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
+  if FilePath <> '' then
   begin
-    LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
-    ActOpenFile.ImageIndex := 2;
-    BtnOpenFile.Action := ActOpenFile;
-    ActSelect.Enabled := true;
-    NormalMode;
-    UpdateGrid;
+    if FilePath <> TxtFileName.Caption then
+    begin
+      CleanGrid;
+      SelectMode;
+    end
+    else
+    begin
+      NormalMode;
+      UpdateGrid;
+    end;
   end
   else
   begin
     DisableMode;
   end;
+  Done;
 end;
 
 //Quando a janela é fechada
@@ -122,12 +136,8 @@ begin
   if OpenFile.Execute then
   begin
     TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
-    ActOpenFile.ImageIndex := 2;
-    BtnOpenFile.Action := ActOpenFile;
-    LblFileName.Caption := 'Arquivo Dataflex: ' + TConfigs.GetConfig('TEMP', 'FilePath');
+    SelectMode;
     CleanGrid;
-    ActSelect.Enabled := true;
-    DisableMode;
   end;
 end;
 
@@ -137,18 +147,13 @@ begin
   WindowFields.ShowModal;
 end;
 
-//Verifica se há arquivo selecionado e chama o FillGrid
+//Joga os dados Dataflex na tabela
 procedure TWindowDatas.ActSelectExecute(Sender: TObject);
 begin
-  if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
-  begin
-    ShowMessage('Selecione um arquivo!');
-  end
-  else
-  begin
-    FillGrid;
-    NormalMode;
-  end;
+  UpdateGrid;
+  FillGrid;
+  NormalMode;
+  Done;
 end;
 
 //Quando o enter é pressionado no TxtRowsLimit
@@ -163,8 +168,7 @@ end;
 //Quando uma Cell da Grid é editada
 procedure TWindowDatas.GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
 begin
-  DidChange := true;;
-  ActSave.Enabled := true;
+  Mudou;
 end;
 
 //Ativa o modo de edição da Grid
@@ -177,25 +181,30 @@ end;
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
 begin
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-  DidChange := false;
+  UpdateGrid;
   NormalMode;
+  Done;
 end;
 
 //Salva as alterações feitas em um novo arquivo
 procedure TWindowDatas.ActSaveAsExecute(Sender: TObject);
 begin
-  //
+  SaveFile.FileName := 'NewFile';
+  if SaveFile.Execute then
+  begin
+    GridToStrList.SaveToFile(SaveFile.FileName);
+  end;
 end;
 
 //Cancela as alterações
 procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
   NormalMode;
-  if DidChange then
+  if DidChange = true then
   begin
-    DidChange := false;
-    FillGrid;
     UpdateGrid;
+    FillGrid;
+    Done;
   end;
 end;
 
@@ -313,6 +322,27 @@ end;
 //Modo Buttons desabilitados
 procedure TWindowDatas.DisableMode;
 begin
+  ActSelect.Enabled := false;
+  ActAlter.Enabled := false;
+  ActSave.Enabled := false;
+  ActSaveAs.Enabled := false;
+  ActCancel.Enabled := false;
+  ActAddCell.Enabled := false;
+  ActDelCell.Enabled := false;
+  ActAddRow.Enabled := false;
+  ActDelRow.Enabled := false;
+  ActAddCol.Enabled := false;
+  ActDelCol.Enabled := false;
+  GridDatas.Options := GridDatas.Options - [goEditing];
+end;
+
+//Modo Button Select ativado
+procedure TWindowDatas.SelectMode;
+begin
+  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
+  ActOpenFile.ImageIndex := 2;
+  BtnOpenFile.Action := ActOpenFile;
+  ActSelect.Enabled := true;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
   ActSaveAs.Enabled := false;
@@ -329,6 +359,10 @@ end;
 //Modo Buttons normais
 procedure TWindowDatas.NormalMode;
 begin
+  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
+  ActOpenFile.ImageIndex := 2;
+  BtnOpenFile.Action := ActOpenFile;
+  ActSelect.Enabled := true;
   ActAlter.Enabled := true;
   ActSave.Enabled := false;
   ActSaveAs.Enabled := true;
@@ -345,6 +379,10 @@ end;
 //Modo Buttons em alteração
 procedure TWindowDatas.AlterMode;
 begin
+  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
+  ActOpenFile.ImageIndex := 2;
+  BtnOpenFile.Action := ActOpenFile;
+  ActSelect.Enabled := true;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
   ActSaveAs.Enabled := true;
@@ -366,6 +404,20 @@ begin
   GridDatas.Row := 1;
   GridDatas.Col := 1;
   GridDatas.Refresh;
+end;
+
+//Quando a Grid é editada
+procedure TWindowDatas.Mudou;
+begin
+  DidChange := true;
+  ActSave.Enabled := true;
+end;
+
+//Quando as alterãções são salvas ou descartadas
+procedure TWindowDatas.Done;
+begin
+  DidChange := false;
+  ActSave.Enabled := false;
 end;
 
 end.

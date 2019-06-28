@@ -75,7 +75,7 @@ var
   Arq: TextFile;
   Cont: integer;
 begin
-  SaveFile.FileName := 'ConfigCampos' + TConfigs.GetConfig('DB', 'Table');
+  SaveFile.FileName := 'Campos' + TConfigs.GetConfig('DB', 'Table');
   if SaveFile.Execute then
   begin
     AssignFile(Arq, SaveFile.FileName);

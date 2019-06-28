@@ -11,7 +11,7 @@ uses
 type
   TWindowMain = class(TForm)
     LblTitle1: TLabel;
-    LblTitle3: TLabel;
+    LblTitle2: TLabel;
     TxtLog: TMemo;
     BtnMigrate: TSpeedButton;
     BtnOpenFile: TSpeedButton;
