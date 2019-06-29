@@ -74,18 +74,25 @@ implementation
 
 --> TO DO <--
 
--To put a DataFlex file modify option on ViewDatas;
 -To improve DataFlex class;
 -To reduce codes on View units;
+-To create a error handling on ViewConfigs;
+
+--> DOING <--
+
+-To put a DataFlex file modify option on ViewDatas;
 }
 
 {$R *.dfm}
 
 //Quando o programa inicia
 procedure TWindowMain.FormActivate(Sender: TObject);
+var
+  Cont: integer;
 begin
   TConfigs.SetConfig('TEMP', 'FilePath', '');
   WindowState := TUtils.Iff(TConfigs.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);
+
 end;
 
 //Quando o programa é fechado

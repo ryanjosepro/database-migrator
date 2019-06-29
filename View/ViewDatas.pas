@@ -70,6 +70,7 @@ type
     procedure FillGrid;
     procedure CleanGrid;
     function GridToStrList: TStringList;
+    function GridIsClean: boolean;
     procedure DisableMode;
     procedure SelectMode;
     procedure NormalMode;
@@ -103,8 +104,15 @@ begin
     end
     else
     begin
-      NormalMode;
-      UpdateGrid;
+      if GridIsClean then
+      begin
+        SelectMode;
+      end
+      else
+      begin
+        NormalMode;
+        UpdateGrid;
+      end;
     end;
   end
   else
@@ -150,10 +158,14 @@ end;
 //Joga os dados Dataflex na tabela
 procedure TWindowDatas.ActSelectExecute(Sender: TObject);
 begin
-  UpdateGrid;
-  FillGrid;
-  NormalMode;
-  Done;
+  try
+    UpdateGrid;
+    FillGrid;
+    NormalMode;
+    Done;
+  Except on E: Exception do
+    ShowMessage('Arquivo Inválido: ' + E.ToString);
+  end;
 end;
 
 //Quando o enter é pressionado no TxtRowsLimit
@@ -181,7 +193,6 @@ end;
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
 begin
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-  UpdateGrid;
   NormalMode;
   Done;
 end;
@@ -189,7 +200,7 @@ end;
 //Salva as alterações feitas em um novo arquivo
 procedure TWindowDatas.ActSaveAsExecute(Sender: TObject);
 begin
-  SaveFile.FileName := 'NewFile';
+  SaveFile.FileName := 'NovoDataflex';
   if SaveFile.Execute then
   begin
     GridToStrList.SaveToFile(SaveFile.FileName);
@@ -202,16 +213,26 @@ begin
   NormalMode;
   if DidChange = true then
   begin
-    UpdateGrid;
     FillGrid;
     Done;
   end;
+  UpdateGrid;
 end;
 
 //Adiciona uma nova célula na Grid
 procedure TWindowDatas.ActAddCellExecute(Sender: TObject);
+var
+  Row, Col, Cont: integer;
 begin
-  //
+  Row := GridDatas.Row;
+  Col := GridDatas.Col;
+
+  for Cont := -(GridDatas.ColCount-1) to -Col - 1 do
+  begin
+    GridDatas.Cells[-Cont, Row] := GridDatas.Cells[(-Cont)-1, Row];
+  end;
+
+  GridDatas.Cells[Col, Row] := '';
 end;
 
 //Remove a célula selecionada na Grid
@@ -319,9 +340,15 @@ begin
   end;
 end;
 
+function TWindowDatas.GridIsClean: boolean;
+begin
+  Result := GridDatas.Cells[0, 1].IsEmpty and GridDatas.Cells[1, 0].IsEmpty and GridDatas.Cells[1, 1].IsEmpty;
+end;
+
 //Modo Buttons desabilitados
 procedure TWindowDatas.DisableMode;
 begin
+  TxtRowsLimit.Enabled := false;
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -339,6 +366,7 @@ end;
 //Modo Button Select ativado
 procedure TWindowDatas.SelectMode;
 begin
+  TxtRowsLimit.Enabled := true;
   TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
   ActOpenFile.ImageIndex := 2;
   BtnOpenFile.Action := ActOpenFile;
@@ -359,6 +387,7 @@ end;
 //Modo Buttons normais
 procedure TWindowDatas.NormalMode;
 begin
+  TxtRowsLimit.Enabled := true;
   TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
   ActOpenFile.ImageIndex := 2;
   BtnOpenFile.Action := ActOpenFile;
@@ -379,6 +408,7 @@ end;
 //Modo Buttons em alteração
 procedure TWindowDatas.AlterMode;
 begin
+  TxtRowsLimit.Enabled := true;
   TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
   ActOpenFile.ImageIndex := 2;
   BtnOpenFile.Action := ActOpenFile;
