@@ -3569,8 +3569,10 @@ object WindowDatas: TWindowDatas
     ColCount = 2
     FixedColor = clBtnShadow
     RowCount = 2
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSizing, goColSizing, goThumbTracking]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goThumbTracking]
     TabOrder = 0
+    Touch.ParentTabletOptions = False
+    Touch.TabletOptions = [toPressAndHold]
     OnSetEditText = GridDatasSetEditText
   end
   object PanelSearch: TPanel
@@ -3624,7 +3626,7 @@ object WindowDatas: TWindowDatas
     Left = 904
     Top = 568
     Bitmap = {
-      494C01010300D800080240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800200240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF

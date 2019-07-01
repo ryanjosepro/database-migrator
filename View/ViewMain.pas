@@ -27,21 +27,29 @@ type
     ActOpenFile: TAction;
     ActConfigDB: TAction;
     ActConfigFields: TAction;
-    ActDados: TAction;
+    ActDatas: TAction;
     ActConfigs: TAction;
     ActMigrate: TAction;
     ActStop: TAction;
+    BtnPause: TSpeedButton;
+    ActPause: TAction;
+    ActContinue: TAction;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
-    procedure ActDadosExecute(Sender: TObject);
+    procedure ActDatasExecute(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActConfigsExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure ActMigrateExecute(Sender: TObject);
     procedure ActStopExecute(Sender: TObject);
+    procedure ActPauseExecute(Sender: TObject);
+    procedure ActContinueExecute(Sender: TObject);
   private
     procedure Log(Msg: string);
+    procedure NormalMode;
+    procedure MigrationMode;
+    procedure PausedMode;
   end;
 
   TMigration = class(TThread)
@@ -56,6 +64,7 @@ type
 var
   WindowMain: TWindowMain;
   MigrationEnabled: boolean = false;
+  MigrationPaused: boolean = false;
 
 implementation
 
@@ -77,10 +86,11 @@ implementation
 -To improve DataFlex class;
 -To reduce codes on View units;
 -To create a error handling on ViewConfigs;
+-To add a option to create a table on migration (By Danilo);
 
 --> DOING <--
 
--To put a DataFlex file modify option on ViewDatas;
+-To put a DataFlex file modify options on ViewDatas;
 }
 
 {$R *.dfm}
@@ -92,7 +102,6 @@ var
 begin
   TConfigs.SetConfig('TEMP', 'FilePath', '');
   WindowState := TUtils.Iff(TConfigs.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);
-
 end;
 
 //Quando o programa é fechado
@@ -107,8 +116,12 @@ begin
     if Answer = mrYes then
     begin
       MigrationEnabled := false;
-      TConfigs.SetConfig('TEMP', 'FilePath', '');
-      TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
+      try
+        TConfigs.SetConfig('TEMP', 'FilePath', '');
+        TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
+      Except
+        Action := TCloseAction.caFree;
+      end;
     end
     else if Answer = mrNo then
     begin
@@ -117,8 +130,12 @@ begin
   end
   else
   begin
-    TConfigs.SetConfig('TEMP', 'FilePath', '');
-    TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
+    try
+      TConfigs.SetConfig('TEMP', 'FilePath', '');
+      TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
+    Except
+      Action := TCloseAction.caFree;
+    end;
   end;
 end;
 
@@ -146,7 +163,7 @@ begin
 end;
 
 //Abre a configuraçãos dos Dados Dataflex
-procedure TWindowMain.ActDadosExecute(Sender: TObject);
+procedure TWindowMain.ActDatasExecute(Sender: TObject);
 begin
   WindowDatas.ShowModal;
   if TConfigs.GetConfig('TEMP', 'FilePath').Trim <> '' then
@@ -172,31 +189,89 @@ begin
       TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
       ActOpenFile.ImageIndex := 5;
       BtnOpenFile.Action := ActOpenFile;
-      ActMigrate.Enabled := false;
-      ActStop.Enabled := true;
-      MigrationEnabled := true;
+      MigrationMode;
       TMigration.Create;
     end;
   end
   else
   begin
-    ActMigrate.Enabled := false;
-    ActStop.Enabled := true;
-    MigrationEnabled := true;
+    MigrationMode;
     TMigration.Create;
   end;
+end;
+
+//Pausa a migração
+procedure TWindowMain.ActPauseExecute(Sender: TObject);
+begin
+  PausedMode;
+end;
+
+//Continua a migração pausada
+procedure TWindowMain.ActContinueExecute(Sender: TObject);
+begin
+  MigrationMode;
 end;
 
 //Para a migração
 procedure TWindowMain.ActStopExecute(Sender: TObject);
 begin
-  MigrationEnabled := false;
+  NormalMode;
 end;
 
 //Envia uma string para o TxtLog
 procedure TWindowMain.Log(Msg: string);
 begin
   TxtLog.Lines.Add(Msg);
+end;
+
+//Modo normal
+procedure TWindowMain.NormalMode;
+begin
+  ActMigrate.Enabled := true;
+  ActPause.Enabled := false;
+  ActContinue.Enabled := false;
+  ActStop.Enabled := false;
+  ActConfigs.Enabled := true;
+  ActOpenFile.Enabled := true;
+  ActConfigDB.Enabled := true;
+  ActConfigFields.Enabled := true;
+  ActDatas.Enabled := true;
+  MigrationEnabled := false;
+  MigrationPaused := false;
+end;
+
+//Modo de migração
+procedure TWindowMain.MigrationMode;
+begin
+  ActMigrate.Enabled := false;
+  ActPause.Enabled := true;
+  ActContinue.Enabled := false;
+  ActStop.Enabled := true;
+  ActConfigs.Enabled := false;
+  ActOpenFile.Enabled := false;
+  ActConfigDB.Enabled := false;
+  ActConfigFields.Enabled := false;
+  ActDatas.Enabled := false;
+  MigrationEnabled := true;
+  MigrationPaused := false;
+  BtnPause.Action := ActPause;
+end;
+
+//Modo migração pausada
+procedure TWindowMain.PausedMode;
+begin
+  ActMigrate.Enabled := false;
+  ActPause.Enabled := false;
+  ActContinue.Enabled := true;
+  ActStop.Enabled := true;
+  ActConfigs.Enabled := false;
+  ActOpenFile.Enabled := false;
+  ActConfigDB.Enabled := false;
+  ActConfigFields.Enabled := false;
+  ActDatas.Enabled := false;
+  MigrationEnabled := true;
+  MigrationPaused := true;
+  BtnPause.Action := ActContinue;
 end;
 
 { TMyThread }
@@ -263,7 +338,15 @@ begin
         //Passa por cada linha Dataflex
         for ContRow := 0 to Limit - 1 do
         begin
-          //Verifica se a migração não foi parada
+
+          //Verifica se a migração foi pausada
+
+          while MigrationPaused do
+          begin
+            Sleep(500);
+          end;
+
+          //Verifica se a migração foi parada
           if MigrationEnabled then
           begin
             //Manda os dados para classe DAO para inserir
@@ -293,9 +376,7 @@ begin
       Handle((ContRow + 1).ToString, E);
     end;
   finally
-    WindowMain.ActMigrate.Enabled := true;
-    WindowMain.ActStop.Enabled := false;
-    MigrationEnabled := false;
+    WindowMain.NormalMode;
     FreeAndNil(Rows);
     FreeAndNil(DataFlex);
   end;

@@ -41,7 +41,7 @@ object WindowConfigs: TWindowConfigs
     Top = 8
     Width = 322
     Height = 324
-    ActivePage = TabMigration
+    ActivePage = TabExceptions
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'
@@ -96,13 +96,15 @@ object WindowConfigs: TWindowConfigs
         TabOrder = 1
       end
     end
+    object TabExceptions: TTabSheet
+      Caption = 'Exce'#231#245'es'
+      ImageIndex = 2
+    end
     object TabFirebird: TTabSheet
       Caption = 'Firebird'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitLeft = 12
+      ExplicitTop = -8
       object CheckTruncFB: TCheckBox
         Left = 3
         Top = 3

@@ -6,7 +6,8 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.Buttons, Vcl.ExtCtrls,
-  ViewFields, Arrays, MyUtils, MyDialogs, Configs, DataFlex;
+  ViewFields, Arrays, MyUtils, MyDialogs, Configs, DataFlex, Data.DB,
+  Vcl.DBGrids;
 
 type
   TWindowDatas = class(TForm)
@@ -76,7 +77,8 @@ type
     procedure NormalMode;
     procedure AlterMode;
     procedure UpdateGrid;
-    procedure Mudou;
+    procedure GridTitles;
+    procedure Altered;
     procedure Done;
 
   end;
@@ -143,9 +145,12 @@ procedure TWindowDatas.ActOpenFileExecute(Sender: TObject);
 begin
   if OpenFile.Execute then
   begin
-    TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
-    SelectMode;
-    CleanGrid;
+    if OpenFile.FileName <> TConfigs.GetConfig('TEMP', 'FilePath') then
+    begin
+      TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+      CleanGrid;
+      SelectMode;
+    end;
   end;
 end;
 
@@ -180,7 +185,7 @@ end;
 //Quando uma Cell da Grid é editada
 procedure TWindowDatas.GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
 begin
-  Mudou;
+  Altered;
 end;
 
 //Ativa o modo de edição da Grid
@@ -192,6 +197,7 @@ end;
 //Salva as alterações feitas no aquivo
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
 begin
+  UpdateGrid;
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
   NormalMode;
   Done;
@@ -210,13 +216,13 @@ end;
 //Cancela as alterações
 procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
-  NormalMode;
-  if DidChange = true then
+  UpdateGrid;
+  if DidChange then
   begin
     FillGrid;
-    Done;
   end;
-  UpdateGrid;
+  NormalMode;
+  Done;
 end;
 
 //Adiciona uma nova célula na Grid
@@ -227,30 +233,73 @@ begin
   Row := GridDatas.Row;
   Col := GridDatas.Col;
 
-  for Cont := -(GridDatas.ColCount-1) to -Col - 1 do
+  for Cont := -(GridDatas.ColCount - 1) to -Col - 1 do
   begin
-    GridDatas.Cells[-Cont, Row] := GridDatas.Cells[(-Cont)-1, Row];
+    GridDatas.Cells[-Cont, Row] := GridDatas.Cells[(-Cont) - 1, Row];
   end;
 
   GridDatas.Cells[Col, Row] := '';
+
+  Altered;
 end;
 
 //Remove a célula selecionada na Grid
 procedure TWindowDatas.ActDelCellExecute(Sender: TObject);
+var
+  Row, Col, Cont: integer;
 begin
-  //
+  Row := GridDatas.Row;
+  Col := GridDatas.Col;
+
+  for Cont := Col to GridDatas.ColCount - 1 do
+  begin
+    GridDatas.Cells[Cont, Row] := GridDatas.Cells[Cont + 1, Row];
+  end;
+
+  Altered;
 end;
 
 //Adiona uma nova linha na Grid
 procedure TWindowDatas.ActAddRowExecute(Sender: TObject);
+var
+  Row, Cont: integer;
 begin
-  //
+  Row := GridDatas.Row;
+
+  GridDatas.RowCount := GridDatas.RowCount + 1;
+
+  for Cont := -(GridDatas.RowCount - 1) to -Row - 1 do
+  begin
+    GridDatas.Rows[-Cont] := GridDatas.Rows[(-Cont) - 1];
+  end;
+
+  GridDatas.Rows[Row].Clear;
+
+  GridTitles;
+
+  Altered;
 end;
 
 //Remove a linha selecionada na Grid
 procedure TWindowDatas.ActDelRowExecute(Sender: TObject);
+var
+  Row, Cont: integer;
 begin
-  //
+  if (GridDatas.RowCount > 2) and (GridDatas.Row <> GridDatas.RowCount - 1) then
+  begin
+    Row := GridDatas.Row;
+
+    GridDatas.RowCount := GridDatas.RowCount - 1;
+
+    for Cont := Row to GridDatas.RowCount - 1 do
+    begin
+      GridDatas.Rows[Cont] := GridDatas.Rows[Cont + 1];
+    end;
+
+    GridTitles;
+
+    Altered;
+  end;
 end;
 
 //Adiciona uma nova coluna na Grid
@@ -294,20 +343,14 @@ begin
     TxtRowsLimit.Text := DataFlex.GetRows.ToString;
   end;
 
-  GridDatas.RowCount := TotRows + 1;
-  GridDatas.ColCount := DataFlex.GetCols + 1;
+  CleanGrid;
+
+  GridDatas.RowCount := TotRows + 2;
+  GridDatas.ColCount := DataFlex.GetCols + 2;
   LblTotRows.Caption := 'Dados: ' + DataFlex.GetRows.ToString;
   LblTotCols.Caption := 'Campos: ' + DataFlex.GetCols.ToString;
 
-  for ContRow := 1 to TotRows do
-  begin
-    GridDatas.Cells[0, ContRow] := 'Dado ' + ContRow.ToString;
-  end;
-
-  for ContCol := 1 to DataFlex.GetCols do
-  begin
-    GridDatas.Cells[ContCol, 0] := 'Campo ' + ContCol.ToString;
-  end;
+  GridTitles;
 
   for ContRow := 1 to TotRows do
   begin
@@ -334,12 +377,13 @@ var
   Cont: integer;
 begin
   Result := TStringList.Create;
-  for Cont := 1 to GridDatas.RowCount - 1 do
+  for Cont := 1 to GridDatas.RowCount - 2 do
   begin
     Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, ';', ''));
   end;
 end;
 
+//Verifica se a Grid está vazia
 function TWindowDatas.GridIsClean: boolean;
 begin
   Result := GridDatas.Cells[0, 1].IsEmpty and GridDatas.Cells[1, 0].IsEmpty and GridDatas.Cells[1, 1].IsEmpty;
@@ -361,6 +405,9 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
+  LblTotRows.Caption := 'Dados:';
+  LblTotCols.Caption := 'Campos:';
+  TxtRowsLimit.Clear;
 end;
 
 //Modo Button Select ativado
@@ -382,6 +429,9 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
+  LblTotRows.Caption := 'Dados:';
+  LblTotCols.Caption := 'Campos:';
+  TxtRowsLimit.Clear;
 end;
 
 //Modo Buttons normais
@@ -429,15 +479,35 @@ end;
 //Muda a Cell selecionada na Grid para atualizá-la
 procedure TWindowDatas.UpdateGrid;
 begin
-  GridDatas.Row := GridDatas.RowCount - 1;
-  GridDatas.Col := GridDatas.ColCount - 1;
-  GridDatas.Row := 1;
-  GridDatas.Col := 1;
-  GridDatas.Refresh;
+
+end;
+
+//Insere os titulos das linhas e colunas fixadas na Grid
+procedure TWindowDatas.GridTitles;
+var
+  Cont: integer;
+begin
+  for Cont := 1 to GridDatas.RowCount - 2 do
+  begin
+    GridDatas.Cells[0, Cont] := 'Dado ' + Cont.ToString;
+  end;
+
+  GridDatas.Rows[GridDatas.RowCount - 1].Clear;
+
+  GridDatas.Cells[0, GridDatas.RowCount - 1] := '      +';
+
+  for Cont := 1 to GridDatas.ColCount - 2 do
+  begin
+    GridDatas.Cells[Cont, 0] := 'Campo ' + Cont.ToString;
+  end;
+
+  GridDatas.Cols[GridDatas.ColCount - 1].Clear;
+
+  GridDatas.Cells[GridDatas.ColCount - 1, 0] := '    +';
 end;
 
 //Quando a Grid é editada
-procedure TWindowDatas.Mudou;
+procedure TWindowDatas.Altered;
 begin
   DidChange := true;
   ActSave.Enabled := true;

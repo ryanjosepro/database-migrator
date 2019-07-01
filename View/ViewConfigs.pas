@@ -23,6 +23,7 @@ type
     TxtCommit: TEdit;
     GroupCommit: TRadioGroup;
     GroupLimit: TRadioGroup;
+    TabExceptions: TTabSheet;
     procedure ActDiscardExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
     procedure GroupCommitClick(Sender: TObject);

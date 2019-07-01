@@ -3395,7 +3395,7 @@ object WindowMain: TWindowMain
   end
   object BtnMigrate: TSpeedButton
     Left = 159
-    Top = 8
+    Top = 3
     Width = 193
     Height = 49
     Action = ActMigrate
@@ -3406,7 +3406,6 @@ object WindowMain: TWindowMain
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ExplicitLeft = 376
   end
   object BtnOpenFile: TSpeedButton
     Left = 67
@@ -5538,11 +5537,11 @@ object WindowMain: TWindowMain
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    OnClick = ActDadosExecute
+    OnClick = ActDatasExecute
   end
   object BtnStop: TSpeedButton
     Left = 207
-    Top = 63
+    Top = 97
     Width = 97
     Height = 33
     Action = ActStop
@@ -5553,13 +5552,12 @@ object WindowMain: TWindowMain
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ExplicitLeft = 424
   end
   object BtnConfigs: TSpeedButton
     Left = 227
-    Top = 119
+    Top = 136
     Width = 57
-    Height = 50
+    Height = 33
     Hint = 'Configura'#231#245'es'
     Anchors = [akTop]
     Flat = True
@@ -6087,11 +6085,24 @@ object WindowMain: TWindowMain
     ParentShowHint = False
     ShowHint = True
     OnClick = ActConfigsExecute
-    ExplicitLeft = 231
+  end
+  object BtnPause: TSpeedButton
+    Left = 216
+    Top = 58
+    Width = 81
+    Height = 28
+    Action = ActPause
+    Anchors = [akTop]
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
   end
   object TxtLog: TMemo
     Left = 8
-    Top = 175
+    Top = 172
     Width = 494
     Height = 435
     TabStop = False
@@ -6133,7 +6144,7 @@ object WindowMain: TWindowMain
     Left = 449
     Top = 544
     Bitmap = {
-      494C010106005C01180240004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010106005C012C0240004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -10383,10 +10394,10 @@ object WindowMain: TWindowMain
       ImageIndex = 2
       OnExecute = ActConfigFieldsExecute
     end
-    object ActDados: TAction
+    object ActDatas: TAction
       Hint = 'Dados Dataflex'
       ImageIndex = 3
-      OnExecute = ActDadosExecute
+      OnExecute = ActDatasExecute
     end
     object ActConfigs: TAction
       Hint = 'Configura'#231#245'es'
@@ -10397,6 +10408,18 @@ object WindowMain: TWindowMain
       Caption = 'Migrar'
       Hint = 'Migrar Dados'
       OnExecute = ActMigrateExecute
+    end
+    object ActContinue: TAction
+      Caption = 'Continuar'
+      Enabled = False
+      Hint = 'Continuar Migra'#231#227'o'
+      OnExecute = ActContinueExecute
+    end
+    object ActPause: TAction
+      Caption = 'Pausar'
+      Enabled = False
+      Hint = 'Pausar Migra'#231#227'o'
+      OnExecute = ActPauseExecute
     end
     object ActStop: TAction
       Caption = 'Parar'
