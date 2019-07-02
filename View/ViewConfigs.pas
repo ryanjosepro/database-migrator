@@ -24,6 +24,7 @@ type
     GroupCommit: TRadioGroup;
     GroupLimit: TRadioGroup;
     TabExceptions: TTabSheet;
+    GroupException: TRadioGroup;
     procedure ActDiscardExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
     procedure GroupCommitClick(Sender: TObject);
@@ -108,13 +109,14 @@ end;
 //Salva todas as configurações
 procedure TWindowConfigs.ActSaveExecute(Sender: TObject);
 var
-  Commit, Limit, TruncFB: integer;
+  Commit, Limit, TruncFB, Error: integer;
 begin
   Commit := TUtils.Iff(GroupCommit.ItemIndex = 0, -1, TUtils.IfEmpty(TxtCommit.Text, '-1').ToInteger);
   Limit := TUtils.Iff(GroupLimit.ItemIndex = 0, -1, TUtils.IfEmpty(TxtLimit.Text, '-1').ToInteger);
   TruncFB := TUtils.Iff(CheckTruncFB.Checked, 1, 0);
+  Error := GroupException.ItemIndex;
 
-  TConfigs.SetGeneral(Commit, Limit, TruncFB);
+  TConfigs.SetGeneral(Commit, Limit, TruncFB, Error);
 
   DidChange := false;
 
@@ -131,9 +133,9 @@ end;
 //Carregas as configurações definidas
 procedure TWindowConfigs.LoadConfigs;
 var
-  Commit, Limit, TruncFB: integer;
+  Commit, Limit, TruncFB, Error: integer;
 begin
-  TConfigs.GetGeneral(Commit, Limit, TruncFB);
+  TConfigs.GetGeneral(Commit, Limit, TruncFB, Error);
 
   if Commit = -1 then
   begin

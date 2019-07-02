@@ -11,12 +11,13 @@ type
   TConfigs = class
   strict private
     class function Source: string;
+    class procedure CreateFile(Path: string);
   public
     class function GetConfig(const Section, Name: string): string;
     class procedure SetConfig(const Section, Name, Value: string);
 
-    class procedure GetGeneral(var Commit, Limit, TruncFB: integer);
-    class procedure SetGeneral(Commit, Limit, TruncFB: integer);
+    class procedure GetGeneral(var Commit, Limit, TruncFB, Error: integer);
+    class procedure SetGeneral(Commit, Limit, TruncFB, Error: integer);
 
     class procedure GetDB(var UserName, Password, Database: string);
     class procedure SetDB(UserName, Password, Database: string);
@@ -28,8 +29,41 @@ implementation
 
 //Caminho das configurações
 class function TConfigs.Source: string;
+var
+  Path: string;
 begin
-  Result := ExtractFilePath(Application.ExeName) + 'Config\Config.ini';
+  Path := ExtractFilePath(Application.ExeName) + 'Config.ini';
+
+  if FileExists(Path) then
+  begin
+    Result := Path;
+  end
+  else
+  begin
+    CreateFile(Path);
+  end;
+end;
+
+//Cria o arquivo Config.ini
+class procedure TConfigs.CreateFile(Path: string);
+var
+  Arq: TIniFile;
+begin
+  Arq := TIniFile.Create(Path);
+  try
+    Arq.WriteString('SYSTEM', 'WindowState', '0');
+    Arq.WriteString('GENERAL', 'Commit', '-1');
+    Arq.WriteString('GENERAL', 'Limit', '-1');
+    Arq.WriteString('GENERAL', 'TruncFB', '0');
+    Arq.WriteString('GENERAL', 'Exception', '2');
+    Arq.WriteString('DB', 'UserName', 'SYSDBA');
+    Arq.WriteString('DB', 'Password', 'masterkey');
+    Arq.WriteString('DB', 'Database', '');
+    Arq.WriteString('DB', 'Table', '');
+    Arq.WriteString('TEMP', 'FilePath', '');
+  finally
+    FreeAndNil(Arq);
+  end;
 end;
 
 //Busca uma configuração específica
@@ -59,18 +93,20 @@ begin
 end;
 
 //Configurações da seção GENERAL
-class procedure TConfigs.GetGeneral(var Commit, Limit, TruncFB: integer);
+class procedure TConfigs.GetGeneral(var Commit, Limit, TruncFB, Error: integer);
 begin
   Commit := TUtils.IfEmpty(TConfigs.GetConfig('GENERAL', 'Commit'), '-1').ToInteger;
   Limit := TUtils.IfEmpty(TConfigs.GetConfig('GENERAL', 'Limit'), '-1').ToInteger;
   TruncFB := TUtils.IfEmpty(TConfigs.GetConfig('GENERAL', 'TruncFB'), '0').ToInteger;
+  Error := TUtils.IfEmpty(TConfigs.GetConfig('GENERAL', 'Error'), '2').ToInteger;
 end;
 
-class procedure TConfigs.SetGeneral(Commit, Limit, TruncFB: integer);
+class procedure TConfigs.SetGeneral(Commit, Limit, TruncFB, Error: integer);
 begin
   TConfigs.SetConfig('GENERAL', 'Commit', Commit.ToString);
   TConfigs.SetConfig('GENERAL', 'Limit', Limit.ToString);
   TConfigs.SetConfig('GENERAL', 'TruncFB', TruncFB.ToString);
+  TConfigs.SetConfig('GENERAL', 'Error', Error.ToString);
 end;
 
 //Configurãções da seção DB

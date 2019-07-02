@@ -55,7 +55,6 @@ type
   TMigration = class(TThread)
   protected
     procedure Execute; override;
-    procedure Handle(Data: string; E: Exception);
   public
     constructor Create;
   end;
@@ -85,12 +84,12 @@ implementation
 
 -To improve DataFlex class;
 -To reduce codes on View units;
--To create a error handling on ViewConfigs;
 -To add a option to create a table on migration (By Danilo);
 
 --> DOING <--
 
 -To put a DataFlex file modify options on ViewDatas;
+-To create a error handling on ViewConfigs;
 }
 
 {$R *.dfm}
@@ -116,12 +115,8 @@ begin
     if Answer = mrYes then
     begin
       MigrationEnabled := false;
-      try
-        TConfigs.SetConfig('TEMP', 'FilePath', '');
-        TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
-      Except
-        Action := TCloseAction.caFree;
-      end;
+      TConfigs.SetConfig('TEMP', 'FilePath', '');
+      TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
     end
     else if Answer = mrNo then
     begin
@@ -130,12 +125,8 @@ begin
   end
   else
   begin
-    try
-      TConfigs.SetConfig('TEMP', 'FilePath', '');
-      TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
-    Except
-      Action := TCloseAction.caFree;
-    end;
+    TConfigs.SetConfig('TEMP', 'FilePath', '');
+    TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
   end;
 end;
 
@@ -181,20 +172,37 @@ end;
 
 //Libera a Thread de migração
 procedure TWindowMain.ActMigrateExecute(Sender: TObject);
+var
+  Ok: boolean;
 begin
-  if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
+  //Verificações antes da liberação da Thread
+  Ok := true;
+  if TDAO.Count <= 0 then
   begin
+    Ok := false;
+    ShowMessage('Selecione uma tabela válida!');
+  end
+  else if WindowFields.IsClean then
+  begin
+    Ok := false;
+    ShowMessage('Configure os campos!');
+  end
+  else if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
+  begin
+    Ok := false;
     if OpenFile.Execute then
     begin
+      Ok := true;
       TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
       ActOpenFile.ImageIndex := 5;
       BtnOpenFile.Action := ActOpenFile;
-      MigrationMode;
-      TMigration.Create;
     end;
-  end
-  else
+  end;
+
+  //Se tudo Ok a Thread é liberada
+  if Ok then
   begin
+    TxtLog.Clear;
     MigrationMode;
     TMigration.Create;
   end;
@@ -288,105 +296,123 @@ var
   Rows: TStringList;
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
-  ContRow, ContCol, Step: integer;
-  Commit, Limit, TruncFB: integer;
+  ContRow, CommitStep: integer;
+  Commit, Limit, TruncFB, Error: integer;
+  ExceptionError: Exception;
   OutStr: string;
 begin
   //Chama do método sobreposto na classe mãe
   inherited;
-  //Passa as linhas do arquivo dataflex para uma StringList
-  Rows := TStringList.Create;
-  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-  //Passa as linhas data flex para a classe de tratamento
-  DataFlex := TDataFlex.Create(Rows, ';');
-  SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
-  //Tranforma as linhas do arquivo em uma matriz com linhas e colunas
-  Datas := DataFlex.ToMatrix;
   try
-    try
-      //Verifica se o Firebird está devidamente configurado
-      if TDAO.Count <= 0 then
-      begin
-        ShowMessage('Selecione uma tabela válida!');
-      end
-      else if WindowFields.IsClean then
-      begin
-        ShowMessage('Configure os campos!');
-      end
-      else
-      begin
-        WindowMain.TxtLog.Clear;
+    //Passa o arquivo Dataflex para uma StringList
+    Rows := TStringList.Create;
+    Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
 
-        //Busca as configurações
-        TConfigs.GetGeneral(Commit, Limit, TruncFB);
+    //Passa a StringList para a classe de tratamento
+    DataFlex := TDataFlex.Create(Rows, ';');
+    SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
 
-        Commit := TUtils.Iff(Commit = -1, DataFlex.GetRows, TUtils.IfLess(Commit, DataFlex.GetRows));
-        Limit := TUtils.Iff(Limit = -1, DataFlex.GetRows, TUtils.IfLess(Limit, DataFlex.GetRows));
+    //A classe de tratamento retorna uma matriz
+    Datas := DataFlex.ToMatrix;
 
-        Step := Commit;
+    //Busca as configurações
+    TConfigs.GetGeneral(Commit, Limit, TruncFB, Error);
+    Commit := TUtils.Iff(Commit = -1, DataFlex.GetRows, TUtils.IfLess(Commit, DataFlex.GetRows));
+    Limit := TUtils.Iff(Limit = -1, DataFlex.GetRows, TUtils.IfLess(Limit, DataFlex.GetRows));
+    CommitStep := Commit;
 
-        //Trunca tabela Firebird
-        if TruncFB = 1 then
-        begin
-          TDAO.Truncate;
-        end;
-
-        //Ajusta a barra de carregamento
-        WindowMain.ProgressBar.Position := 0;
-        WindowMain.ProgressBar.Max := Limit;
-
-        //Passa por cada linha Dataflex
-        for ContRow := 0 to Limit - 1 do
-        begin
-
-          //Verifica se a migração foi pausada
-
-          while MigrationPaused do
-          begin
-            Sleep(500);
-          end;
-
-          //Verifica se a migração foi parada
-          if MigrationEnabled then
-          begin
-            //Manda os dados para classe DAO para inserir
-            TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
-            //Manda os dados para o log
-            WindowMain.Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
-            //Atualiza a barra de carregamento
-            WindowMain.ProgressBar.StepIt;
-            if ContRow + 1 = Step then
-            begin
-              TDAO.Commit;
-              WindowMain.Log('COMITADO!');
-              Step := Step + Commit;
-            end;
-          end
-          else
-          begin
-            //Quando a migração é interrompida
-            WindowMain.Log('PARADO!');
-            break;
-          end;
-        end;
-        WindowMain.Log('MIGRAÇÃO FINALIZADA!');
-      end;
-    except on E: Exception do
-      //Tratamento de erros
-      Handle((ContRow + 1).ToString, E);
+    //Trunca tabela Firebird
+    if TruncFB = 1 then
+    begin
+      TDAO.Truncate;
     end;
+
+    //Ajusta a barra de carregamento
+    WindowMain.ProgressBar.Position := 0;
+    WindowMain.ProgressBar.Max := Limit;
+
+    ExceptionError := Exception.Create('');
+
+    //Passa por cada linha Dataflex
+    for ContRow := 0 to Limit - 1 do
+    begin
+      try
+        //Verifica se a migração foi pausada
+        while MigrationPaused do
+        begin
+          Sleep(500);
+        end;
+
+        //Verifica se a migração foi parada
+        if MigrationEnabled then
+        begin
+          //Manda os dados para classe DAO para inserir
+          TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
+
+          //Manda os dados para o log
+          WindowMain.Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
+
+          //Atualiza a barra de carregamento
+          WindowMain.ProgressBar.StepIt;
+
+          //Verifica o passo de commit
+          if (ContRow + 1 = CommitStep) or (ContRow + 1 >= Limit) then
+          begin
+            TDAO.Commit;
+            WindowMain.Log('COMITADO!');
+            CommitStep := CommitStep + Commit;
+          end;
+        end
+        else
+        begin
+          //Quando a migração é interrompida
+          WindowMain.Log('PARADO!');
+          break;
+        end;
+      Except on E: Exception do
+        ExceptionError := E;
+      end;
+
+      if ExceptionError.ToString <> '' then
+      begin
+        if Error = 0 then
+        begin
+          WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + ExceptionError.ToString);
+        end
+        else
+        if Error = 1 then
+        begin
+          WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + ExceptionError.ToString);
+          WindowMain.Log('DADO PULADO');
+        end
+        else
+        if Error = 3 then
+        begin
+          //TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOooooooooooooooooooooooooo!
+        end;
+
+        ExceptionError := Exception.Create('');
+      end;
+
+      //Tratamento de erros
+      {
+      if ExceptionError.ToString then
+      begin
+        ShowMessage('Teste ' + ExceptionError.ToString);
+
+        if Error = 0 then
+        begin
+          WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString);
+        end;
+      end;
+      }
+    end;
+    WindowMain.Log('MIGRAÇÃO FINALIZADA!');
   finally
     WindowMain.NormalMode;
     FreeAndNil(Rows);
     FreeAndNil(DataFlex);
   end;
-end;
-
-//Tratamento de erros da migração
-procedure TMigration.Handle(Data: string; E: Exception);
-begin
-  WindowMain.Log('ERRO NO DADO ' + Data + ' -> ' + E.ToString);
-  TDAO.Rollback;
 end;
 
 end.

@@ -3623,10 +3623,10 @@ object WindowDatas: TWindowDatas
   object Images: TImageList
     Height = 64
     Width = 64
-    Left = 904
+    Left = 920
     Top = 568
     Bitmap = {
-      494C01010300D800200240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800240240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -5747,7 +5747,7 @@ object WindowDatas: TWindowDatas
   end
   object Actions: TActionList
     Images = Images
-    Left = 856
+    Left = 872
     Top = 568
     object ActOpenFile: TAction
       Hint = 'Arquivo Dataflex'
@@ -5828,7 +5828,7 @@ object WindowDatas: TWindowDatas
         FileMask = '*.*'
       end>
     Options = []
-    Left = 808
+    Left = 824
     Top = 568
   end
   object SaveFile: TFileSaveDialog
@@ -5842,7 +5842,7 @@ object WindowDatas: TWindowDatas
       end>
     FileTypeIndex = 0
     Options = []
-    Left = 760
+    Left = 776
     Top = 568
   end
 end
