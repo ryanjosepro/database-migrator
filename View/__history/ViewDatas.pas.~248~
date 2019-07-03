@@ -185,6 +185,11 @@ end;
 //Quando uma Cell da Grid é editada
 procedure TWindowDatas.GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
 begin
+  if ACol = GridDatas.RowCount - 1 then
+  begin
+    ActAddRow.Execute;
+  end;
+
   Altered;
 end;
 
@@ -479,7 +484,7 @@ end;
 //Muda a Cell selecionada na Grid para atualizá-la
 procedure TWindowDatas.UpdateGrid;
 begin
-  GridDatas.Selection;
+
 end;
 
 //Insere os titulos das linhas e colunas fixadas na Grid
