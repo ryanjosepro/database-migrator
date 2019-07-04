@@ -108,7 +108,7 @@ var
   Cont: integer;
 begin
   Result := '';
-  for Cont := TUtils.Iff(Starts > Ends, 0, Starts) to TUtils.IfLess(Ends, Length(StrArray)) do
+  for Cont := TUtils.Iff(Starts > Ends, 0, Starts) to Ends do
   begin
     if Cont = Ends then
     begin

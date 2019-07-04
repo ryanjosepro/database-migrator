@@ -131,9 +131,9 @@ begin
   begin
     case TMyDialogs.YesNoCancel('Deseja salvar as alterações?') of
     mrYes:
-      ActSaveExecute(BtnSave);
+      ActSave.Execute;
     mrNo:
-      ActCancelExecute(BtnCancel);
+      ActCancel.Execute;
     mrCancel:
       Action := caNone;
     end;
@@ -178,15 +178,18 @@ procedure TWindowDatas.TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift
 begin
   if Key.ToString = '13' then
   begin
-    ActSelectExecute(BtnSelect);
+    ActSelect.Execute;
   end;
 end;
 
 //Quando uma Cell da Grid é editada
 procedure TWindowDatas.GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
 begin
-  if ARow then
-  
+  if ARow = GridDatas.RowCount - 1 then
+  begin
+    ActAddRow.Execute;
+  end;
+
   Altered;
 end;
 

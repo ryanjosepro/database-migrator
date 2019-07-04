@@ -384,7 +384,7 @@ begin
   Result := TStringList.Create;
   for Cont := 1 to GridDatas.RowCount - 2 do
   begin
-    Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, ';', ''));
+    Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, GridDatas.ColCount - 2, ';', ''));
   end;
 end;
 

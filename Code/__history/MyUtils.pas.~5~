@@ -16,7 +16,7 @@ type
 
     class function ArrayToStr(StrArray: TStringArray; Starts: integer = 0; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
     class function ArrayToStr(StrArray: System.TArray<System.string>; Starts: integer = 0; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
-    class function ArrayToStr(StrArray: System.TArray<System.string>; Starts, Ends: integer; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
+    class function ArrayToStr(StrArray: System.TArray<System.string>; Starts, Ends: integer; Seperator: string = ' - '; StrFinal: string = ';'): string; overload;
 
     class function Extract(StrList: TStringList; Starts, Ends: integer): TStringList; overload;
     class function Extract(StrList: TStringList; Starts, Ends: string; IncStarts: boolean = true; IncEnds: boolean = true): TStringList; overload;
@@ -103,24 +103,6 @@ begin
   end;
 end;
 
-class function TUtils.ArrayToStr(StrArray: System.TArray<System.string>; Starts, Ends: integer; Separator, StrFinal: string): string;
-var
-  Cont: integer;
-begin
-  Result := '';
-  for Cont := TUtils.Iff(Starts > Ends, 0, Starts) to TUtils.IfLess(Ends, Length(StrArray)) do
-  begin
-    if Cont = Ends then
-    begin
-      Result := Result + StrArray[Cont] + StrFinal;
-    end
-    else
-    begin
-      Result := Result + StrArray[Cont] + Separator;
-    end;
-  end;
-end;
-
 //Extrai uma parte de uma StringList
 class function TUtils.Extract(StrList: TStringList; Starts, Ends: integer): TStringList;
 var
@@ -163,6 +145,28 @@ begin
 end;
 
 class function TUtils.Extract(StrList: TStringList; Starts: integer; Ends: string; IncEnds: boolean): TStringList;
+var
+  Cont: integer;
+begin
+  Result := TStringList.Create;
+  for Cont := 0 to StrList.Count - 1 do
+  begin
+    if StrList[Cont] <> Ends then
+    begin
+      Result.Add(StrList[Cont]);
+    end
+    else
+    begin
+      if IncEnds then
+      begin
+        Result.Add(StrList[Cont]);
+      end;
+      Break;
+    end;
+  end;
+end;
+
+class function TUtils.ArrayToStr(StrArray: System.TArray<System.string>; Starts, Ends: integer; Seperator, StrFinal: string): string;
 var
   Cont: integer;
 begin
