@@ -484,7 +484,8 @@ end;
 //Muda a Cell selecionada na Grid para atualizá-la
 procedure TWindowDatas.UpdateGrid;
 begin
-
+  TxtRowsLimit.SetFocus;
+  GridDatas.SetFocus;
 end;
 
 //Insere os titulos das linhas e colunas fixadas na Grid

@@ -393,19 +393,6 @@ begin
 
         ExceptionError := Exception.Create('');
       end;
-
-      //Tratamento de erros
-      {
-      if ExceptionError.ToString then
-      begin
-        ShowMessage('Teste ' + ExceptionError.ToString);
-
-        if Error = 0 then
-        begin
-          WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString);
-        end;
-      end;
-      }
     end;
     WindowMain.Log('MIGRAÇÃO FINALIZADA!');
   finally
