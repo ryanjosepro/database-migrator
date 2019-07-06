@@ -34,6 +34,7 @@ type
     BtnPause: TSpeedButton;
     ActPause: TAction;
     ActContinue: TAction;
+    SpeedButton1: TSpeedButton;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
@@ -45,6 +46,7 @@ type
     procedure ActStopExecute(Sender: TObject);
     procedure ActPauseExecute(Sender: TObject);
     procedure ActContinueExecute(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
   private
     procedure Log(Msg: string);
     procedure NormalMode;
@@ -281,6 +283,11 @@ begin
   BtnPause.Action := ActContinue;
 end;
 
+procedure TWindowMain.SpeedButton1Click(Sender: TObject);
+begin
+  WindowDatas.Teste(5, 5);
+end;
+
 { TMyThread }
 
 //Cria a Thread e a executa
@@ -377,6 +384,7 @@ begin
         if Error = 0 then
         begin
           WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + ExceptionError.ToString);
+          WindowMain.ActStop.Execute;
         end
         else
         if Error = 1 then
@@ -387,7 +395,7 @@ begin
         else
         if Error = 3 then
         begin
-          //TO DOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOooooooooooooooooooooooooo!
+
         end;
 
         ExceptionError := Exception.Create('');

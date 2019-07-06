@@ -82,11 +82,15 @@ type
     procedure Altered;
     procedure Done;
 
+  public
+    procedure Teste(Row, Col: integer);
+
   end;
 
 var
   WindowDatas: TWindowDatas;
   DidChange: boolean = false;
+  Mode: integer;
 
 implementation
 
@@ -455,6 +459,7 @@ begin
   LblTotRows.Caption := 'Dados:';
   LblTotCols.Caption := 'Campos:';
   TxtRowsLimit.Clear;
+  Mode := 0;
 end;
 
 //Modo Button Select ativado
@@ -479,6 +484,7 @@ begin
   LblTotRows.Caption := 'Dados:';
   LblTotCols.Caption := 'Campos:';
   TxtRowsLimit.Clear;
+  Mode := 1;
 end;
 
 //Modo Buttons normais
@@ -500,6 +506,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
+  Mode := 2;
 end;
 
 //Modo Buttons em alteração
@@ -521,6 +528,7 @@ begin
   ActAddCol.Enabled := true;
   ActDelCol.Enabled := true;
   GridDatas.Options := GridDatas.Options + [goEditing];
+  Mode := 3;
 end;
 
 //Muda a Cell selecionada na Grid para atualizá-la
@@ -576,6 +584,19 @@ procedure TWindowDatas.Done;
 begin
   DidChange := false;
   ActSave.Enabled := false;
+end;
+
+//Only a test
+procedure TWindowDatas.Teste(Row, Col: integer);
+begin
+  if (Mode = 1) or (Mode = 2) then
+  begin
+    TxtRowsLimit.Text := '';
+    ActSelect.Execute;
+    GridDatas.Row := Row;
+    GridDatas.Col := Col;
+  end;
+  ShowModal;
 end;
 
 end.
