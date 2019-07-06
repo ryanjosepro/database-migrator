@@ -77,6 +77,7 @@ type
     procedure NormalMode;
     procedure AlterMode;
     procedure UpdateGrid;
+    procedure GridSize(RowCount, ColCount: integer);
     procedure GridTitles;
     procedure Altered;
     procedure Done;
@@ -190,6 +191,11 @@ begin
     ActAddRow.Execute;
   end;
 
+  if ACol = GridDatas.ColCount - 1 then
+  begin
+    ActAddCol.Execute;
+  end;
+
   Altered;
 end;
 
@@ -218,7 +224,7 @@ begin
   end;
 end;
 
-//Cancela as alterações
+//Cancela as alteraçõe
 procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
   UpdateGrid;
@@ -282,6 +288,8 @@ begin
 
   GridTitles;
 
+  UpdateGrid;
+
   Altered;
 end;
 
@@ -290,10 +298,10 @@ procedure TWindowDatas.ActDelRowExecute(Sender: TObject);
 var
   Row, Cont: integer;
 begin
-  if (GridDatas.RowCount > 2) and (GridDatas.Row <> GridDatas.RowCount - 1) then
-  begin
-    Row := GridDatas.Row;
+  Row := GridDatas.Row;
 
+  if (GridDatas.RowCount > 2) and (Row <> GridDatas.RowCount - 1) then
+  begin
     GridDatas.RowCount := GridDatas.RowCount - 1;
 
     for Cont := Row to GridDatas.RowCount - 1 do
@@ -303,20 +311,57 @@ begin
 
     GridTitles;
 
+    UpdateGrid;
+
     Altered;
   end;
 end;
 
 //Adiciona uma nova coluna na Grid
 procedure TWindowDatas.ActAddColExecute(Sender: TObject);
+var
+  Col, Cont: integer;
 begin
-  //
+  Col := GridDatas.Col;
+
+  GridDatas.ColCount := GridDatas.ColCount + 1;
+
+  for Cont := -(GridDatas.ColCount - 1) to -Col - 1 do
+  begin
+    GridDatas.Cols[-Cont] := GridDatas.Cols[(-Cont) - 1];
+  end;
+
+  GridDatas.Cols[Col].Clear;
+
+  GridTitles;
+
+  UpdateGrid;
+
+  Altered;
 end;
 
 //Remove a coluna selecionada na Grid
 procedure TWindowDatas.ActDelColExecute(Sender: TObject);
+var
+  Col, Cont: integer;
 begin
-  //
+  Col := GridDatas.Col;
+
+  if (GridDatas.ColCount > 2) and (Col <> GridDatas.ColCount - 1) then
+  begin
+    GridDatas.ColCount := GridDatas.ColCount - 1;
+
+    for Cont := Col to GridDatas.ColCount - 1 do
+    begin
+      GridDatas.Cols[Cont] := GridDatas.Cols[Cont + 1];
+    end;
+
+    GridTitles;
+
+    UpdateGrid;
+
+    Altered;
+  end;
 end;
 
 //Insere os dados do arquivo Dataflex na Grid
@@ -350,10 +395,7 @@ begin
 
   CleanGrid;
 
-  GridDatas.RowCount := TotRows + 2;
-  GridDatas.ColCount := DataFlex.GetCols + 2;
-  LblTotRows.Caption := 'Dados: ' + DataFlex.GetRows.ToString;
-  LblTotCols.Caption := 'Campos: ' + DataFlex.GetCols.ToString;
+  GridSize(TotRows, DataFlex.GetCols);
 
   GridTitles;
 
@@ -486,6 +528,16 @@ procedure TWindowDatas.UpdateGrid;
 begin
   TxtRowsLimit.SetFocus;
   GridDatas.SetFocus;
+  LblTotRows.Caption := 'Dados: ' + (GridDatas.RowCount - 2).ToString;
+  LblTotCols.Caption := 'Campos: ' + (GridDatas.ColCount - 2).ToString;
+end;
+
+//Define o tamanho da Grid
+procedure TWindowDatas.GridSize(RowCount, ColCount: integer);
+begin
+  GridDatas.RowCount := RowCount + 2;
+  GridDatas.ColCount := ColCount + 2;
+  UpdateGrid;
 end;
 
 //Insere os titulos das linhas e colunas fixadas na Grid

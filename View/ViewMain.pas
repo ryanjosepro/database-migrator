@@ -88,7 +88,6 @@ implementation
 
 --> DOING <--
 
--To put a DataFlex file modify options on ViewDatas;
 -To create a error handling on ViewConfigs;
 }
 
