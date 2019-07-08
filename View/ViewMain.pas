@@ -34,7 +34,6 @@ type
     BtnPause: TSpeedButton;
     ActPause: TAction;
     ActContinue: TAction;
-    SpeedButton1: TSpeedButton;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
@@ -46,7 +45,6 @@ type
     procedure ActStopExecute(Sender: TObject);
     procedure ActPauseExecute(Sender: TObject);
     procedure ActContinueExecute(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
   private
     procedure Log(Msg: string);
     procedure NormalMode;
@@ -283,11 +281,6 @@ begin
   BtnPause.Action := ActContinue;
 end;
 
-procedure TWindowMain.SpeedButton1Click(Sender: TObject);
-begin
-  WindowDatas.Teste(5, 5);
-end;
-
 { TMyThread }
 
 //Cria a Thread e a executa
@@ -327,7 +320,7 @@ begin
     Limit := TUtils.Iff(Limit = -1, DataFlex.GetRows, TUtils.IfLess(Limit, DataFlex.GetRows));
     CommitStep := Commit;
 
-    //Trunca tabela Firebird
+    //Trunca tabela Firebirds
     if TruncFB = 1 then
     begin
       TDAO.Truncate;
@@ -340,8 +333,9 @@ begin
     ExceptionError := Exception.Create('');
 
     //Passa por cada linha Dataflex
-    for ContRow := 0 to Limit - 1 do
+    while ContRow <= Limit - 1 do
     begin
+      Inc(ContRow, 1);
       try
         //Verifica se a migração foi pausada
         while MigrationPaused do
@@ -393,9 +387,13 @@ begin
           WindowMain.Log('DADO PULADO');
         end
         else
-        if Error = 3 then
+        if Error = 2 then
         begin
-
+          WindowDatas.ShowModal(ContRow + 1);
+          if TMyDialogs.YesNo('Deseja reinserir o dado ' + ContRow.ToString + '?') = mrYes then
+          begin
+            ContRow := ContRow - 1;
+          end;
         end;
 
         ExceptionError := Exception.Create('');

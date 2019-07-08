@@ -41,7 +41,7 @@ object WindowConfigs: TWindowConfigs
     Top = 8
     Width = 322
     Height = 324
-    ActivePage = TabMigration
+    ActivePage = TabExceptions
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'
@@ -106,7 +106,7 @@ object WindowConfigs: TWindowConfigs
         Height = 73
         Caption = 'Tratamento de Erro'
         Columns = 2
-        ItemIndex = 2
+        ItemIndex = 0
         Items.Strings = (
           'Parar a Migra'#231#227'o'
           'Pular o Dado'
@@ -118,10 +118,6 @@ object WindowConfigs: TWindowConfigs
     object TabFirebird: TTabSheet
       Caption = 'Firebird'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object CheckTruncFB: TCheckBox
         Left = 3
         Top = 3

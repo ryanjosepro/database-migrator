@@ -157,6 +157,8 @@ begin
     TxtLimit.Text := Limit.ToString;
   end;
 
+  GroupException.ItemIndex := Error;
+
   CheckTruncFB.Checked := (TruncFB = 1);
 
   PageConfigs.TabIndex := 0;

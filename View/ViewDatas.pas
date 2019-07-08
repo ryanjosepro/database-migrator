@@ -83,14 +83,20 @@ type
     procedure Done;
 
   public
-    procedure Teste(Row, Col: integer);
+    function ShowModal(Row: integer): integer; overload;
 
   end;
 
 var
   WindowDatas: TWindowDatas;
   DidChange: boolean = false;
-  Mode: integer;
+
+  Mode: integer = 0;
+  //0 -> Disable Mode
+  //1 -> Select Mode
+  //2 -> Normal Mode
+  //3 -> Alter Mode
+  //4 -> Error Handling Mode
 
 implementation
 
@@ -101,32 +107,35 @@ procedure TWindowDatas.FormActivate(Sender: TObject);
 var
   FilePath: string;
 begin
-  FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
-  if FilePath <> '' then
+  if Mode <> 4 then
   begin
-    if FilePath <> TxtFileName.Caption then
+    FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
+    if FilePath <> '' then
     begin
-      CleanGrid;
-      SelectMode;
-    end
-    else
-    begin
-      if GridIsClean then
+      if FilePath <> TxtFileName.Caption then
       begin
+        CleanGrid;
         SelectMode;
       end
       else
       begin
-        NormalMode;
-        UpdateGrid;
+        if GridIsClean then
+        begin
+          SelectMode;
+        end
+        else
+        begin
+          NormalMode;
+          UpdateGrid;
+        end;
       end;
+    end
+    else
+    begin
+      DisableMode;
     end;
-  end
-  else
-  begin
-    DisableMode;
+    Done;
   end;
-  Done;
 end;
 
 //Quando a janela é fechada
@@ -545,7 +554,6 @@ procedure TWindowDatas.GridSize(RowCount, ColCount: integer);
 begin
   GridDatas.RowCount := RowCount + 2;
   GridDatas.ColCount := ColCount + 2;
-  UpdateGrid;
 end;
 
 //Insere os titulos das linhas e colunas fixadas na Grid
@@ -579,24 +587,22 @@ begin
   ActSave.Enabled := true;
 end;
 
-//Quando as alterãções são salvas ou descartadas
+//Quando as alterações são salvas ou descartadas
 procedure TWindowDatas.Done;
 begin
   DidChange := false;
   ActSave.Enabled := false;
 end;
 
-//Only a test
-procedure TWindowDatas.Teste(Row, Col: integer);
+function TWindowDatas.ShowModal(Row: integer): integer;
 begin
-  if (Mode = 1) or (Mode = 2) then
-  begin
-    TxtRowsLimit.Text := '';
-    ActSelect.Execute;
-    GridDatas.Row := Row;
-    GridDatas.Col := Col;
-  end;
-  ShowModal;
+  Mode := 4;
+  TxtRowsLimit.Text := '';
+  FillGrid;
+  GridDatas.Row := Row;
+  GridDatas.Col := 1;
+  NormalMode;
+  inherited ShowModal;
 end;
 
 end.
