@@ -3,7 +3,7 @@ unit MyUtils;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.Types, System.Variants,
+  System.SysUtils, System.Classes, System.Types, System.Variants, System.StrUtils,
   Arrays;
 
 type
@@ -11,8 +11,10 @@ type
   TUtils = class
   public
     class function Iff(Cond: boolean; V1, V2: variant): variant;
-    class function IfEmpty(Value, Replace: string): string;
     class function IfLess(Value, Value2: integer): integer;
+    class function IfEmpty(Value, Replace: string): string;
+
+    class function Cut(Text, Separator: string): TStringArray;
 
     class function ArrayToStr(StrArray: TStringArray; Starts: integer = 0; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
     class function ArrayToStr(StrArray: System.TArray<System.string>; Starts: integer = 0; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
@@ -63,6 +65,21 @@ begin
   else
   begin
     Result := Replace;
+  end;
+end;
+
+//Divide uma string em array baseando-se no separador
+class function TUtils.Cut(Text, Separator: string): TStringArray;
+var
+  StrArray: TStringDynArray;
+  Cont: integer;
+begin
+  SetLength(StrArray, Length(SplitString(Text, Separator)));
+  StrArray := SplitString(Text, Separator);
+  SetLength(Result, Length(StrArray));
+  for Cont := 0 to Length(StrArray) - 1 do
+  begin
+    Result[Cont] := StrArray[Cont];
   end;
 end;
 

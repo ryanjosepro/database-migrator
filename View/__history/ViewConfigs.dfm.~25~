@@ -41,13 +41,40 @@ object WindowConfigs: TWindowConfigs
     Top = 8
     Width = 322
     Height = 324
-    ActivePage = TabMigration
+    ActivePage = TabFirebird
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'
+      object LblUntil: TLabel
+        Left = 187
+        Top = 198
+        Width = 17
+        Height = 13
+        Caption = 'At'#233
+      end
+      object LblFrom: TLabel
+        Left = 82
+        Top = 198
+        Width = 13
+        Height = 13
+        Caption = 'De'
+      end
+      object GroupLimit: TRadioGroup
+        Left = 3
+        Top = 127
+        Width = 308
+        Height = 103
+        Caption = 'Limite de Migra'#231#227'o'
+        ItemIndex = 0
+        Items.Strings = (
+          'Todas'
+          'Limite:')
+        TabOrder = 3
+        OnClick = GroupLimitClick
+      end
       object GroupCommit: TRadioGroup
         Left = 3
-        Top = 0
+        Top = 48
         Width = 308
         Height = 73
         Caption = 'Commitar'
@@ -61,7 +88,7 @@ object WindowConfigs: TWindowConfigs
       end
       object TxtCommit: TEdit
         Left = 222
-        Top = 32
+        Top = 80
         Width = 82
         Height = 21
         AutoSelect = False
@@ -70,23 +97,9 @@ object WindowConfigs: TWindowConfigs
         NumbersOnly = True
         TabOrder = 0
       end
-      object GroupLimit: TRadioGroup
-        Left = 3
-        Top = 72
-        Width = 308
-        Height = 73
-        Caption = 'Limite de Migra'#231#227'o'
-        Columns = 2
-        ItemIndex = 0
-        Items.Strings = (
-          'Todas'
-          'Limite:')
-        TabOrder = 3
-        OnClick = GroupLimitClick
-      end
-      object TxtLimit: TEdit
-        Left = 222
-        Top = 102
+      object TxtLimitStrs: TEdit
+        Left = 99
+        Top = 195
         Width = 82
         Height = 21
         AutoSelect = False
@@ -94,6 +107,35 @@ object WindowConfigs: TWindowConfigs
         Enabled = False
         NumbersOnly = True
         TabOrder = 1
+      end
+      object TxtLimitEnds: TEdit
+        Left = 214
+        Top = 195
+        Width = 82
+        Height = 21
+        AutoSelect = False
+        AutoSize = False
+        Enabled = False
+        NumbersOnly = True
+        TabOrder = 4
+      end
+      object CheckLogDatas: TCheckBox
+        Left = 3
+        Top = 25
+        Width = 308
+        Height = 17
+        Caption = 'Mostrar no log de sa'#237'da os dados inseridos'
+        TabOrder = 5
+        OnClick = CheckTruncFBClick
+      end
+      object CheckLogActions: TCheckBox
+        Left = 3
+        Top = 2
+        Width = 308
+        Height = 17
+        Caption = 'Mostrar no log de sa'#237'da as a'#231#245'es executadas'
+        TabOrder = 6
+        OnClick = CheckTruncFBClick
       end
     end
     object TabExceptions: TTabSheet
@@ -106,22 +148,17 @@ object WindowConfigs: TWindowConfigs
         Height = 73
         Caption = 'Tratamento de Erro'
         Columns = 2
-        ItemIndex = 2
+        ItemIndex = 0
         Items.Strings = (
-          'Parar a Migra'#231#227'o'
-          'Pular o Dado'
-          'Tratar Dado')
+          'Parar Migra'#231#227'o'
+          'Ignorar dado'
+          'Tratar dado')
         TabOrder = 0
-        OnClick = GroupCommitClick
       end
     end
     object TabFirebird: TTabSheet
       Caption = 'Firebird'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object CheckTruncFB: TCheckBox
         Left = 3
         Top = 3

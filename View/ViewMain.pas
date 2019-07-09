@@ -296,8 +296,8 @@ var
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
   ContRow, CommitStep: integer;
-  Commit, Limit, TruncFB, Error: integer;
-  ExceptionError: Exception;
+  LogActions, LogDatas, Commit, LimitStrs, LimitEnds, TruncFB, ErrorHdlg: integer;
+  Error: string;
   OutStr: string;
 begin
   //Chama do método sobreposto na classe mãe
@@ -315,12 +315,17 @@ begin
     Datas := DataFlex.ToMatrix;
 
     //Busca as configurações
-    TConfigs.GetGeneral(Commit, Limit, TruncFB, Error);
+    TConfigs.GetGeneral(LogActions, LogDatas, Commit, LimitStrs, LimitEnds, TruncFB, ErrorHdlg);
+
     Commit := TUtils.Iff(Commit = -1, DataFlex.GetRows, TUtils.IfLess(Commit, DataFlex.GetRows));
-    Limit := TUtils.Iff(Limit = -1, DataFlex.GetRows, TUtils.IfLess(Limit, DataFlex.GetRows));
+
+    LimitEnds := TUtils.Iff(LimitEnds = -1, DataFlex.GetRows, TUtils.IfLess(LimitEnds, DataFlex.GetRows));
+
+    LimitStrs := TUtils.Iff(LimitStrs = -1, 0, TUtils.IfLess(LimitStrs, LimitEnds));
+
     CommitStep := Commit;
 
-    //Trunca tabela Firebirds
+    //Trunca a tabela Firebird
     if TruncFB = 1 then
     begin
       TDAO.Truncate;
@@ -328,12 +333,14 @@ begin
 
     //Ajusta a barra de carregamento
     WindowMain.ProgressBar.Position := 0;
-    WindowMain.ProgressBar.Max := Limit;
+    WindowMain.ProgressBar.Max := LimitEnds;
 
-    ExceptionError := Exception.Create('');
+    Error := '';
+
+    ContRow := LimitStrs;
 
     //Passa por cada linha Dataflex
-    while ContRow <= Limit - 1 do
+    while ContRow <= LimitEnds - 1 do
     begin
       Inc(ContRow, 1);
       try
@@ -350,44 +357,59 @@ begin
           TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
 
           //Manda os dados para o log
-          WindowMain.Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
+          if LogDatas = 1 then
+          begin
+            WindowMain.Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
+          end;
 
           //Atualiza a barra de carregamento
           WindowMain.ProgressBar.StepIt;
 
           //Verifica o passo de commit
-          if (ContRow + 1 = CommitStep) or (ContRow + 1 >= Limit) then
+          if (ContRow + 1 = CommitStep) or (ContRow + 1 >= LimitEnds) then
           begin
             TDAO.Commit;
-            WindowMain.Log('COMITADO!');
+            if LogActions = 1 then
+            begin
+              WindowMain.Log('DADOS COMITADOS!');
+            end;
             CommitStep := CommitStep + Commit;
           end;
         end
         else
         begin
           //Quando a migração é interrompida
-          WindowMain.Log('PARADO!');
           break;
         end;
       Except on E: Exception do
-        ExceptionError := E;
+        Error := E.ToString;
       end;
 
-      if ExceptionError.ToString <> '' then
+      //Verifica se houve algum erro
+      if Error <> '' then
       begin
-        if Error = 0 then
+        //Parar migração
+        if ErrorHdlg = 0 then
         begin
-          WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + ExceptionError.ToString);
+          if LogActions = 1 then
+          begin
+            WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + Error);
+          end;
           WindowMain.ActStop.Execute;
         end
         else
-        if Error = 1 then
+        //Ignorar dado
+        if ErrorHdlg = 1 then
         begin
-          WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + ExceptionError.ToString);
-          WindowMain.Log('DADO PULADO');
+          if LogActions = 1 then
+          begin
+            WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + Error);
+            WindowMain.Log('DADO IGNORADO!');
+          end;
         end
+        //Tratar Dado
         else
-        if Error = 2 then
+        if ErrorHdlg = 2 then
         begin
           WindowDatas.ShowModal(ContRow + 1);
           if TMyDialogs.YesNo('Deseja reinserir o dado ' + ContRow.ToString + '?') = mrYes then
@@ -396,10 +418,13 @@ begin
           end;
         end;
 
-        ExceptionError := Exception.Create('');
+        Error := '';
       end;
     end;
-    WindowMain.Log('MIGRAÇÃO FINALIZADA!');
+    if LogActions = 1 then
+    begin
+      WindowMain.Log('MIGRAÇÃO FINALIZADA!');
+    end;
   finally
     WindowMain.NormalMode;
     FreeAndNil(Rows);

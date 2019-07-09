@@ -251,7 +251,7 @@ end;
 class procedure TDAO.Truncate;
 begin
   QuerySQL.SQL.Clear;
-  QuerySQL.SQL.Add('delete from ' + Table +' where id > 0');
+  QuerySQL.SQL.Add('delete from ' + Table +' where id >= 0');
   QuerySQL.ExecSQL;
   Commit;
   QuerySQL.SQL.Clear;

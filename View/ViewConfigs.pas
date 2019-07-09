@@ -10,7 +10,7 @@ uses
 
 type
   TWindowConfigs = class(TForm)
-    TxtLimit: TEdit;
+    TxtLimitStrs: TEdit;
     PageConfigs: TPageControl;
     TabMigration: TTabSheet;
     TabFirebird: TTabSheet;
@@ -25,6 +25,11 @@ type
     GroupLimit: TRadioGroup;
     TabExceptions: TTabSheet;
     GroupException: TRadioGroup;
+    TxtLimitEnds: TEdit;
+    LblUntil: TLabel;
+    LblFrom: TLabel;
+    CheckLogDatas: TCheckBox;
+    CheckLogActions: TCheckBox;
     procedure ActDiscardExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
     procedure GroupCommitClick(Sender: TObject);
@@ -91,12 +96,14 @@ begin
   DidChange := true;
   if GroupLimit.ItemIndex = 0 then
   begin
-    TxtLimit.Enabled := false;
+    TxtLimitStrs.Enabled := false;
+    TxtLimitEnds.Enabled := false;
   end
   else
   begin
-    TxtLimit.Enabled := true;
-    TxtLimit.SetFocus;
+    TxtLimitStrs.Enabled := true;
+    TxtLimitEnds.Enabled := true;
+    TxtLimitStrs.SetFocus;
   end;
 end;
 
@@ -109,14 +116,17 @@ end;
 //Salva todas as configurações
 procedure TWindowConfigs.ActSaveExecute(Sender: TObject);
 var
-  Commit, Limit, TruncFB, Error: integer;
+  LogActions, LogDatas, Commit, LimitStrs, LimitEnds, TruncFB, ErrorHdlg: integer;
 begin
+  LogActions := TUtils.Iff(CheckLogActions.Checked, 1, 0);
+  LogDatas := TUtils.Iff(CheckLogDatas.Checked, 1, 0);
   Commit := TUtils.Iff(GroupCommit.ItemIndex = 0, -1, TUtils.IfEmpty(TxtCommit.Text, '-1').ToInteger);
-  Limit := TUtils.Iff(GroupLimit.ItemIndex = 0, -1, TUtils.IfEmpty(TxtLimit.Text, '-1').ToInteger);
+  LimitStrs := TUtils.Iff(GroupLimit.ItemIndex = 0, -1, TUtils.IfEmpty(TxtLimitStrs.Text, '-1').ToInteger);
+  LimitEnds := TUtils.Iff(GroupLimit.ItemIndex = 0, -1, TUtils.IfEmpty(TxtLimitEnds.Text, '-1').ToInteger);
   TruncFB := TUtils.Iff(CheckTruncFB.Checked, 1, 0);
-  Error := GroupException.ItemIndex;
+  ErrorHdlg := GroupException.ItemIndex;
 
-  TConfigs.SetGeneral(Commit, Limit, TruncFB, Error);
+  TConfigs.SetGeneral(LogActions, LogDatas, Commit, LimitStrs, LimitEnds, TruncFB, ErrorHdlg);
 
   DidChange := false;
 
@@ -133,9 +143,14 @@ end;
 //Carregas as configurações definidas
 procedure TWindowConfigs.LoadConfigs;
 var
-  Commit, Limit, TruncFB, Error: integer;
+  LogActions, LogDatas, Commit, LimitStrs, LimitEnds, TruncFB, ErrorHdlg: integer;
 begin
-  TConfigs.GetGeneral(Commit, Limit, TruncFB, Error);
+  TConfigs.GetGeneral(LogActions, LogDatas, Commit, LimitStrs, LimitEnds, TruncFB, ErrorHdlg);
+
+  //Migração
+  CheckLogActions.Checked := (LogActions = 1);
+
+  CheckLogDatas.Checked := (LogDatas = 1);
 
   if Commit = -1 then
   begin
@@ -147,18 +162,21 @@ begin
     TxtCommit.Text := Commit.ToString;
   end;
 
-  if Limit = -1 then
+  if (LimitStrs = -1) and (LimitEnds = -1) then
   begin
     GroupLimit.ItemIndex := 0;
   end
   else
   begin
     GroupLimit.ItemIndex := 1;
-    TxtLimit.Text := Limit.ToString;
+    TxtLimitStrs.Text := TUtils.Iff(LimitStrs = -1, '', LimitStrs.ToString);
+    TxtLimitEnds.Text := TUtils.Iff(LimitEnds = -1, '', LimitEnds.ToString);
   end;
 
-  GroupException.ItemIndex := Error;
+  //Exceções
+  GroupException.ItemIndex := ErrorHdlg;
 
+  //Firebird
   CheckTruncFB.Checked := (TruncFB = 1);
 
   PageConfigs.TabIndex := 0;
