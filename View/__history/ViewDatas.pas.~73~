@@ -83,7 +83,7 @@ type
     procedure Done;
 
   public
-    function ShowModal(Row, Col: integer): integer; overload;
+    function ShowModal(Row: integer): integer; overload;
 
   end;
 
@@ -91,7 +91,7 @@ var
   WindowDatas: TWindowDatas;
   DidChange: boolean = false;
 
-  Mode: integer;
+  Mode: integer = 0;
   //0 -> Disable Mode
   //1 -> Select Mode
   //2 -> Normal Mode
@@ -257,7 +257,7 @@ begin
   Row := GridDatas.Row;
   Col := GridDatas.Col;
 
-  for Cont := -(GridDatas.ColCount - 1) to -Col - 1 do
+  for Cont := GridDatas.ColCount - 1 downto -Col - 1 do
   begin
     GridDatas.Cells[-Cont, Row] := GridDatas.Cells[(-Cont) - 1, Row];
   end;
@@ -594,13 +594,14 @@ begin
   ActSave.Enabled := false;
 end;
 
-function TWindowDatas.ShowModal(Row, Col: integer): integer;
+//Iniciar a janela com dados já selecionados
+function TWindowDatas.ShowModal(Row: integer): integer;
 begin
   Mode := 4;
   TxtRowsLimit.Text := '';
   FillGrid;
   GridDatas.Row := Row;
-  GridDatas.Col := Col;
+  GridDatas.Col := 1;
   NormalMode;
   inherited ShowModal;
 end;

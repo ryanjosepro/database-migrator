@@ -257,9 +257,9 @@ begin
   Row := GridDatas.Row;
   Col := GridDatas.Col;
 
-  for Cont := -(GridDatas.ColCount - 1) to -Col - 1 do
+  for Cont := GridDatas.ColCount - 1 downto Col + 1 do
   begin
-    GridDatas.Cells[-Cont, Row] := GridDatas.Cells[(-Cont) - 1, Row];
+    GridDatas.Cells[Cont, Row] := GridDatas.Cells[Cont - 1, Row];
   end;
 
   GridDatas.Cells[Col, Row] := '';
@@ -292,9 +292,9 @@ begin
 
   GridDatas.RowCount := GridDatas.RowCount + 1;
 
-  for Cont := -(GridDatas.RowCount - 1) to -Row - 1 do
+  for Cont := GridDatas.RowCount - 1 downto Row + 1 do
   begin
-    GridDatas.Rows[-Cont] := GridDatas.Rows[(-Cont) - 1];
+    GridDatas.Rows[Cont] := GridDatas.Rows[Cont - 1];
   end;
 
   GridDatas.Rows[Row].Clear;
@@ -339,9 +339,9 @@ begin
 
   GridDatas.ColCount := GridDatas.ColCount + 1;
 
-  for Cont := -(GridDatas.ColCount - 1) to -Col - 1 do
+  for Cont := GridDatas.ColCount - 1 downto Col + 1 do
   begin
-    GridDatas.Cols[-Cont] := GridDatas.Cols[(-Cont) - 1];
+    GridDatas.Cols[Cont] := GridDatas.Cols[Cont - 1];
   end;
 
   GridDatas.Cols[Col].Clear;
@@ -594,6 +594,7 @@ begin
   ActSave.Enabled := false;
 end;
 
+//Iniciar a janela com dados já selecionados
 function TWindowDatas.ShowModal(Row: integer): integer;
 begin
   Mode := 4;

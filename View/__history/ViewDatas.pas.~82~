@@ -83,7 +83,7 @@ type
     procedure Done;
 
   public
-    function ShowModal(Row, Col: integer): integer; overload;
+    function ShowModal(Row: integer): integer; overload;
 
   end;
 
@@ -91,7 +91,7 @@ var
   WindowDatas: TWindowDatas;
   DidChange: boolean = false;
 
-  Mode: integer;
+  Mode: integer = 0;
   //0 -> Disable Mode
   //1 -> Select Mode
   //2 -> Normal Mode
@@ -107,32 +107,35 @@ procedure TWindowDatas.FormActivate(Sender: TObject);
 var
   FilePath: string;
 begin
-  FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
-  if FilePath <> '' then
+  if Mode <> 4 then
   begin
-    if FilePath <> TxtFileName.Caption then
+    FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
+    if FilePath <> '' then
     begin
-      CleanGrid;
-      SelectMode;
-    end
-    else
-    begin
-      if GridIsClean then
+      if FilePath <> TxtFileName.Caption then
       begin
+        CleanGrid;
         SelectMode;
       end
       else
       begin
-        NormalMode;
-        UpdateGrid;
+        if GridIsClean then
+        begin
+          SelectMode;
+        end
+        else
+        begin
+          NormalMode;
+          UpdateGrid;
+        end;
       end;
+    end
+    else
+    begin
+      DisableMode;
     end;
-  end
-  else
-  begin
-    DisableMode;
+    Done;
   end;
-  Done;
 end;
 
 //Quando a janela é fechada
@@ -254,9 +257,9 @@ begin
   Row := GridDatas.Row;
   Col := GridDatas.Col;
 
-  for Cont := -(GridDatas.ColCount - 1) to -Col - 1 do
+  for Cont := GridDatas.ColCount - 1 downto Col + 1 do
   begin
-    GridDatas.Cells[-Cont, Row] := GridDatas.Cells[(-Cont) - 1, Row];
+    GridDatas.Cells[Cont, Row] := GridDatas.Cells[Cont - 1, Row];
   end;
 
   GridDatas.Cells[Col, Row] := '';
@@ -289,9 +292,9 @@ begin
 
   GridDatas.RowCount := GridDatas.RowCount + 1;
 
-  for Cont := -(GridDatas.RowCount - 1) to -Row - 1 do
+  for Cont := GridDatas.RowCount - 1 downto Row + 1 do
   begin
-    GridDatas.Rows[-Cont] := GridDatas.Rows[(-Cont) - 1];
+    GridDatas.Rows[Cont] := GridDatas.Rows[Cont - 1];
   end;
 
   GridDatas.Rows[Row].Clear;
@@ -336,9 +339,9 @@ begin
 
   GridDatas.ColCount := GridDatas.ColCount + 1;
 
-  for Cont := -(GridDatas.ColCount - 1) to -Col - 1 do
+  for Cont := GridDatas.ColCount - 1 downto Col + 1 do
   begin
-    GridDatas.Cols[-Cont] := GridDatas.Cols[(-Cont) - 1];
+    GridDatas.Cols[Cont] := GridDatas.Cols[Cont - 1];
   end;
 
   GridDatas.Cols[Col].Clear;
@@ -584,17 +587,22 @@ begin
   ActSave.Enabled := true;
 end;
 
-//Quando as alterãções são salvas ou descartadas
+//Quando as alterações são salvas ou descartadas
 procedure TWindowDatas.Done;
 begin
   DidChange := false;
   ActSave.Enabled := false;
 end;
 
-function TWindowDatas.ShowModal(Row, Col: integer): integer;
+//Iniciar a janela com dados já selecionados
+function TWindowDatas.ShowModal(Row: integer): integer;
 begin
   Mode := 4;
+  TxtRowsLimit.Text := '';
   FillGrid;
+  GridDatas.Row := Row;
+  GridDatas.Col := 1;
+  NormalMode;
   inherited ShowModal;
 end;
 
