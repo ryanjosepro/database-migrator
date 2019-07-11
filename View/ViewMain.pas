@@ -55,6 +55,7 @@ type
   TMigration = class(TThread)
   protected
     procedure Execute; override;
+    procedure Log(Msg: string);
   public
     constructor Create;
   end;
@@ -296,7 +297,7 @@ var
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
   ContRow, CommitStep: integer;
-  LogActions, LogDatas, Commit, LimitStrs, LimitEnds, TruncFB, ErrorHdlg: integer;
+  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer;
   Error: string;
   OutStr: string;
 begin
@@ -315,13 +316,13 @@ begin
     Datas := DataFlex.ToMatrix;
 
     //Busca as configurações
-    TConfigs.GetGeneral(LogActions, LogDatas, Commit, LimitStrs, LimitEnds, TruncFB, ErrorHdlg);
+    TConfigs.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
 
-    Commit := TUtils.Iff(Commit = -1, DataFlex.GetRows, TUtils.IfLess(Commit, DataFlex.GetRows));
+    Commit := TUtils.IffLess(Commit = -1, DataFlex.GetRows, Commit);
 
-    LimitEnds := TUtils.Iff(LimitEnds = -1, DataFlex.GetRows, TUtils.IfLess(LimitEnds, DataFlex.GetRows));
+    LimitEnds := TUtils.Iff(LimitEnds = -1, DataFlex.GetRows, LimitEnds);
 
-    LimitStrs := TUtils.Iff(LimitStrs = -1, 0, TUtils.IfLess(LimitStrs, LimitEnds));
+    LimitStarts := TUtils.Iff(LimitStarts = -1, 1, LimitStarts);
 
     CommitStep := Commit;
 
@@ -337,12 +338,11 @@ begin
 
     Error := '';
 
-    ContRow := LimitStrs;
+    ContRow := LimitStarts - 1;
 
     //Passa por cada linha Dataflex
     while ContRow <= LimitEnds - 1 do
     begin
-      Inc(ContRow, 1);
       try
         //Verifica se a migração foi pausada
         while MigrationPaused do
@@ -359,7 +359,7 @@ begin
           //Manda os dados para o log
           if LogDatas = 1 then
           begin
-            WindowMain.Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
+            Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
           end;
 
           //Atualiza a barra de carregamento
@@ -371,7 +371,7 @@ begin
             TDAO.Commit;
             if LogActions = 1 then
             begin
-              WindowMain.Log('DADOS COMITADOS!');
+              Log('DADOS COMITADOS!');
             end;
             CommitStep := CommitStep + Commit;
           end;
@@ -379,6 +379,7 @@ begin
         else
         begin
           //Quando a migração é interrompida
+          TDAO.Rollback;
           break;
         end;
       Except on E: Exception do
@@ -393,7 +394,7 @@ begin
         begin
           if LogActions = 1 then
           begin
-            WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + Error);
+            Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + Error);
           end;
           WindowMain.ActStop.Execute;
         end
@@ -403,8 +404,8 @@ begin
         begin
           if LogActions = 1 then
           begin
-            WindowMain.Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + Error);
-            WindowMain.Log('DADO IGNORADO!');
+            Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + Error);
+            Log('DADO IGNORADO!');
           end;
         end
         //Tratar Dado
@@ -420,16 +421,22 @@ begin
 
         Error := '';
       end;
+      Inc(ContRow, 1);
     end;
     if LogActions = 1 then
     begin
-      WindowMain.Log('MIGRAÇÃO FINALIZADA!');
+      Log('MIGRAÇÃO FINALIZADA!');
     end;
   finally
     WindowMain.NormalMode;
     FreeAndNil(Rows);
     FreeAndNil(DataFlex);
   end;
+end;
+
+procedure TMigration.Log(Msg: string);
+begin
+  WindowMain.Log(Msg);
 end;
 
 end.

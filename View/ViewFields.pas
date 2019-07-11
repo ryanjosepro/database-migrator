@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, System.Variants, Winapi.Windows, Winapi.Messages, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, shlObj,
-  Arrays, MyUtils, Configs, DAO;
+  Arrays, MyUtils, MyDialogs, Configs, DAO;
 
 type
   TWindowFields = class(TForm)
@@ -110,7 +110,7 @@ begin
       Rows := TUtils.Extract(Arq, 0, '{$DEFAULTS$}');
       GridFields.Cols[3].Clear;
       GridFields.Cells[3, 0] := 'Nº Campo Dataflex';
-      for  Cont := 0 to TUtils.Iff(Rows.Count < GridFields.RowCount - 1, Rows.Count, GridFields.RowCount - 1) - 1 do
+      for  Cont := 0 to TUtils.IfLess(Rows.Count, GridFields.RowCount - 1) - 1 do
       begin
         GridFields.Cells[3, Cont + 1] := Rows[Cont];
       end;
@@ -118,7 +118,7 @@ begin
       Rows := TUtils.Extract(Arq, '{$DEFAULTS$}', Arq.Count - 1);
       GridFields.Cols[4].Clear;
       GridFields.Cells[4, 0] := 'Valor Padrão';
-      for  Cont := 0 to TUtils.Iff(Rows.Count < GridFields.RowCount - 1, Rows.Count, GridFields.RowCount - 1) - 1 do
+      for  Cont := 0 to TUtils.IfLess(Rows.Count, GridFields.RowCount - 1) - 1 do
       begin
         GridFields.Cells[4, Cont + 1] := Rows[Cont];
       end;
@@ -163,10 +163,14 @@ end;
 
 //Apaga todos os dados da tabela Firebird
 procedure TWindowFields.ActTruncFBExecute(Sender: TObject);
+var
+  Answer: integer;
 begin
-  case MessageDlg('Deseja apagar todos os dados da tabela ' + TConfigs.GetConfig('DB', 'Table') + '?', mtConfirmation, mbYesNo, 0, mbNo) of
-  mrYes:
+  Answer :=  TMyDialogs.YesNo('Deseja apagar todos os dados da tabela ' + TConfigs.GetConfig('DB', 'Table') + '?');
+  if Answer = mrYes then
+  begin
     TDAO.Truncate;
+    TDAO.Commit;
   end;
 end;
 
