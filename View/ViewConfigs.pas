@@ -35,8 +35,8 @@ type
     procedure GroupCommitClick(Sender: TObject);
     procedure GroupLimitClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure CheckTruncFBClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure SomeChange(Sender: TObject);
 
   private
     procedure LoadConfigs;
@@ -108,7 +108,7 @@ begin
 end;
 
 //Quando o CheckTruncFB é alterado
-procedure TWindowConfigs.CheckTruncFBClick(Sender: TObject);
+procedure TWindowConfigs.SomeChange(Sender: TObject);
 begin
   DidChange := true;
 end;

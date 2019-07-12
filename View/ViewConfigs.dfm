@@ -126,7 +126,7 @@ object WindowConfigs: TWindowConfigs
         Height = 17
         Caption = 'Mostrar no log de sa'#237'da os dados inseridos'
         TabOrder = 5
-        OnClick = CheckTruncFBClick
+        OnClick = SomeChange
       end
       object CheckLogActions: TCheckBox
         Left = 3
@@ -135,7 +135,7 @@ object WindowConfigs: TWindowConfigs
         Height = 17
         Caption = 'Mostrar no log de sa'#237'da as a'#231#245'es executadas'
         TabOrder = 6
-        OnClick = CheckTruncFBClick
+        OnClick = SomeChange
       end
     end
     object TabExceptions: TTabSheet
@@ -154,6 +154,7 @@ object WindowConfigs: TWindowConfigs
           'Ignorar dado'
           'Tratar dado')
         TabOrder = 0
+        OnClick = SomeChange
       end
     end
     object TabFirebird: TTabSheet
@@ -166,7 +167,7 @@ object WindowConfigs: TWindowConfigs
         Height = 17
         Caption = 'Truncar tabela firebird ao iniciar migra'#231#227'o'
         TabOrder = 0
-        OnClick = CheckTruncFBClick
+        OnClick = SomeChange
       end
     end
   end

@@ -84,12 +84,14 @@ implementation
 --> TO DO <--
 
 -To improve DataFlex class;
--To reduce codes on View units;
 -To add a option to create a table on migration (By Danilo);
+-To fix ViewDatas cutting the lines when setting a limit for them;
 
 --> DOING <--
 
+-To reduce codes on View units;
 -To create a error handling on ViewConfigs;
+
 }
 
 {$R *.dfm}
@@ -181,15 +183,18 @@ begin
   begin
     Ok := false;
     ShowMessage('Selecione uma tabela válida!');
+    WindowFields.ShowModal;
   end
   else if WindowFields.IsClean then
   begin
     Ok := false;
     ShowMessage('Configure os campos!');
+    WindowFields.ShowModal;
   end
   else if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
   begin
     Ok := false;
+    ShowMessage('Selecione um arquivo!');
     if OpenFile.Execute then
     begin
       Ok := true;
@@ -359,7 +364,7 @@ begin
           //Manda os dados para o log
           if LogDatas = 1 then
           begin
-            Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
+              Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
           end;
 
           //Atualiza a barra de carregamento
@@ -410,12 +415,23 @@ begin
         end
         //Tratar Dado
         else
+        ShowMessage('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + Error);
         if ErrorHdlg = 2 then
         begin
-          WindowDatas.ShowModal(ContRow + 1);
-          if TMyDialogs.YesNo('Deseja reinserir o dado ' + ContRow.ToString + '?') = mrYes then
+          Synchronize(
+          procedure
+          begin
+            WindowDatas.ShowModal(ContRow + 1);
+          end
+          );
+          if TMyDialogs.YesNo('Deseja reinserir o dado ' + (ContRow + 1).ToString + '?', mbYes) = mrYes then
           begin
             ContRow := ContRow - 1;
+          end
+          else
+          begin
+            Log('ERRO NO DADO ' + (ContRow + 1).ToString + ' -> ' + Error);
+            Log('DADO IGNORADO!');
           end;
         end;
 

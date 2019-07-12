@@ -3619,6 +3619,14 @@ object WindowDatas: TWindowDatas
       TabOrder = 0
       OnKeyDown = TxtRowsLimitKeyDown
     end
+    object CheckLimitConsider: TCheckBox
+      Left = 288
+      Top = 8
+      Width = 145
+      Height = 17
+      Caption = 'Considerar limite ao salvar'
+      TabOrder = 1
+    end
   end
   object Images: TImageList
     Height = 64
@@ -3626,7 +3634,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 568
     Bitmap = {
-      494C01010300D8005C0240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800600240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF

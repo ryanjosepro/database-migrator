@@ -49,6 +49,7 @@ type
     BtnSaveAs: TSpeedButton;
     SaveFile: TFileSaveDialog;
     TxtFileName: TLabel;
+    CheckLimitConsider: TCheckBox;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -452,7 +453,14 @@ end;
 //Modo Buttons desabilitados
 procedure TWindowDatas.DisableMode;
 begin
+  TxtFileName.Caption := '';
   TxtRowsLimit.Enabled := false;
+  LblTotRows.Caption := 'Dados:';
+  LblTotCols.Caption := 'Campos:';
+  ActOpenFile.ImageIndex := 1;
+  BtnOpenFile.Action := ActOpenFile;
+  TxtRowsLimit.Clear;
+  CheckLimitConsider.Enabled := false;
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -465,15 +473,34 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-  LblTotRows.Caption := 'Dados:';
-  LblTotCols.Caption := 'Campos:';
-  TxtRowsLimit.Clear;
   Mode := 0;
 end;
 
 //Modo Button Select ativado
 procedure TWindowDatas.SelectMode;
 begin
+  //TxtFileName.Caption := '';
+  TxtRowsLimit.Enabled := true;
+  LblTotRows.Caption := 'Dados:';
+  LblTotCols.Caption := 'Campos:';
+  ActOpenFile.ImageIndex := 1;
+  BtnOpenFile.Action := ActOpenFile;
+  TxtRowsLimit.Clear;
+  CheckLimitConsider.Enabled := false;
+  ActSelect.Enabled := false;
+  ActAlter.Enabled := false;
+  ActSave.Enabled := false;
+  ActSaveAs.Enabled := false;
+  ActCancel.Enabled := false;
+  ActAddCell.Enabled := false;
+  ActDelCell.Enabled := false;
+  ActAddRow.Enabled := false;
+  ActDelRow.Enabled := false;
+  ActAddCol.Enabled := false;
+  ActDelCol.Enabled := false;
+  GridDatas.Options := GridDatas.Options - [goEditing];
+  Mode := 0;
+
   TxtRowsLimit.Enabled := true;
   TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
   ActOpenFile.ImageIndex := 2;
@@ -493,6 +520,7 @@ begin
   LblTotRows.Caption := 'Dados:';
   LblTotCols.Caption := 'Campos:';
   TxtRowsLimit.Clear;
+  CheckLimitConsider.Enabled := true;
   Mode := 1;
 end;
 
@@ -540,7 +568,7 @@ begin
   Mode := 3;
 end;
 
-//Muda a Cell selecionada na Grid para atualizá-la
+//Desfoca e foca na tabela para atualizá-la
 procedure TWindowDatas.UpdateGrid;
 begin
   TxtRowsLimit.SetFocus;
