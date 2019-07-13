@@ -454,11 +454,15 @@ end;
 procedure TWindowDatas.DisableMode;
 begin
   TxtFileName.Caption := '';
-  TxtRowsLimit.Enabled := false;
   LblTotRows.Caption := 'Dados:';
   LblTotCols.Caption := 'Campos:';
+  ActOpenFile.Enabled := true;
   ActOpenFile.ImageIndex := 1;
   BtnOpenFile.Action := ActOpenFile;
+  ActConfigFields.Enabled := true;
+  TxtRowsLimit.Enabled := false;
+  TxtRowsLimit.Clear;
+  CheckLimitConsider.Enabled := false;
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -471,19 +475,22 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-
-  TxtRowsLimit.Clear;
-  CheckLimitConsider.Enabled := false;
   Mode := 0;
 end;
 
 //Modo Button Select ativado
 procedure TWindowDatas.SelectMode;
 begin
-  TxtRowsLimit.Enabled := true;
-  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
-  ActOpenFile.ImageIndex := 2;
+  //TxtFileName.Caption := '';
+  //LblTotRows.Caption := 'Dados:';
+  //LblTotCols.Caption := 'Campos:';
+  ActOpenFile.Enabled := true;
+  ActOpenFile.ImageIndex := 1;
   BtnOpenFile.Action := ActOpenFile;
+  ActConfigFields.Enabled := true;
+  TxtRowsLimit.Enabled := true;
+  TxtRowsLimit.Clear;
+  CheckLimitConsider.Enabled := true;
   ActSelect.Enabled := true;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -496,24 +503,26 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-  LblTotRows.Caption := 'Dados:';
-  LblTotCols.Caption := 'Campos:';
-  TxtRowsLimit.Clear;
-  CheckLimitConsider.Enabled := true;
   Mode := 1;
 end;
 
 //Modo Buttons normais
 procedure TWindowDatas.NormalMode;
 begin
-  TxtRowsLimit.Enabled := true;
-  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
-  ActOpenFile.ImageIndex := 2;
+  //TxtFileName.Caption := '';
+  //LblTotRows.Caption := 'Dados:';
+  //LblTotCols.Caption := 'Campos:';
+  ActOpenFile.Enabled := true;
+  ActOpenFile.ImageIndex := 1;
   BtnOpenFile.Action := ActOpenFile;
+  ActConfigFields.Enabled := true;
+  TxtRowsLimit.Enabled := true;
+  //TxtRowsLimit.Clear;
+  CheckLimitConsider.Enabled := true;
   ActSelect.Enabled := true;
   ActAlter.Enabled := true;
   ActSave.Enabled := false;
-  ActSaveAs.Enabled := true;
+  ActSaveAs.Enabled := false;
   ActCancel.Enabled := false;
   ActAddCell.Enabled := false;
   ActDelCell.Enabled := false;
@@ -528,23 +537,29 @@ end;
 //Modo Buttons em alteração
 procedure TWindowDatas.AlterMode;
 begin
+  //TxtFileName.Caption := '';
+  //LblTotRows.Caption := 'Dados:';
+  //LblTotCols.Caption := 'Campos:';
+  ActOpenFile.Enabled := false;
+  //ActOpenFile.ImageIndex := 1;
+  //BtnOpenFile.Action := ActOpenFile;
+  ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
-  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
-  ActOpenFile.ImageIndex := 2;
-  BtnOpenFile.Action := ActOpenFile;
+  //TxtRowsLimit.Clear;
+  CheckLimitConsider.Enabled := true;
   ActSelect.Enabled := true;
-  ActAlter.Enabled := false;
+  ActAlter.Enabled := true;
   ActSave.Enabled := false;
-  ActSaveAs.Enabled := true;
-  ActCancel.Enabled := true;
-  ActAddCell.Enabled := true;
-  ActDelCell.Enabled := true;
-  ActAddRow.Enabled := true;
-  ActDelRow.Enabled := true;
-  ActAddCol.Enabled := true;
-  ActDelCol.Enabled := true;
-  GridDatas.Options := GridDatas.Options + [goEditing];
-  Mode := 3;
+  ActSaveAs.Enabled := false;
+  ActCancel.Enabled := false;
+  ActAddCell.Enabled := false;
+  ActDelCell.Enabled := false;
+  ActAddRow.Enabled := false;
+  ActDelRow.Enabled := false;
+  ActAddCol.Enabled := false;
+  ActDelCol.Enabled := false;
+  GridDatas.Options := GridDatas.Options - [goEditing];
+  Mode := 2;
 end;
 
 //Desfoca e foca na tabela para atualizá-la
