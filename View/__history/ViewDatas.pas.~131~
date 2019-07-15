@@ -428,8 +428,7 @@ begin
   GridDatas.RowCount := 2;
   GridDatas.ColCount := 2;
   GridDatas.Rows[0].Clear;
-  GridDatas.Cols[0].Clear;
-  GridDatas.Cols[1].Clear;
+  GridDatas.Rows[1].Clear;
 end;
 
 //Retorna os dados da Grid em linhas numa StringList
@@ -515,13 +514,14 @@ begin
   ActOpenFile.Enabled := true;
   ActOpenFile.ImageIndex := 1;
   BtnOpenFile.Action := ActOpenFile;
+  ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
   //TxtRowsLimit.Clear;
   CheckLimitConsider.Enabled := true;
   ActSelect.Enabled := true;
   ActAlter.Enabled := true;
   ActSave.Enabled := false;
-  ActSaveAs.Enabled := false;
+  ActSaveAs.Enabled := true;
   ActCancel.Enabled := false;
   ActAddCell.Enabled := false;
   ActDelCell.Enabled := false;
@@ -539,25 +539,26 @@ begin
   //TxtFileName.Caption := '';
   //LblTotRows.Caption := 'Dados:';
   //LblTotCols.Caption := 'Campos:';
-  ActOpenFile.Enabled := true;
-  ActOpenFile.ImageIndex := 1;
-  BtnOpenFile.Action := ActOpenFile;
-  TxtRowsLimit.Enabled := true;
+  ActOpenFile.Enabled := false;
+  //ActOpenFile.ImageIndex := 1;
+  //BtnOpenFile.Action := ActOpenFile;
+  ActConfigFields.Enabled := true;
+  TxtRowsLimit.Enabled := false;
   //TxtRowsLimit.Clear;
   CheckLimitConsider.Enabled := true;
-  ActSelect.Enabled := true;
-  ActAlter.Enabled := true;
+  ActSelect.Enabled := false;
+  ActAlter.Enabled := false;
   ActSave.Enabled := false;
-  ActSaveAs.Enabled := false;
-  ActCancel.Enabled := false;
-  ActAddCell.Enabled := false;
-  ActDelCell.Enabled := false;
-  ActAddRow.Enabled := false;
-  ActDelRow.Enabled := false;
-  ActAddCol.Enabled := false;
-  ActDelCol.Enabled := false;
-  GridDatas.Options := GridDatas.Options - [goEditing];
-  Mode := 2;
+  ActSaveAs.Enabled := true;
+  ActCancel.Enabled := true;
+  ActAddCell.Enabled := true;
+  ActDelCell.Enabled := true;
+  ActAddRow.Enabled := true;
+  ActDelRow.Enabled := true;
+  ActAddCol.Enabled := true;
+  ActDelCol.Enabled := true;
+  GridDatas.Options := GridDatas.Options + [goEditing];
+  Mode := 3;
 end;
 
 //Desfoca e foca na tabela para atualizá-la

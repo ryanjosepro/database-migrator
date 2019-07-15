@@ -79,6 +79,7 @@ type
     procedure AlterMode;
     procedure UpdateGrid;
     procedure GridSize(RowCount, ColCount: integer);
+    procedure GridInfos;
     procedure GridTitles;
     procedure Altered;
     procedure Done;
@@ -425,11 +426,9 @@ end;
 //Limpa os dados da Grid
 procedure TWindowDatas.CleanGrid;
 begin
-  GridDatas.RowCount := 2;
-  GridDatas.ColCount := 2;
+  GridSize(2, 2);
   GridDatas.Rows[0].Clear;
-  GridDatas.Cols[0].Clear;
-  GridDatas.Cols[1].Clear;
+  GridDatas.Rows[1].Clear;
 end;
 
 //Retorna os dados da Grid em linhas numa StringList
@@ -576,6 +575,13 @@ procedure TWindowDatas.GridSize(RowCount, ColCount: integer);
 begin
   GridDatas.RowCount := RowCount + 2;
   GridDatas.ColCount := ColCount + 2;
+end;
+
+//Insere as informações da tabela
+procedure TWindowDatas.GridInfos;
+begin
+  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
+
 end;
 
 //Insere os titulos das linhas e colunas fixadas na Grid
