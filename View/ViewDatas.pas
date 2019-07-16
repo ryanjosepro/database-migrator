@@ -17,7 +17,7 @@ type
     LblTotCols: TLabel;
     BtnFields: TSpeedButton;
     Images: TImageList;
-    Actions: TActionList;
+    s: TActionList;
     ActConfigFields: TAction;
     BtnSelect: TSpeedButton;
     ActSelect: TAction;
@@ -77,9 +77,8 @@ type
     procedure SelectMode;
     procedure NormalMode;
     procedure AlterMode;
-    procedure UpdateGrid;
+    procedure RefreshGrid;
     procedure GridSize(RowCount, ColCount: integer);
-    procedure GridInfos;
     procedure GridTitles;
     procedure Altered;
     procedure Done;
@@ -128,7 +127,6 @@ begin
         else
         begin
           NormalMode;
-          UpdateGrid;
         end;
       end;
     end
@@ -165,6 +163,7 @@ begin
     begin
       TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
       CleanGrid;
+      GridTitles;
       SelectMode;
     end;
   end;
@@ -180,7 +179,6 @@ end;
 procedure TWindowDatas.ActSelectExecute(Sender: TObject);
 begin
   try
-    UpdateGrid;
     FillGrid;
     NormalMode;
     Done;
@@ -223,7 +221,6 @@ end;
 //Salva as alterações feitas no aquivo
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
 begin
-  UpdateGrid;
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
   NormalMode;
   Done;
@@ -239,10 +236,9 @@ begin
   end;
 end;
 
-//Cancela as alteraçõe
+//Cancela as alterações
 procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
-  UpdateGrid;
   if DidChange then
   begin
     FillGrid;
@@ -266,6 +262,8 @@ begin
 
   GridDatas.Cells[Col, Row] := '';
 
+  RefreshGrid;
+
   Altered;
 end;
 
@@ -282,6 +280,10 @@ begin
     GridDatas.Cells[Cont, Row] := GridDatas.Cells[Cont + 1, Row];
   end;
 
+  GridDatas.Cells[GridDatas.ColCount - 1, Row] := '';
+
+  RefreshGrid;
+
   Altered;
 end;
 
@@ -292,7 +294,7 @@ var
 begin
   Row := GridDatas.Row;
 
-  GridDatas.RowCount := GridDatas.RowCount + 1;
+  GridSize(GridDatas.RowCount + 1, GridDatas.ColCount);
 
   for Cont := GridDatas.RowCount - 1 downto Row + 1 do
   begin
@@ -301,9 +303,7 @@ begin
 
   GridDatas.Rows[Row].Clear;
 
-  GridTitles;
-
-  UpdateGrid;
+  RefreshGrid;
 
   Altered;
 end;
@@ -319,14 +319,14 @@ begin
   begin
     GridDatas.RowCount := GridDatas.RowCount - 1;
 
+    GridSize(GridDatas.RowCount - 1, GridDatas.ColCount);
+
     for Cont := Row to GridDatas.RowCount - 1 do
     begin
       GridDatas.Rows[Cont] := GridDatas.Rows[Cont + 1];
     end;
 
-    GridTitles;
-
-    UpdateGrid;
+    RefreshGrid;
 
     Altered;
   end;
@@ -339,7 +339,7 @@ var
 begin
   Col := GridDatas.Col;
 
-  GridDatas.ColCount := GridDatas.ColCount + 1;
+  GridSize(GridDatas.RowCount, GridDatas.ColCount + 1);
 
   for Cont := GridDatas.ColCount - 1 downto Col + 1 do
   begin
@@ -348,9 +348,7 @@ begin
 
   GridDatas.Cols[Col].Clear;
 
-  GridTitles;
-
-  UpdateGrid;
+  RefreshGrid;
 
   Altered;
 end;
@@ -364,16 +362,14 @@ begin
 
   if (GridDatas.ColCount > 2) and (Col <> GridDatas.ColCount - 1) then
   begin
-    GridDatas.ColCount := GridDatas.ColCount - 1;
+    GridSize(GridDatas.RowCount, GridDatas.ColCount - 1);
 
     for Cont := Col to GridDatas.ColCount - 1 do
     begin
       GridDatas.Cols[Cont] := GridDatas.Cols[Cont + 1];
     end;
 
-    GridTitles;
-
-    UpdateGrid;
+    RefreshGrid;
 
     Altered;
   end;
@@ -412,8 +408,6 @@ begin
 
   GridSize(TotRows, DataFlex.GetCols);
 
-  GridTitles;
-
   for ContRow := 1 to TotRows do
   begin
     for ContCol := 1 to DataFlex.GetCols do
@@ -426,7 +420,7 @@ end;
 //Limpa os dados da Grid
 procedure TWindowDatas.CleanGrid;
 begin
-  GridSize(2, 2);
+  GridSize(0, 0);
   GridDatas.Rows[0].Clear;
   GridDatas.Rows[1].Clear;
 end;
@@ -562,33 +556,21 @@ begin
 end;
 
 //Desfoca e foca na tabela para atualizá-la
-procedure TWindowDatas.UpdateGrid;
+procedure TWindowDatas.RefreshGrid;
 begin
   TxtRowsLimit.SetFocus;
   GridDatas.SetFocus;
-  LblTotRows.Caption := 'Dados: ' + (GridDatas.RowCount - 2).ToString;
-  LblTotCols.Caption := 'Campos: ' + (GridDatas.ColCount - 2).ToString;
 end;
 
 //Define o tamanho da Grid
 procedure TWindowDatas.GridSize(RowCount, ColCount: integer);
-begin
-  GridDatas.RowCount := RowCount + 2;
-  GridDatas.ColCount := ColCount + 2;
-end;
-
-//Insere as informações da tabela
-procedure TWindowDatas.GridInfos;
-begin
-  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
-
-end;
-
-//Insere os titulos das linhas e colunas fixadas na Grid
-procedure TWindowDatas.GridTitles;
 var
   Cont: integer;
 begin
+  GridDatas.RowCount := RowCount + 2;
+  GridDatas.ColCount := ColCount + 2;
+
+  //Insere os titulos das linhas e colunas fixadas na Grid
   for Cont := 1 to GridDatas.RowCount - 2 do
   begin
     GridDatas.Cells[0, Cont] := 'Dado ' + Cont.ToString;
@@ -606,6 +588,14 @@ begin
   GridDatas.Cols[GridDatas.ColCount - 1].Clear;
 
   GridDatas.Cells[GridDatas.ColCount - 1, 0] := '    +';
+end;
+
+//Insere as informações da tabela
+procedure TWindowDatas.GridTitles;
+begin
+  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
+  LblTotRows.Caption := 'Dados: ' + (GridDatas.RowCount - 2).ToString;
+  LblTotCols.Caption := 'Campos: ' + (GridDatas.ColCount - 2).ToString;
 end;
 
 //Quando a Grid é editada
