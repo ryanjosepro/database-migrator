@@ -315,7 +315,7 @@ begin
 
     //Passa a StringList para a classe de tratamento
     DataFlex := TDataFlex.Create(Rows, ';');
-    SetLength(Datas, DataFlex.GetRows, DataFlex.GetCols);
+    SetLength(Datas, DataFlex.GetRowCount, DataFlex.GetColCount);
 
     //A classe de tratamento retorna uma matriz
     Datas := DataFlex.ToMatrix;
@@ -323,9 +323,9 @@ begin
     //Busca as configurações
     TConfigs.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
 
-    Commit := TUtils.IffLess(Commit = -1, DataFlex.GetRows, Commit);
+    Commit := TUtils.IffLess(Commit = -1, DataFlex.GetRowCount, Commit);
 
-    LimitEnds := TUtils.Iff(LimitEnds = -1, DataFlex.GetRows, LimitEnds);
+    LimitEnds := TUtils.Iff(LimitEnds = -1, DataFlex.GetRowCount, LimitEnds);
 
     LimitStarts := TUtils.Iff(LimitStarts = -1, 1, LimitStarts);
 
