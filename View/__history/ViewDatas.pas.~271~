@@ -49,6 +49,7 @@ type
     SaveFile: TFileSaveDialog;
     TxtFileName: TLabel;
     CheckLimitConsider: TCheckBox;
+    TxtRefresh: TEdit;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -77,8 +78,8 @@ type
     procedure NormalMode;
     procedure AlterMode;
     procedure RefreshGrid;
-    procedure GridSize(RowCount, ColCount: integer);
-    procedure GridTitles;
+    procedure GetGridTitles;
+    procedure GetFileInfos;
     procedure Altered;
     procedure Done;
 
@@ -115,14 +116,14 @@ begin
       if FilePath <> TxtFileName.Caption then
       begin
         CleanGrid;
-        GridTitles;
+        GetFileInfos;
         SelectMode;
       end
       else
       begin
         if GridIsClean then
         begin
-          GridTitles;
+          GetFileInfos;
           SelectMode;
         end
         else
@@ -164,7 +165,7 @@ begin
     begin
       TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
       CleanGrid;
-      GridTitles;
+      GetFileInfos;
       SelectMode;
     end;
   end;
@@ -295,16 +296,22 @@ var
 begin
   Row := GridDatas.Row;
 
-  GridSize(GridDatas.RowCount + 1, GridDatas.ColCount);
+  GridDatas.RowCount := GridDatas.RowCount + 1;
 
   for Cont := GridDatas.RowCount - 1 downto Row + 1 do
   begin
     GridDatas.Rows[Cont] := GridDatas.Rows[Cont - 1];
   end;
 
-  GridDatas.Rows[Row].Clear;
+  if Row = GridDatas.RowCount + 1 then
+  begin
+    GridDatas.Rows[Row].Clear;
+    ShowMessage('Ultima Linha');
+  end;
 
-  RefreshGrid;
+  GetGridTitles;
+
+  //RefreshGrid;
 
   Altered;
 end;
@@ -320,12 +327,12 @@ begin
   begin
     GridDatas.RowCount := GridDatas.RowCount - 1;
 
-    GridSize(GridDatas.RowCount - 1, GridDatas.ColCount);
-
     for Cont := Row to GridDatas.RowCount - 1 do
     begin
       GridDatas.Rows[Cont] := GridDatas.Rows[Cont + 1];
     end;
+
+    GetGridTitles;
 
     RefreshGrid;
 
@@ -340,7 +347,7 @@ var
 begin
   Col := GridDatas.Col;
 
-  GridSize(GridDatas.RowCount, GridDatas.ColCount + 1);
+  GridDatas.ColCount := GridDatas.ColCount + 1;
 
   for Cont := GridDatas.ColCount - 1 downto Col + 1 do
   begin
@@ -348,6 +355,8 @@ begin
   end;
 
   GridDatas.Cols[Col].Clear;
+
+  GetGridTitles;
 
   RefreshGrid;
 
@@ -363,12 +372,14 @@ begin
 
   if (GridDatas.ColCount > 2) and (Col <> GridDatas.ColCount - 1) then
   begin
-    GridSize(GridDatas.RowCount, GridDatas.ColCount - 1);
+    GridDatas.ColCount := GridDatas.ColCount - 1;
 
     for Cont := Col to GridDatas.ColCount - 1 do
     begin
       GridDatas.Cols[Cont] := GridDatas.Cols[Cont + 1];
     end;
+
+    GetGridTitles;
 
     RefreshGrid;
 
@@ -408,7 +419,10 @@ begin
 
     CleanGrid;
 
-    GridSize(TotRows, DataFlex.GetColCount);
+    GridDatas.RowCount := TotRows + 2;
+    GridDatas.ColCount := DataFlex.GetColCount + 2;
+
+    GetGridTitles;
 
     for ContRow := 1 to TotRows do
     begin
@@ -426,7 +440,8 @@ end;
 //Limpa os dados da Grid
 procedure TWindowDatas.CleanGrid;
 begin
-  GridSize(0, 0);
+  GridDatas.RowCount := 2;
+  GridDatas.ColCount := 2;
   GridDatas.Rows[0].Clear;
   GridDatas.Rows[1].Clear;
 end;
@@ -564,18 +579,15 @@ end;
 //Desfoca e foca na tabela para atualizá-la
 procedure TWindowDatas.RefreshGrid;
 begin
-  TxtRowsLimit.SetFocus;
+  TxtRefresh.SetFocus;
   GridDatas.SetFocus;
 end;
 
 //Define o tamanho da Grid
-procedure TWindowDatas.GridSize(RowCount, ColCount: integer);
+procedure TWindowDatas.GetGridTitles;
 var
   Cont: integer;
 begin
-  GridDatas.RowCount := RowCount + 2;
-  GridDatas.ColCount := ColCount + 2;
-
   //Insere os titulos das linhas e colunas fixadas na Grid
   for Cont := 1 to GridDatas.RowCount - 2 do
   begin
@@ -597,7 +609,7 @@ begin
 end;
 
 //Insere as informações da tabela
-procedure TWindowDatas.GridTitles;
+procedure TWindowDatas.GetFileInfos;
 var
   Rows: TStringList;
   DataFlex: TDataFlex;
