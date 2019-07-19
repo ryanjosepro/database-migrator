@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms,Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons,
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList,
-  MyDialogs, Configs, DAO;
+  MyUtils, MyDialogs, Configs, DAO;
 
 type
   TWindowDB = class(TForm)
@@ -35,6 +35,7 @@ type
     procedure ActSaveExecute(Sender: TObject);
     procedure ActTestConnExecute(Sender: TObject);
     procedure ActDiscardExecute(Sender: TObject);
+    procedure ActDBFileHint(var HintStr: string; var CanShow: Boolean);
 
   private
     procedure LoadConfigs;
@@ -80,6 +81,12 @@ begin
   begin
     TxtDatabase.Text := OpenFile.FileName;
   end;
+end;
+
+//Quando o hint é mostrado
+procedure TWindowDB.ActDBFileHint(var HintStr: string; var CanShow: Boolean);
+begin
+  HintStr := TUtils.IfEmpty(TConfigs.GetConfig('DB', 'Database'), 'Banco de Dados');
 end;
 
 //Descarta as alterações

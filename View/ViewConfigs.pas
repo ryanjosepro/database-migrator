@@ -30,6 +30,7 @@ type
     LblFrom: TLabel;
     CheckLogDatas: TCheckBox;
     CheckLogActions: TCheckBox;
+    GroupLog: TGroupBox;
     procedure ActDiscardExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
     procedure GroupCommitClick(Sender: TObject);

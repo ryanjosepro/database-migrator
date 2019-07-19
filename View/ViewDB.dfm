@@ -115,11 +115,13 @@ object WindowDB: TWindowDB
     Anchors = [akLeft, akBottom]
   end
   object BtnDBFile: TSpeedButton
-    Left = 266
-    Top = 154
-    Width = 23
-    Height = 22
+    Left = 262
+    Top = 151
+    Width = 27
+    Height = 27
     Action = ActDBFile
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnDiscard: TSpeedButton
     Left = 103
@@ -140,6 +142,8 @@ object WindowDB: TWindowDB
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 2
     OnChange = EditsChange
   end
@@ -179,7 +183,7 @@ object WindowDB: TWindowDB
       '0\ProjectMigration.dpr'
     FileTypes = <>
     Options = []
-    Left = 8
+    Left = 16
   end
   object Actions: TActionList
     Images = Images
@@ -187,6 +191,7 @@ object WindowDB: TWindowDB
     object ActDBFile: TAction
       ImageIndex = 0
       OnExecute = ActDBFileExecute
+      OnHint = ActDBFileHint
     end
     object ActSave: TAction
       Caption = 'Salvar'
@@ -206,7 +211,7 @@ object WindowDB: TWindowDB
     BkColor = clWhite
     Left = 240
     Bitmap = {
-      494C010101000800740010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C0101010008007C0010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

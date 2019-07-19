@@ -48,7 +48,7 @@ type
     BtnSaveAs: TSpeedButton;
     SaveFile: TFileSaveDialog;
     TxtFileName: TLabel;
-    CheckLimitConsider: TCheckBox;
+    CheckConsiderLimit: TCheckBox;
     TxtRefresh: TEdit;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -222,8 +222,17 @@ end;
 
 //Salva as alterações feitas no aquivo
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
+var
+  Limit: string;
 begin
+  Limit := TxtRowsLimit.Text;
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+  if not CheckConsiderLimit.Checked then
+  begin
+    TxtRowsLimit.Text := Limit;
+    FillGrid;
+  end;
+  RefreshGrid;
   NormalMode;
   Done;
 end;
@@ -306,11 +315,10 @@ begin
   if Row <> GridDatas.RowCount - 2 then
   begin
     GridDatas.Rows[Row].Clear;
+    RefreshGrid;
   end;
 
   GetGridTitles;
-
-  //RefreshGrid;
 
   Altered;
 end;
@@ -353,11 +361,13 @@ begin
     GridDatas.Cols[Cont] := GridDatas.Cols[Cont - 1];
   end;
 
-  GridDatas.Cols[Col].Clear;
+  if Col <> GridDatas.ColCount - 2 then
+  begin
+    GridDatas.Cols[Col].Clear;
+    RefreshGrid;
+  end;
 
   GetGridTitles;
-
-  RefreshGrid;
 
   Altered;
 end;
@@ -449,11 +459,29 @@ end;
 function TWindowDatas.GridToStrList: TStringList;
 var
   Cont: integer;
+  Limit: string;
 begin
   Result := TStringList.Create;
-  for Cont := 1 to GridDatas.RowCount - 2 do
+
+  if CheckConsiderLimit.Checked then
   begin
-    Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, GridDatas.ColCount - 2, ';', ''));
+    for Cont := 1 to GridDatas.RowCount - 2 do
+    begin
+      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, GridDatas.ColCount - 2, ';', ''));
+    end;
+  end
+  else
+  begin
+    for Cont := 1 to GridDatas.RowCount - 2 do
+    begin
+      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, GridDatas.ColCount - 2, ';', ''));
+    end;
+    TxtRowsLimit.Text := '';
+    FillGrid;
+    for Cont := Cont + 1 to GridDatas.RowCount - 2 do
+    begin
+      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, GridDatas.ColCount - 2, ';', ''));
+    end;
   end;
 end;
 
@@ -475,7 +503,7 @@ begin
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := false;
   TxtRowsLimit.Clear;
-  CheckLimitConsider.Enabled := false;
+  CheckConsiderLimit.Enabled := false;
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -503,7 +531,7 @@ begin
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
   TxtRowsLimit.Clear;
-  CheckLimitConsider.Enabled := true;
+  CheckConsiderLimit.Enabled := true;
   ActSelect.Enabled := true;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -531,7 +559,7 @@ begin
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
   //TxtRowsLimit.Clear;
-  CheckLimitConsider.Enabled := true;
+  CheckConsiderLimit.Enabled := true;
   ActSelect.Enabled := true;
   ActAlter.Enabled := true;
   ActSave.Enabled := false;
@@ -559,7 +587,7 @@ begin
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := false;
   //TxtRowsLimit.Clear;
-  CheckLimitConsider.Enabled := true;
+  CheckConsiderLimit.Enabled := true;
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;

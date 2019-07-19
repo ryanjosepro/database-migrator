@@ -45,6 +45,7 @@ type
     procedure ActStopExecute(Sender: TObject);
     procedure ActPauseExecute(Sender: TObject);
     procedure ActContinueExecute(Sender: TObject);
+    procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
   private
     procedure Log(Msg: string);
     procedure NormalMode;
@@ -85,11 +86,10 @@ implementation
 
 -To improve DataFlex class;
 -To add a option to create a table on migration (By Danilo);
--To fix ViewDatas cutting the lines when setting a limit for them;
+-To add shortcuts on program;
 
 --> DOING <--
 
--To reduce codes on View units;
 -To create a error handling on ViewConfigs;
 
 }
@@ -141,6 +141,11 @@ begin
     ActOpenFile.ImageIndex := 5;
     BtnOpenFile.Action := ActOpenFile;
   end;
+end;
+
+procedure TWindowMain.ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
+begin
+  HintStr := TUtils.IfEmpty(TConfigs.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
 end;
 
 //Abre as configurações do banco de dados
