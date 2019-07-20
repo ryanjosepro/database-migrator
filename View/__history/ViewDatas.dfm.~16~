@@ -3560,6 +3560,14 @@ object WindowDatas: TWindowDatas
     Height = 13
     Anchors = [akLeft, akTop, akRight]
   end
+  object TxtRefresh: TEdit
+    Left = 408
+    Top = 320
+    Width = 121
+    Height = 21
+    TabOrder = 2
+    Text = 'TxtRefresh'
+  end
   object GridDatas: TStringGrid
     Left = 8
     Top = 104
@@ -3619,7 +3627,7 @@ object WindowDatas: TWindowDatas
       TabOrder = 0
       OnKeyDown = TxtRowsLimitKeyDown
     end
-    object CheckLimitConsider: TCheckBox
+    object CheckConsiderLimit: TCheckBox
       Left = 288
       Top = 8
       Width = 145
@@ -3634,7 +3642,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 568
     Bitmap = {
-      494C01010300D800700240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D8008C0240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -5753,7 +5761,7 @@ object WindowDatas: TWindowDatas
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000}
   end
-  object s: TActionList
+  object Actions: TActionList
     Images = Images
     Left = 872
     Top = 568

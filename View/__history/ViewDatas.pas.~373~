@@ -16,7 +16,7 @@ type
     LblTotCols: TLabel;
     BtnFields: TSpeedButton;
     Images: TImageList;
-    s: TActionList;
+    Actions: TActionList;
     ActConfigFields: TAction;
     BtnSelect: TSpeedButton;
     ActSelect: TAction;
@@ -69,19 +69,20 @@ type
     procedure GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
 
   private
-    procedure FillGrid;
+    procedure FillGrid(Rows: TStringList);
     procedure CleanGrid;
-    function GridToStrList: TStringList;
-    function GridIsClean: boolean;
+    procedure GetGridTitles;
+    procedure GetFileInfos;
+    procedure RefreshGrid;
     procedure DisableMode;
     procedure SelectMode;
     procedure NormalMode;
     procedure AlterMode;
-    procedure RefreshGrid;
-    procedure GetGridTitles;
-    procedure GetFileInfos;
     procedure Altered;
     procedure Done;
+    function GetFile: TStringList;
+    function GridToStrList: TStringList;
+    function GridIsClean: boolean;
 
   public
     function ShowModal(Row: integer): integer; overload;
@@ -181,7 +182,7 @@ end;
 procedure TWindowDatas.ActSelectExecute(Sender: TObject);
 begin
   try
-    FillGrid;
+    FillGrid(GetFile);
     NormalMode;
     Done;
   Except on E: Exception do
@@ -220,14 +221,25 @@ begin
   AlterMode;
 end;
 
+//TO REWRITE
 //Salva as alterações feitas no aquivo
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
+var
+  Limit: string;
 begin
+  Limit := TxtRowsLimit.Text;
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+  if not CheckConsiderLimit.Checked then
+  begin
+    TxtRowsLimit.Text := Limit;
+    FillGrid(GetFile);
+  end;
+  RefreshGrid;
   NormalMode;
   Done;
 end;
 
+//REWRITE
 //Salva as alterações feitas em um novo arquivo
 procedure TWindowDatas.ActSaveAsExecute(Sender: TObject);
 begin
@@ -243,7 +255,7 @@ procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
   if DidChange then
   begin
-    FillGrid;
+    FillGrid(GetFile);
   end;
   NormalMode;
   Done;
@@ -388,15 +400,12 @@ begin
 end;
 
 //Insere os dados do arquivo Dataflex na Grid
-procedure TWindowDatas.FillGrid;
+procedure TWindowDatas.FillGrid(Rows: TStringList);
 var
-  Rows: TStringList;
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
   ContRow, ContCol, TotRows: integer;
 begin
-  Rows := TStringList.Create;
-  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
   DataFlex := TDataFlex.Create(Rows, ';');
   SetLength(Datas, DataFlex.GetRowCount, DataFlex.GetColCount);
   Datas := DataFlex.ToMatrix;
@@ -432,7 +441,6 @@ begin
       end;
     end;
   finally
-    FreeAndNil(Rows);
     FreeAndNil(DataFlex);
   end;
 end;
@@ -446,41 +454,53 @@ begin
   GridDatas.Rows[1].Clear;
 end;
 
-//Retorna os dados da Grid em linhas numa StringList
-function TWindowDatas.GridToStrList: TStringList;
+//Insere os titulos das linhas e colunas fixadas na Grid
+procedure TWindowDatas.GetGridTitles;
 var
   Cont: integer;
-  Limit: string;
 begin
-  Result := TStringList.Create;
-
-  if CheckConsiderLimit.Checked then
+  for Cont := 1 to GridDatas.RowCount - 2 do
   begin
-    for Cont := 1 to GridDatas.RowCount - 2 do
-    begin
-      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, GridDatas.ColCount - 2, ';', ''));
-    end;
-  end
-  else
-  begin
-    for Cont := 1 to GridDatas.RowCount - 2 do
-    begin
-      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, GridDatas.ColCount - 2, ';', ''));
-    end;
-    TxtRowsLimit.Text := '';
-    FillGrid;
-    for Cont := Cont + 1 to GridDatas.RowCount do
-    begin
-      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, 1, GridDatas.ColCount - 2, ';', ''));
-    end;
+    GridDatas.Cells[0, Cont] := 'Dado ' + Cont.ToString;
   end;
 
+  GridDatas.Rows[GridDatas.RowCount - 1].Clear;
+
+  GridDatas.Cells[0, GridDatas.RowCount - 1] := '      +';
+
+  for Cont := 1 to GridDatas.ColCount - 2 do
+  begin
+    GridDatas.Cells[Cont, 0] := 'Campo ' + Cont.ToString;
+  end;
+
+  GridDatas.Cols[GridDatas.ColCount - 1].Clear;
+
+  GridDatas.Cells[GridDatas.ColCount - 1, 0] := '    +';
 end;
 
-//Verifica se a Grid está vazia
-function TWindowDatas.GridIsClean: boolean;
+//Insere as informações da grid nos campos acima dela
+procedure TWindowDatas.GetFileInfos;
+var
+  Rows: TStringList;
+  DataFlex: TDataFlex;
 begin
-  Result := GridDatas.Cells[0, 1].IsEmpty and GridDatas.Cells[1, 0].IsEmpty and GridDatas.Cells[1, 1].IsEmpty;
+  Rows := TStringList.Create;
+
+  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+
+  DataFlex := TDataFlex.Create(Rows, ';');
+
+  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
+  LblTotRows.Caption := 'Dados: ' + (DataFlex.GetRowCount).ToString;
+  LblTotCols.Caption := 'Campos: ' + (DataFlex.GetColCount).ToString;
+end;
+
+//REWRITE
+//Desfoca e foca na tabela para atualizá-la
+procedure TWindowDatas.RefreshGrid;
+begin
+  TxtRefresh.SetFocus;
+  GridDatas.SetFocus;
 end;
 
 //Modo Buttons desabilitados
@@ -595,55 +615,6 @@ begin
   Mode := 3;
 end;
 
-//Desfoca e foca na tabela para atualizá-la
-procedure TWindowDatas.RefreshGrid;
-begin
-  TxtRefresh.SetFocus;
-  GridDatas.SetFocus;
-end;
-
-//Define o tamanho da Grid
-procedure TWindowDatas.GetGridTitles;
-var
-  Cont: integer;
-begin
-  //Insere os titulos das linhas e colunas fixadas na Grid
-  for Cont := 1 to GridDatas.RowCount - 2 do
-  begin
-    GridDatas.Cells[0, Cont] := 'Dado ' + Cont.ToString;
-  end;
-
-  GridDatas.Rows[GridDatas.RowCount - 1].Clear;
-
-  GridDatas.Cells[0, GridDatas.RowCount - 1] := '      +';
-
-  for Cont := 1 to GridDatas.ColCount - 2 do
-  begin
-    GridDatas.Cells[Cont, 0] := 'Campo ' + Cont.ToString;
-  end;
-
-  GridDatas.Cols[GridDatas.ColCount - 1].Clear;
-
-  GridDatas.Cells[GridDatas.ColCount - 1, 0] := '    +';
-end;
-
-//Insere as informações da tabela
-procedure TWindowDatas.GetFileInfos;
-var
-  Rows: TStringList;
-  DataFlex: TDataFlex;
-begin
-  Rows := TStringList.Create;
-
-  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-
-  DataFlex := TDataFlex.Create(Rows, ';');
-
-  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
-  LblTotRows.Caption := 'Dados: ' + (DataFlex.GetRowCount).ToString;
-  LblTotCols.Caption := 'Campos: ' + (DataFlex.GetColCount).ToString;
-end;
-
 //Quando a Grid é editada
 procedure TWindowDatas.Altered;
 begin
@@ -656,6 +627,35 @@ procedure TWindowDatas.Done;
 begin
   DidChange := false;
   ActSave.Enabled := false;
+end;
+
+//Retorna o arquivo selecionado em uma StringList
+function TWindowDatas.GetFile: TStringList;
+begin
+  Result := TStringList.Create;
+  Result.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+end;
+
+//REWRITE
+//Retorna os dados da Grid em linhas numa StringList
+function TWindowDatas.GridToStrList: TStringList;
+var
+  Cont: integer;
+begin
+  Result := TStringList.Create;
+  if CheckConsiderLimit.Checked then
+  begin
+    for Cont := 1 to GridDatas.RowCount - 2 do
+    begin
+      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont]));
+    end;
+  end;
+end;
+
+//Verifica se a Grid está vazia
+function TWindowDatas.GridIsClean: boolean;
+begin
+  Result := GridDatas.Cells[0, 1].IsEmpty and GridDatas.Cells[1, 0].IsEmpty and GridDatas.Cells[1, 1].IsEmpty;
 end;
 
 //Iniciar a janela com dados já selecionados
