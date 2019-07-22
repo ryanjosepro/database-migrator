@@ -32,7 +32,7 @@ begin
   self.StrList := StrList;
   self.Separator := Separator;
   self.RowCount := StrList.Count;
-  self.ColCount := Length(TUtils.Cut(StrList[0], self.Separator));
+  self.ColCount := Length(TUtils.Cut(self.StrList[0], self.Separator));
 end;
 
 //Retorna a quantidade de linhas

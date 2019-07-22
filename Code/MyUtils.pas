@@ -21,9 +21,8 @@ type
 
     class function Cut(Text, Separator: string): TStringArray;
 
-    class function ArrayToStr(StrArray: TStringArray; Starts: integer = 0; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
-    class function ArrayToStr(StrArray: System.TArray<System.string>; Starts: integer = 0; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
-    class function ArrayToStr(StrArray: System.TArray<System.string>; Starts, Ends: integer; Separator: string = ' - '; StrFinal: string = ';'): string; overload;
+    class function ArrayToStr(StrArray: TStringArray; Separator: string; StrFinal: string; Starts: integer = 0): string; overload;
+    class function ArrayToStr(StrArray: System.TArray<System.string>; Separator: string; StrFinal: string; Starts: integer = 0): string; overload;
 
     class function Extract(StrList: TStringList; Starts, Ends: integer): TStringList; overload;
     class function Extract(StrList: TStringList; Starts, Ends: string; IncStarts: boolean = true; IncEnds: boolean = true): TStringList; overload;
@@ -99,7 +98,7 @@ begin
 end;
 
 //Transforma um array em uma string
-class function TUtils.ArrayToStr(StrArray: TStringArray; Starts: integer; Separator, StrFinal: string): string;
+class function TUtils.ArrayToStr(StrArray: TStringArray; Separator, StrFinal: string; Starts: integer): string;
 var
   Cont: integer;
 begin
@@ -117,38 +116,20 @@ begin
   end;
 end;
 
-class function TUtils.ArrayToStr(StrArray: System.TArray<System.string>; Starts: integer; Separator, StrFinal: string): string;
+class function TUtils.ArrayToStr(StrArray: System.TArray<System.string>; Separator, StrFinal: string; Starts: integer): string;
 var
   Cont: integer;
 begin
   Result := '';
   for Cont := TUtils.Iff(Starts > Length(StrArray), 0, Starts) to Length(StrArray) - 1 do
   begin
-    if Cont = Length(StrArray) - 1 then
+    if Cont <> Length(StrArray) - 1 then
     begin
-      Result := Result + StrArray[Cont] + StrFinal;
+      Result := Result + StrArray[Cont] + Separator;
     end
     else
     begin
-      Result := Result + StrArray[Cont] + Separator;
-    end;
-  end;
-end;
-
-class function TUtils.ArrayToStr(StrArray: System.TArray<System.string>; Starts, Ends: integer; Separator, StrFinal: string): string;
-var
-  Cont: integer;
-begin
-  Result := '';
-  for Cont := TUtils.Iff(Starts > Ends, 0, Starts) to TUtils.IfLess(Ends, Length(StrArray)) do
-  begin
-    if Cont = Ends then
-    begin
       Result := Result + StrArray[Cont] + StrFinal;
-    end
-    else
-    begin
-      Result := Result + StrArray[Cont] + Separator;
     end;
   end;
 end;

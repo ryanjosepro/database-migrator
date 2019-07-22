@@ -144,6 +144,7 @@ begin
   end;
 end;
 
+//Mostra o caminho do arquivo
 procedure TWindowMain.ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
 begin
   HintStr := TUtils.IfEmpty(TConfigs.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
@@ -370,7 +371,7 @@ begin
           //Manda os dados para o log
           if LogDatas = 1 then
           begin
-              Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow]));
+              Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow], ' - ', ';'));
           end;
 
           //Atualiza a barra de carregamento
@@ -456,6 +457,7 @@ begin
   end;
 end;
 
+//Manda as informações para o log de saída
 procedure TMigration.Log(Msg: string);
 begin
   WindowMain.Log(Msg);

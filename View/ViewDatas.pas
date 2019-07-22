@@ -177,6 +177,7 @@ begin
   end;
 end;
 
+//Mostra o caminho do arquivo
 procedure TWindowDatas.ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
 begin
   HintStr := TUtils.IfEmpty(TConfigs.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
@@ -239,11 +240,6 @@ var
 begin
   Limit := TxtRowsLimit.Text;
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-  if not CheckConsiderLimit.Checked then
-  begin
-    TxtRowsLimit.Text := Limit;
-    FillGrid(GetFile);
-  end;
   RefreshGrid;
   NormalMode;
   Done;
@@ -491,14 +487,9 @@ end;
 //Insere as informações da grid nos campos acima dela
 procedure TWindowDatas.GetFileInfos;
 var
-  Rows: TStringList;
   DataFlex: TDataFlex;
 begin
-  Rows := TStringList.Create;
-
-  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-
-  DataFlex := TDataFlex.Create(Rows, ';');
+  DataFlex := TDataFlex.Create(GetFile, ';');
 
   TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
   LblTotRows.Caption := 'Dados: ' + (DataFlex.GetRowCount).ToString;
@@ -649,12 +640,12 @@ begin
   begin
     for Cont := 1 to GridDatas.RowCount - 2 do
     begin
-      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray));
+      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, ';', ';'));
     end;
   end
   else
   begin
-    //Here is the big problem
+
   end;
 end;
 
