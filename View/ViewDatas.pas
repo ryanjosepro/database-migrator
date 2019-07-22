@@ -67,6 +67,7 @@ type
     procedure ActDelColExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
     procedure GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
+    procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
 
   private
     procedure FillGrid(Rows: TStringList);
@@ -116,6 +117,8 @@ begin
     begin
       if FilePath <> TxtFileName.Caption then
       begin
+        ActOpenFile.ImageIndex := 2;
+        BtnOpenFile.Action := ActOpenFile;
         CleanGrid;
         GetFileInfos;
         SelectMode;
@@ -165,11 +168,18 @@ begin
     if OpenFile.FileName <> TConfigs.GetConfig('TEMP', 'FilePath') then
     begin
       TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+      ActOpenFile.ImageIndex := 2;
+      BtnOpenFile.Action := ActOpenFile;
       CleanGrid;
       GetFileInfos;
       SelectMode;
     end;
   end;
+end;
+
+procedure TWindowDatas.ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
+begin
+  HintStr := TUtils.IfEmpty(TConfigs.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
 end;
 
 //Abre a configuração de campos
@@ -221,7 +231,7 @@ begin
   AlterMode;
 end;
 
-//TO REWRITE
+//REWRITE
 //Salva as alterações feitas no aquivo
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
 var
@@ -510,8 +520,6 @@ begin
   LblTotRows.Caption := 'Dados:';
   LblTotCols.Caption := 'Campos:';
   ActOpenFile.Enabled := true;
-  ActOpenFile.ImageIndex := 1;
-  BtnOpenFile.Action := ActOpenFile;
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := false;
   TxtRowsLimit.Clear;
@@ -538,8 +546,6 @@ begin
   //LblTotRows.Caption := 'Dados:';
   //LblTotCols.Caption := 'Campos:';
   ActOpenFile.Enabled := true;
-  ActOpenFile.ImageIndex := 1;
-  BtnOpenFile.Action := ActOpenFile;
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
   TxtRowsLimit.Clear;
@@ -566,8 +572,6 @@ begin
   //LblTotRows.Caption := 'Dados:';
   //LblTotCols.Caption := 'Campos:';
   ActOpenFile.Enabled := true;
-  ActOpenFile.ImageIndex := 1;
-  BtnOpenFile.Action := ActOpenFile;
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
   //TxtRowsLimit.Clear;
@@ -594,8 +598,6 @@ begin
   //LblTotRows.Caption := 'Dados:';
   //LblTotCols.Caption := 'Campos:';
   ActOpenFile.Enabled := false;
-  //ActOpenFile.ImageIndex := 1;
-  //BtnOpenFile.Action := ActOpenFile;
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := false;
   //TxtRowsLimit.Clear;
@@ -652,7 +654,7 @@ begin
   end
   else
   begin
-    //HERE IS THE BIG PROBLEM OF THIS UNIT :(
+    //Here is the big problem
   end;
 end;
 

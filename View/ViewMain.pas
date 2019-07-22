@@ -84,6 +84,7 @@ implementation
 
 --> TO DO <--
 
+-To add dark theme on ViewConfigs;
 -To improve DataFlex class;
 -To add a option to create a table on migration (By Danilo);
 -To add shortcuts on program;
