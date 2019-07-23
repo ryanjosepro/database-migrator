@@ -171,7 +171,7 @@ begin
       ActOpenFile.ImageIndex := 2;
       BtnOpenFile.Action := ActOpenFile;
       CleanGrid;
-      SetFileInfos(GetFile);
+      GetFileInfos;
       SelectMode;
     end;
   end;
@@ -327,7 +327,7 @@ begin
     RefreshGrid;
   end;
 
-  SetGridTitles;
+  GetGridTitles;
 
   Altered;
 end;
@@ -348,7 +348,7 @@ begin
       GridDatas.Rows[Cont] := GridDatas.Rows[Cont + 1];
     end;
 
-    SetGridTitles;
+    GetGridTitles;
 
     RefreshGrid;
 
@@ -376,7 +376,7 @@ begin
     RefreshGrid;
   end;
 
-  SetGridTitles;
+  GetGridTitles;
 
   Altered;
 end;
@@ -397,7 +397,7 @@ begin
       GridDatas.Cols[Cont] := GridDatas.Cols[Cont + 1];
     end;
 
-    SetGridTitles;
+    GetGridTitles;
 
     RefreshGrid;
 
@@ -437,7 +437,7 @@ begin
     GridDatas.RowCount := TotRows + 2;
     GridDatas.ColCount := DataFlex.GetColCount + 2;
 
-    SetGridTitles;
+    GetGridTitles;
 
     for ContRow := 1 to TotRows do
     begin

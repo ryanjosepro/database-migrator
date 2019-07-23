@@ -72,7 +72,7 @@ type
   private
     procedure FillGrid(Rows: TStringList);
     procedure CleanGrid;
-    procedure SetGridTitles;
+    procedure SetGridTitles(Rows: TStringList);
     procedure SetFileInfos(Rows: TStringList);
     procedure RefreshGrid;
     procedure DisableMode;
@@ -120,14 +120,14 @@ begin
         ActOpenFile.ImageIndex := 2;
         BtnOpenFile.Action := ActOpenFile;
         CleanGrid;
-        SetFileInfos(GetFile);
+        GetFileInfos;
         SelectMode;
       end
       else
       begin
         if GridIsClean then
         begin
-          SetFileInfos(GetFile);
+          GetFileInfos;
           SelectMode;
         end
         else
@@ -171,7 +171,7 @@ begin
       ActOpenFile.ImageIndex := 2;
       BtnOpenFile.Action := ActOpenFile;
       CleanGrid;
-      SetFileInfos(GetFile);
+      GetFileInfos;
       SelectMode;
     end;
   end;
@@ -327,7 +327,7 @@ begin
     RefreshGrid;
   end;
 
-  SetGridTitles;
+  GetGridTitles;
 
   Altered;
 end;
@@ -348,7 +348,7 @@ begin
       GridDatas.Rows[Cont] := GridDatas.Rows[Cont + 1];
     end;
 
-    SetGridTitles;
+    GetGridTitles;
 
     RefreshGrid;
 
@@ -376,7 +376,7 @@ begin
     RefreshGrid;
   end;
 
-  SetGridTitles;
+  GetGridTitles;
 
   Altered;
 end;
@@ -397,7 +397,7 @@ begin
       GridDatas.Cols[Cont] := GridDatas.Cols[Cont + 1];
     end;
 
-    SetGridTitles;
+    GetGridTitles;
 
     RefreshGrid;
 
@@ -437,7 +437,7 @@ begin
     GridDatas.RowCount := TotRows + 2;
     GridDatas.ColCount := DataFlex.GetColCount + 2;
 
-    SetGridTitles;
+    GetGridTitles;
 
     for ContRow := 1 to TotRows do
     begin
@@ -461,7 +461,7 @@ begin
 end;
 
 //Insere os titulos das linhas e colunas fixadas na Grid
-procedure TWindowDatas.SetGridTitles;
+procedure TWindowDatas.SetGridTitles(Rows: TStringList);
 var
   Cont: integer;
 begin

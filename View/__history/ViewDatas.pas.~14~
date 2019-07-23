@@ -72,8 +72,8 @@ type
   private
     procedure FillGrid(Rows: TStringList);
     procedure CleanGrid;
-    procedure GetGridTitles;
-    procedure GetFileInfos;
+    procedure SetGridTitles;
+    procedure SetFileInfos(Rows: TStringList);
     procedure RefreshGrid;
     procedure DisableMode;
     procedure SelectMode;
@@ -120,7 +120,7 @@ begin
         ActOpenFile.ImageIndex := 2;
         BtnOpenFile.Action := ActOpenFile;
         CleanGrid;
-        GetFileInfos;
+        SetFileInfos(GetFile);
         SelectMode;
       end
       else
@@ -177,6 +177,7 @@ begin
   end;
 end;
 
+//Mostra o caminho do arquivo
 procedure TWindowDatas.ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
 begin
   HintStr := TUtils.IfEmpty(TConfigs.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
@@ -239,11 +240,6 @@ var
 begin
   Limit := TxtRowsLimit.Text;
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-  if not CheckConsiderLimit.Checked then
-  begin
-    TxtRowsLimit.Text := Limit;
-    FillGrid(GetFile);
-  end;
   RefreshGrid;
   NormalMode;
   Done;
@@ -465,7 +461,7 @@ begin
 end;
 
 //Insere os titulos das linhas e colunas fixadas na Grid
-procedure TWindowDatas.GetGridTitles;
+procedure TWindowDatas.SetGridTitles;
 var
   Cont: integer;
 begin
@@ -489,15 +485,10 @@ begin
 end;
 
 //Insere as informações da grid nos campos acima dela
-procedure TWindowDatas.GetFileInfos;
+procedure TWindowDatas.SetFileInfos(Rows: TStringList);
 var
-  Rows: TStringList;
   DataFlex: TDataFlex;
 begin
-  Rows := TStringList.Create;
-
-  Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-
   DataFlex := TDataFlex.Create(Rows, ';');
 
   TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
@@ -649,7 +640,7 @@ begin
   begin
     for Cont := 1 to GridDatas.RowCount - 2 do
     begin
-      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray));
+      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, ';', ';'));
     end;
   end
   else
