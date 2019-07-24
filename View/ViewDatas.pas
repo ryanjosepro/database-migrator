@@ -44,7 +44,7 @@ type
     ActCancel: TAction;
     BtnSave: TSpeedButton;
     ActSave: TAction;
-    ActSaveAs: TAction;
+    ActExport: TAction;
     BtnSaveAs: TSpeedButton;
     SaveFile: TFileSaveDialog;
     TxtFileName: TLabel;
@@ -57,7 +57,7 @@ type
     procedure ActSelectExecute(Sender: TObject);
     procedure TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure ActAlterExecute(Sender: TObject);
-    procedure ActSaveAsExecute(Sender: TObject);
+    procedure ActExportExecute(Sender: TObject);
     procedure ActCancelExecute(Sender: TObject);
     procedure ActAddCellExecute(Sender: TObject);
     procedure ActAddRowExecute(Sender: TObject);
@@ -235,11 +235,9 @@ end;
 //REWRITE
 //Salva as alterações feitas no aquivo
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
-var
-  Limit: string;
 begin
-  Limit := TxtRowsLimit.Text;
   GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+  SetFileInfos(GetFile);
   RefreshGrid;
   NormalMode;
   Done;
@@ -247,7 +245,7 @@ end;
 
 //REWRITE
 //Salva as alterações feitas em um novo arquivo
-procedure TWindowDatas.ActSaveAsExecute(Sender: TObject);
+procedure TWindowDatas.ActExportExecute(Sender: TObject);
 begin
   SaveFile.FileName := 'NovoDataflex';
   if SaveFile.Execute then
@@ -518,7 +516,7 @@ begin
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
-  ActSaveAs.Enabled := false;
+  ActExport.Enabled := false;
   ActCancel.Enabled := false;
   ActAddCell.Enabled := false;
   ActDelCell.Enabled := false;
@@ -544,7 +542,7 @@ begin
   ActSelect.Enabled := true;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
-  ActSaveAs.Enabled := false;
+  ActExport.Enabled := false;
   ActCancel.Enabled := false;
   ActAddCell.Enabled := false;
   ActDelCell.Enabled := false;
@@ -570,7 +568,7 @@ begin
   ActSelect.Enabled := true;
   ActAlter.Enabled := true;
   ActSave.Enabled := false;
-  ActSaveAs.Enabled := true;
+  ActExport.Enabled := true;
   ActCancel.Enabled := false;
   ActAddCell.Enabled := false;
   ActDelCell.Enabled := false;
@@ -596,7 +594,7 @@ begin
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
-  ActSaveAs.Enabled := true;
+  ActExport.Enabled := true;
   ActCancel.Enabled := true;
   ActAddCell.Enabled := true;
   ActDelCell.Enabled := true;
@@ -636,6 +634,12 @@ var
   Cont: integer;
 begin
   Result := TStringList.Create;
+  for Cont := 1 to GridDatas.RowCount - 2 do
+  begin
+    Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, ';', ';', 1, 2));
+  end;
+  {
+  Result := TStringList.Create;
   if CheckConsiderLimit.Checked then
   begin
     for Cont := 1 to GridDatas.RowCount - 2 do
@@ -647,6 +651,7 @@ begin
   begin
 
   end;
+  }
 end;
 
 //Verifica se a Grid está vazia

@@ -3544,7 +3544,7 @@ object WindowDatas: TWindowDatas
     Top = 618
     Width = 90
     Height = 22
-    Action = ActSaveAs
+    Action = ActExport
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3642,7 +3642,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 568
     Bitmap = {
-      494C01010300D8009C0240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800A40240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -5792,10 +5792,10 @@ object WindowDatas: TWindowDatas
       Enabled = False
       OnExecute = ActSaveExecute
     end
-    object ActSaveAs: TAction
-      Caption = 'Salvar como'
+    object ActExport: TAction
+      Caption = 'Exportar'
       Enabled = False
-      OnExecute = ActSaveAsExecute
+      OnExecute = ActExportExecute
     end
     object ActCancel: TAction
       Caption = 'Cancelar'
