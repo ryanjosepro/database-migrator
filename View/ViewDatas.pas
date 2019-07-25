@@ -48,7 +48,7 @@ type
     BtnSaveAs: TSpeedButton;
     SaveFile: TFileSaveDialog;
     TxtFileName: TLabel;
-    CheckConsiderLimit: TCheckBox;
+    CheckConsLimit: TCheckBox;
     TxtRefresh: TEdit;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -68,6 +68,7 @@ type
     procedure ActSaveExecute(Sender: TObject);
     procedure GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
     procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
+    procedure FormCreate(Sender: TObject);
 
   private
     procedure FillGrid(Rows: TStringList);
@@ -79,10 +80,11 @@ type
     procedure SelectMode;
     procedure NormalMode;
     procedure AlterMode;
+    procedure HandlingMode;
     procedure Altered;
     procedure Done;
     function GetFile: TStringList;
-    function GridToStrList: TStringList;
+    function GridToStrList(ConsLimit: boolean): TStringList;
     function GridIsClean: boolean;
 
   public
@@ -149,7 +151,7 @@ procedure TWindowDatas.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if DidChange then
   begin
-    case TMyDialogs.YesNoCancel('Deseja salvar as alterações?') of
+    case TDialogs.YesNoCancel('Deseja salvar as alterações?') of
     mrYes:
       ActSave.Execute;
     mrNo:
@@ -158,6 +160,15 @@ begin
       Action := caNone;
     end;
   end;
+  if Mode = 4 then
+  begin
+    NormalMode;
+  end;
+end;
+
+procedure TWindowDatas.FormCreate(Sender: TObject);
+begin
+
 end;
 
 //Abre o arquivo Dataflex
@@ -189,6 +200,15 @@ begin
   WindowFields.ShowModal;
 end;
 
+//Quando o enter é pressionado no TxtRowsLimit
+procedure TWindowDatas.TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  if Key.ToString = '13' then
+  begin
+    ActSelect.Execute;
+  end;
+end;
+
 //Joga os dados Dataflex na tabela
 procedure TWindowDatas.ActSelectExecute(Sender: TObject);
 begin
@@ -198,15 +218,6 @@ begin
     Done;
   Except on E: Exception do
     ShowMessage('Arquivo Inválido: ' + E.ToString);
-  end;
-end;
-
-//Quando o enter é pressionado no TxtRowsLimit
-procedure TWindowDatas.TxtRowsLimitKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-  if Key.ToString = '13' then
-  begin
-    ActSelect.Execute;
   end;
 end;
 
@@ -226,31 +237,48 @@ begin
   Altered;
 end;
 
+//Exporta a tabela para um novo dataflex
+procedure TWindowDatas.ActExportExecute(Sender: TObject);
+begin
+  SaveFile.FileName := 'NovoDataflex';
+  if SaveFile.Execute then
+  begin
+    if FileExists(SaveFile.FileName) then
+    begin
+      if TDialogs.YesNo('Arquivo existente, deseja sobrescrevê-lo?') = mrYes then
+      begin
+        GridToStrList(CheckConsLimit.Checked).SaveToFile(SaveFile.FileName);
+        if SaveFile.FileName = TConfigs.GetConfig('TEMP', 'FilePath') then
+        begin
+          CleanGrid;
+          SetFileInfos(GetFile);
+          SelectMode;
+        end;
+      end;
+    end;
+  end;
+end;
+
 //Ativa o modo de edição da Grid
 procedure TWindowDatas.ActAlterExecute(Sender: TObject);
 begin
   AlterMode;
 end;
 
-//REWRITE
 //Salva as alterações feitas no aquivo
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
 begin
-  GridToStrList.SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+  GridToStrList(CheckConsLimit.Checked).SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
   SetFileInfos(GetFile);
   RefreshGrid;
-  NormalMode;
   Done;
-end;
-
-//REWRITE
-//Salva as alterações feitas em um novo arquivo
-procedure TWindowDatas.ActExportExecute(Sender: TObject);
-begin
-  SaveFile.FileName := 'NovoDataflex';
-  if SaveFile.Execute then
+  if Mode = 4 then
   begin
-    GridToStrList.SaveToFile(SaveFile.FileName);
+    Close;
+  end
+  else
+  begin
+    NormalMode;
   end;
 end;
 
@@ -261,8 +289,15 @@ begin
   begin
     FillGrid(GetFile);
   end;
-  NormalMode;
   Done;
+  if Mode = 4 then
+  begin
+    Close;
+  end
+  else
+  begin
+    NormalMode;
+  end;
 end;
 
 //Adiciona uma nova célula na Grid
@@ -494,7 +529,6 @@ begin
   LblTotCols.Caption := 'Campos: ' + (DataFlex.GetColCount).ToString;
 end;
 
-//REWRITE
 //Desfoca e foca na tabela para atualizá-la
 procedure TWindowDatas.RefreshGrid;
 begin
@@ -512,7 +546,7 @@ begin
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := false;
   TxtRowsLimit.Clear;
-  CheckConsiderLimit.Enabled := false;
+  CheckConsLimit.Enabled := false;
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -538,7 +572,7 @@ begin
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
   TxtRowsLimit.Clear;
-  CheckConsiderLimit.Enabled := true;
+  CheckConsLimit.Enabled := true;
   ActSelect.Enabled := true;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -564,7 +598,7 @@ begin
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
   //TxtRowsLimit.Clear;
-  CheckConsiderLimit.Enabled := true;
+  CheckConsLimit.Enabled := true;
   ActSelect.Enabled := true;
   ActAlter.Enabled := true;
   ActSave.Enabled := false;
@@ -590,7 +624,7 @@ begin
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := false;
   //TxtRowsLimit.Clear;
-  CheckConsiderLimit.Enabled := true;
+  CheckConsLimit.Enabled := true;
   ActSelect.Enabled := false;
   ActAlter.Enabled := false;
   ActSave.Enabled := false;
@@ -604,6 +638,32 @@ begin
   ActDelCol.Enabled := true;
   GridDatas.Options := GridDatas.Options + [goEditing];
   Mode := 3;
+end;
+
+//Modo Buttons em tratamento de erro
+procedure TWindowDatas.HandlingMode;
+begin
+  //TxtFileName.Caption := '';
+  //LblTotRows.Caption := 'Dados:';
+  //LblTotCols.Caption := 'Campos:';
+  ActOpenFile.Enabled := false;
+  ActConfigFields.Enabled := false;
+  TxtRowsLimit.Enabled := false;
+  //TxtRowsLimit.Clear;
+  CheckConsLimit.Enabled := false;
+  ActSelect.Enabled := false;
+  ActAlter.Enabled := false;
+  ActSave.Enabled := false;
+  ActExport.Enabled := true;
+  ActCancel.Enabled := true;
+  ActAddCell.Enabled := true;
+  ActDelCell.Enabled := true;
+  ActAddRow.Enabled := false;
+  ActDelRow.Enabled := false;
+  ActAddCol.Enabled := false;
+  ActDelCol.Enabled := false;
+  GridDatas.Options := GridDatas.Options + [goEditing];
+  Mode := 4;
 end;
 
 //Quando a Grid é editada
@@ -627,31 +687,27 @@ begin
   Result.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
 end;
 
-//REWRITE
 //Retorna os dados da Grid em linhas numa StringList
-function TWindowDatas.GridToStrList: TStringList;
+function TWindowDatas.GridToStrList(ConsLimit: boolean): TStringList;
 var
   Cont: integer;
+  Rows: TStringList;
 begin
   Result := TStringList.Create;
+
   for Cont := 1 to GridDatas.RowCount - 2 do
   begin
-    Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, ';', ';', 1, 2));
+    Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, ';', '', 1, 1));
   end;
-  {
-  Result := TStringList.Create;
-  if CheckConsiderLimit.Checked then
-  begin
-    for Cont := 1 to GridDatas.RowCount - 2 do
-    begin
-      Result.Add(TUtils.ArrayToStr(GridDatas.Rows[Cont].ToStringArray, ';', ';'));
-    end;
-  end
-  else
-  begin
 
+  if not ConsLimit then
+  begin
+    Rows := GetFile;
+    for Cont := StrToInt(TxtRowsLimit.Text) to Rows.Count - 1 do
+    begin
+      Result.Add(Rows[Cont]);
+    end;
   end;
-  }
 end;
 
 //Verifica se a Grid está vazia
@@ -663,12 +719,11 @@ end;
 //Iniciar a janela com dados já selecionados
 function TWindowDatas.ShowModal(Row: integer): integer;
 begin
-  Mode := 4;
   TxtRowsLimit.Text := '';
   FillGrid(GetFile);
   GridDatas.Row := Row;
   GridDatas.Col := 1;
-  NormalMode;
+  HandlingMode;
   inherited ShowModal;
 end;
 

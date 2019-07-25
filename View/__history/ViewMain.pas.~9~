@@ -84,7 +84,7 @@ implementation
 
 --> TO DO <--
 
--To add dark theme on ViewConfigs;
+-To add dark theme option on ViewConfigs;
 -To improve DataFlex class;
 -To add a option to create a table on migration (By Danilo);
 -To add shortcuts on program;
@@ -457,6 +457,7 @@ begin
   end;
 end;
 
+//Manda as informações para o log de saída
 procedure TMigration.Log(Msg: string);
 begin
   WindowMain.Log(Msg);

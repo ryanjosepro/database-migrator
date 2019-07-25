@@ -3426,18 +3426,20 @@ object WindowDatas: TWindowDatas
     ExplicitLeft = 843
   end
   object BtnAlter: TSpeedButton
-    Left = 8
-    Top = 618
+    Left = 104
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActAlter
     Anchors = [akBottom]
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnActCell: TSpeedButton
     Left = 392
-    Top = 618
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActAddCell
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -3446,12 +3448,14 @@ object WindowDatas: TWindowDatas
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnDelCell: TSpeedButton
     Left = 488
-    Top = 618
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActDelCell
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -3460,12 +3464,14 @@ object WindowDatas: TWindowDatas
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnAddRow: TSpeedButton
     Left = 584
-    Top = 618
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActAddRow
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -3474,12 +3480,14 @@ object WindowDatas: TWindowDatas
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnDelRow: TSpeedButton
     Left = 680
-    Top = 618
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActDelRow
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -3488,12 +3496,14 @@ object WindowDatas: TWindowDatas
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnAddCol: TSpeedButton
     Left = 776
-    Top = 618
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActAddCol
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -3502,12 +3512,14 @@ object WindowDatas: TWindowDatas
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnDelCol: TSpeedButton
     Left = 872
-    Top = 618
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActDelCol
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -3516,20 +3528,24 @@ object WindowDatas: TWindowDatas
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnCancel: TSpeedButton
     Left = 296
-    Top = 618
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActCancel
     Anchors = [akBottom]
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnSave: TSpeedButton
-    Left = 104
-    Top = 618
+    Left = 200
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActSave
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -3538,12 +3554,14 @@ object WindowDatas: TWindowDatas
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object BtnSaveAs: TSpeedButton
-    Left = 200
-    Top = 618
+    Left = 8
+    Top = 605
     Width = 90
-    Height = 22
+    Height = 35
     Action = ActExport
     Anchors = [akBottom]
     Font.Charset = DEFAULT_CHARSET
@@ -3552,6 +3570,8 @@ object WindowDatas: TWindowDatas
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
   end
   object TxtFileName: TLabel
     Left = 102
@@ -3572,7 +3592,7 @@ object WindowDatas: TWindowDatas
     Left = 8
     Top = 104
     Width = 954
-    Height = 512
+    Height = 495
     Anchors = [akLeft, akTop, akRight, akBottom]
     ColCount = 2
     FixedColor = clBtnShadow
@@ -3627,7 +3647,7 @@ object WindowDatas: TWindowDatas
       TabOrder = 0
       OnKeyDown = TxtRowsLimitKeyDown
     end
-    object CheckConsiderLimit: TCheckBox
+    object CheckConsLimit: TCheckBox
       Left = 288
       Top = 8
       Width = 145
@@ -3640,9 +3660,9 @@ object WindowDatas: TWindowDatas
     Height = 64
     Width = 64
     Left = 920
-    Top = 568
+    Top = 544
     Bitmap = {
-      494C01010300D800A40240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800B40240004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -5764,7 +5784,7 @@ object WindowDatas: TWindowDatas
   object Actions: TActionList
     Images = Images
     Left = 872
-    Top = 568
+    Top = 544
     object ActOpenFile: TAction
       Hint = 'Arquivo Dataflex'
       ImageIndex = 1
@@ -5782,6 +5802,11 @@ object WindowDatas: TWindowDatas
       Hint = 'Mostrar os dados na tabela'
       OnExecute = ActSelectExecute
     end
+    object ActExport: TAction
+      Caption = 'Exportar'
+      Enabled = False
+      OnExecute = ActExportExecute
+    end
     object ActAlter: TAction
       Caption = 'Alterar'
       Enabled = False
@@ -5790,12 +5815,8 @@ object WindowDatas: TWindowDatas
     object ActSave: TAction
       Caption = 'Salvar'
       Enabled = False
+      ShortCut = 16467
       OnExecute = ActSaveExecute
-    end
-    object ActExport: TAction
-      Caption = 'Exportar'
-      Enabled = False
-      OnExecute = ActExportExecute
     end
     object ActCancel: TAction
       Caption = 'Cancelar'
@@ -5807,29 +5828,33 @@ object WindowDatas: TWindowDatas
       Enabled = False
       OnExecute = ActAddCellExecute
     end
-    object ActAddRow: TAction
-      Caption = 'Inserir Linha'
-      Enabled = False
-      OnExecute = ActAddRowExecute
-    end
-    object ActAddCol: TAction
-      Caption = 'Inserir Coluna'
-      Enabled = False
-      OnExecute = ActAddColExecute
-    end
     object ActDelCell: TAction
       Caption = 'Remover C'#233'lula'
       Enabled = False
       OnExecute = ActDelCellExecute
     end
+    object ActAddRow: TAction
+      Caption = 'Inserir Linha'
+      Enabled = False
+      ShortCut = 16429
+      OnExecute = ActAddRowExecute
+    end
     object ActDelRow: TAction
       Caption = 'Remover Linha'
       Enabled = False
+      ShortCut = 16430
       OnExecute = ActDelRowExecute
+    end
+    object ActAddCol: TAction
+      Caption = 'Inserir Coluna'
+      Enabled = False
+      ShortCut = 8237
+      OnExecute = ActAddColExecute
     end
     object ActDelCol: TAction
       Caption = 'Remover Coluna'
       Enabled = False
+      ShortCut = 8238
       OnExecute = ActDelColExecute
     end
   end
@@ -5846,7 +5871,7 @@ object WindowDatas: TWindowDatas
       end>
     Options = []
     Left = 824
-    Top = 568
+    Top = 544
   end
   object SaveFile: TFileSaveDialog
     DefaultExtension = 'csv'
@@ -5858,8 +5883,8 @@ object WindowDatas: TWindowDatas
         FileMask = '*.csv'
       end>
     FileTypeIndex = 0
-    Options = []
+    Options = [fdoFileMustExist]
     Left = 776
-    Top = 568
+    Top = 544
   end
 end

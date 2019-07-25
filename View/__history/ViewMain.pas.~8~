@@ -84,7 +84,7 @@ implementation
 
 --> TO DO <--
 
--To add dark theme option on ViewConfigs;
+-To add dark theme;
 -To improve DataFlex class;
 -To add a option to create a table on migration (By Danilo);
 -To add shortcuts on program;
@@ -113,7 +113,7 @@ var
 begin
   if MigrationEnabled then
   begin
-    Answer := TDialogs.YesNo('Deseja cancelar a migração?');
+    Answer := TMyDialogs.YesNo('Deseja cancelar a migração?');
 
     if Answer = mrYes then
     begin
@@ -371,7 +371,7 @@ begin
           //Manda os dados para o log
           if LogDatas = 1 then
           begin
-            Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow], ' - ', ';'));
+              Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow], ' - ', ';'));
           end;
 
           //Atualiza a barra de carregamento
@@ -431,12 +431,8 @@ begin
             WindowDatas.ShowModal(ContRow + 1);
           end
           );
-          if TDialogs.YesNo('Deseja reinserir o dado ' + (ContRow + 1).ToString + '?', mbYes) = mrYes then
+          if TMyDialogs.YesNo('Deseja reinserir o dado ' + (ContRow + 1).ToString + '?', mbYes) = mrYes then
           begin
-            Rows := TStringList.Create;
-            Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-            DataFlex := TDataFlex.Create(Rows, ';');
-            Datas := DataFlex.ToMatrix;
             ContRow := ContRow - 1;
           end
           else

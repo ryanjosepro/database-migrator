@@ -123,7 +123,7 @@ begin
   Result := '';
   for Cont := TUtils.Iff(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
   begin
-    if Cont <> Length(StrArray) - 1 - EndsBefore then
+    if Cont = Length(StrArray) - 1 - EndsBefore then
     begin
       Result := Result + StrArray[Cont] + StrFinal;
     end

@@ -433,10 +433,6 @@ begin
           );
           if TDialogs.YesNo('Deseja reinserir o dado ' + (ContRow + 1).ToString + '?', mbYes) = mrYes then
           begin
-            Rows := TStringList.Create;
-            Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-            DataFlex := TDataFlex.Create(Rows, ';');
-            Datas := DataFlex.ToMatrix;
             ContRow := ContRow - 1;
           end
           else

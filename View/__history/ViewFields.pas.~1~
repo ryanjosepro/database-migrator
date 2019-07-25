@@ -166,7 +166,7 @@ procedure TWindowFields.ActTruncFBExecute(Sender: TObject);
 var
   Answer: integer;
 begin
-  Answer :=  TDialogs.YesNo('Deseja apagar todos os dados da tabela ' + TConfigs.GetConfig('DB', 'Table') + '?');
+  Answer :=  TMyDialogs.YesNo('Deseja apagar todos os dados da tabela ' + TConfigs.GetConfig('DB', 'Table') + '?');
   if Answer = mrYes then
   begin
     TDAO.Truncate;

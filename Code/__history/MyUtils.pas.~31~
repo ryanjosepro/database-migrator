@@ -103,9 +103,9 @@ var
   Cont: integer;
 begin
   Result := '';
-  for Cont := TUtils.Iff(Starts > Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
+  for Cont := TUtils.Iff(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
   begin
-    if Cont = Length(StrArray) - 1 then
+    if Cont = Length(StrArray) - 1 - EndsBefore then
     begin
       Result := Result + StrArray[Cont] + StrFinal;
     end
@@ -121,15 +121,15 @@ var
   Cont: integer;
 begin
   Result := '';
-  for Cont := TUtils.Iff(Starts > Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
+  for Cont := TUtils.Iff(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
   begin
-    if Cont <> Length(StrArray) - 1 then
+    if Cont <> Length(StrArray) - 1 - EndsBefore then
     begin
-      Result := Result + StrArray[Cont] + Separator;
+      Result := Result + StrArray[Cont] + StrFinal;
     end
     else
     begin
-      Result := Result + StrArray[Cont] + StrFinal;
+      Result := Result + StrArray[Cont] + Separator;
     end;
   end;
 end;

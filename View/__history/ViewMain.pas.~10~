@@ -371,7 +371,7 @@ begin
           //Manda os dados para o log
           if LogDatas = 1 then
           begin
-            Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow], ' - ', ';'));
+              Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow], ' - ', ';'));
           end;
 
           //Atualiza a barra de carregamento
@@ -433,10 +433,6 @@ begin
           );
           if TDialogs.YesNo('Deseja reinserir o dado ' + (ContRow + 1).ToString + '?', mbYes) = mrYes then
           begin
-            Rows := TStringList.Create;
-            Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
-            DataFlex := TDataFlex.Create(Rows, ';');
-            Datas := DataFlex.ToMatrix;
             ContRow := ContRow - 1;
           end
           else

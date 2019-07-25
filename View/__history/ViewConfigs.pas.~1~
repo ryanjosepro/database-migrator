@@ -63,7 +63,7 @@ procedure TWindowConfigs.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   if DidChange then
   begin
-    case TDialogs.YesNoCancel('Deseja salvar as alterações?') of
+    case TMyDialogs.YesNoCancel('Deseja salvar as alterações?') of
     mrYes:
       ActSaveExecute(BtnSave);
     mrCancel:
