@@ -85,13 +85,11 @@ implementation
 --> TO DO <--
 
 -To add dark theme option on ViewConfigs;
--To improve DataFlex class;
 -To add a option to create a table on migration (By Danilo);
--To add shortcuts on program;
 
 --> DOING <--
 
--To create a error handling on ViewConfigs;
+-To add shortcuts on program;
 
 }
 

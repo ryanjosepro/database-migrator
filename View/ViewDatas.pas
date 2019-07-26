@@ -27,13 +27,6 @@ type
     BtnOpenFile: TSpeedButton;
     OpenFile: TFileOpenDialog;
     BtnAlter: TSpeedButton;
-    ActAlter: TAction;
-    ActAddCell: TAction;
-    ActAddRow: TAction;
-    ActAddCol: TAction;
-    ActDelCell: TAction;
-    ActDelRow: TAction;
-    ActDelCol: TAction;
     BtnActCell: TSpeedButton;
     BtnDelCell: TSpeedButton;
     BtnAddRow: TSpeedButton;
@@ -41,15 +34,24 @@ type
     BtnAddCol: TSpeedButton;
     BtnDelCol: TSpeedButton;
     BtnCancel: TSpeedButton;
-    ActCancel: TAction;
     BtnSave: TSpeedButton;
-    ActSave: TAction;
-    ActExport: TAction;
     BtnSaveAs: TSpeedButton;
     SaveFile: TFileSaveDialog;
     TxtFileName: TLabel;
     CheckConsLimit: TCheckBox;
     TxtRefresh: TEdit;
+    AltImages: TImageList;
+    AltActions: TActionList;
+    ActExport: TAction;
+    ActAlter: TAction;
+    ActSave: TAction;
+    ActCancel: TAction;
+    ActAddCell: TAction;
+    ActDelCell: TAction;
+    ActAddRow: TAction;
+    ActDelRow: TAction;
+    ActAddCol: TAction;
+    ActDelCol: TAction;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -289,7 +291,7 @@ begin
   begin
     FillGrid(GetFile);
   end;
-  Done;
+
   if Mode = 4 then
   begin
     Close;
@@ -298,6 +300,10 @@ begin
   begin
     NormalMode;
   end;
+
+  RefreshGrid;
+
+  Done;
 end;
 
 //Adiciona uma nova célula na Grid
@@ -445,42 +451,50 @@ var
   Datas: TStringMatrix;
   ContRow, ContCol, TotRows: integer;
 begin
-  DataFlex := TDataFlex.Create(Rows, ';');
-  SetLength(Datas, DataFlex.GetRowCount, DataFlex.GetColCount);
-  Datas := DataFlex.ToMatrix;
-
-  try
-    if Trim(TxtRowsLimit.Text) = '' then
-    begin
-      TotRows := 0;
-    end
-    else
-    begin
-      TotRows := StrToInt(TxtRowsLimit.Text);
-    end;
-
-    if (TotRows > DataFlex.GetRowCount) or (TotRows = 0) then
-    begin
-      TotRows := DataFlex.GetRowCount;
-      TxtRowsLimit.Text := DataFlex.GetRowCount.ToString;
-    end;
-
+  if Rows.Count = 0 then
+  begin
     CleanGrid;
-
-    GridDatas.RowCount := TotRows + 2;
-    GridDatas.ColCount := DataFlex.GetColCount + 2;
-
     SetGridTitles;
+  end
+  else
+  begin
+    DataFlex := TDataFlex.Create(Rows, ';');
+    SetLength(Datas, DataFlex.GetRowCount, DataFlex.GetColCount);
+    Datas := DataFlex.ToMatrix;
 
-    for ContRow := 1 to TotRows do
-    begin
-      for ContCol := 1 to DataFlex.GetColCount do
+    try
+      if Trim(TxtRowsLimit.Text) = '' then
       begin
-        GridDatas.Cells[ContCol, ContRow] := Datas[ContRow - 1, ContCol - 1];
+        TotRows := 0;
+      end
+      else
+      begin
+        TotRows := StrToInt(TxtRowsLimit.Text);
       end;
+
+      if (TotRows > DataFlex.GetRowCount) or (TotRows = 0) then
+      begin
+        TotRows := DataFlex.GetRowCount;
+        TxtRowsLimit.Text := DataFlex.GetRowCount.ToString;
+      end;
+
+      CleanGrid;
+
+      GridDatas.RowCount := TotRows + 2;
+      GridDatas.ColCount := DataFlex.GetColCount + 2;
+
+      SetGridTitles;
+
+      for ContRow := 1 to TotRows do
+      begin
+        for ContCol := 1 to DataFlex.GetColCount do
+        begin
+          GridDatas.Cells[ContCol, ContRow] := Datas[ContRow - 1, ContCol - 1];
+        end;
+      end;
+    finally
+      FreeAndNil(DataFlex);
     end;
-  finally
-    FreeAndNil(DataFlex);
   end;
 end;
 
@@ -522,11 +536,26 @@ procedure TWindowDatas.SetFileInfos(Rows: TStringList);
 var
   DataFlex: TDataFlex;
 begin
-  DataFlex := TDataFlex.Create(Rows, ';');
+  if Rows.Count = 0 then
+  begin
+    LblTotRows.Caption := 'Dados: 0';
+    LblTotCols.Caption := 'Campos: 0';
+  end
+  else
+  begin
+    DataFlex := TDataFlex.Create(Rows, ';');
 
-  TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
-  LblTotRows.Caption := 'Dados: ' + (DataFlex.GetRowCount).ToString;
-  LblTotCols.Caption := 'Campos: ' + (DataFlex.GetColCount).ToString;
+    TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
+
+    if StrToInt(LblTotRows.Caption) < DataFlex.GetRowCount then
+    begin
+      TxtRowsLimit.Text := IntToStr(StrToInt(TxtRowsLimit.Text) + (StrToInt(TxtRowsLimit.Text) - DataFlex.GetRowCount));
+    end;
+
+
+    LblTotRows.Caption := 'Dados: ' + (DataFlex.GetRowCount).ToString;
+    LblTotCols.Caption := 'Campos: ' + (DataFlex.GetColCount).ToString;
+  end;
 end;
 
 //Desfoca e foca na tabela para atualizá-la
@@ -703,9 +732,12 @@ begin
   if not ConsLimit then
   begin
     Rows := GetFile;
-    for Cont := StrToInt(TxtRowsLimit.Text) to Rows.Count - 1 do
+    if Rows.Count <> 0 then
     begin
-      Result.Add(Rows[Cont]);
+      for Cont := StrToInt(TxtRowsLimit.Text) to Rows.Count - 1 do
+      begin
+        Result.Add(Rows[Cont]);
+      end;
     end;
   end;
 end;
