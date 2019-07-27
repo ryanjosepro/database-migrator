@@ -52,6 +52,8 @@ type
     ActDelRow: TAction;
     ActAddCol: TAction;
     ActDelCol: TAction;
+    TxtTotRows: TLabel;
+    TxtTotCols: TLabel;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -70,7 +72,6 @@ type
     procedure ActSaveExecute(Sender: TObject);
     procedure GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
     procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
-    procedure FormCreate(Sender: TObject);
 
   private
     procedure FillGrid(Rows: TStringList);
@@ -98,7 +99,7 @@ var
   WindowDatas: TWindowDatas;
   DidChange: boolean = false;
 
-  Mode: integer = 0;
+  //Mode: integer = 0;
   //0 -> Disable Mode
   //1 -> Select Mode
   //2 -> Normal Mode
@@ -114,38 +115,35 @@ procedure TWindowDatas.FormActivate(Sender: TObject);
 var
   FilePath: string;
 begin
-  if Mode <> 4 then
+  FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
+  if FilePath <> '' then
   begin
-    FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
-    if FilePath <> '' then
+    if FilePath <> TxtFileName.Caption then
     begin
-      if FilePath <> TxtFileName.Caption then
+      ActOpenFile.ImageIndex := 2;
+      BtnOpenFile.Action := ActOpenFile;
+      CleanGrid;
+      SetFileInfos(GetFile);
+      SelectMode;
+    end
+    else
+    begin
+      if GridIsClean then
       begin
-        ActOpenFile.ImageIndex := 2;
-        BtnOpenFile.Action := ActOpenFile;
-        CleanGrid;
         SetFileInfos(GetFile);
         SelectMode;
       end
       else
       begin
-        if GridIsClean then
-        begin
-          SetFileInfos(GetFile);
-          SelectMode;
-        end
-        else
-        begin
-          NormalMode;
-        end;
+        NormalMode;
       end;
-    end
-    else
-    begin
-      DisableMode;
     end;
-    Done;
+  end
+  else
+  begin
+    DisableMode;
   end;
+  Done;
 end;
 
 //Quando a janela é fechada
@@ -162,15 +160,6 @@ begin
       Action := caNone;
     end;
   end;
-  if Mode = 4 then
-  begin
-    NormalMode;
-  end;
-end;
-
-procedure TWindowDatas.FormCreate(Sender: TObject);
-begin
-
 end;
 
 //Abre o arquivo Dataflex
@@ -274,14 +263,7 @@ begin
   SetFileInfos(GetFile);
   RefreshGrid;
   Done;
-  if Mode = 4 then
-  begin
-    Close;
-  end
-  else
-  begin
-    NormalMode;
-  end;
+  NormalMode;
 end;
 
 //Cancela as alterações
@@ -531,31 +513,13 @@ begin
   GridDatas.Cells[GridDatas.ColCount - 1, 0] := '    +';
 end;
 
+//REWRITE
 //Insere as informações da grid nos campos acima dela
 procedure TWindowDatas.SetFileInfos(Rows: TStringList);
 var
   DataFlex: TDataFlex;
 begin
-  if Rows.Count = 0 then
-  begin
-    LblTotRows.Caption := 'Dados: 0';
-    LblTotCols.Caption := 'Campos: 0';
-  end
-  else
-  begin
-    DataFlex := TDataFlex.Create(Rows, ';');
 
-    TxtFileName.Caption := TConfigs.GetConfig('TEMP', 'FilePath');
-
-    if StrToInt(LblTotRows.Caption) < DataFlex.GetRowCount then
-    begin
-      TxtRowsLimit.Text := IntToStr(StrToInt(TxtRowsLimit.Text) + (StrToInt(TxtRowsLimit.Text) 0+ 1);
-    end;
-
-
-    LblTotRows.Caption := 'Dados: ' + (DataFlex.GetRowCount).ToString;
-    LblTotCols.Caption := 'Campos: ' + (DataFlex.GetColCount).ToString;
-  end;
 end;
 
 //Desfoca e foca na tabela para atualizá-la
@@ -569,8 +533,8 @@ end;
 procedure TWindowDatas.DisableMode;
 begin
   TxtFileName.Caption := '';
-  LblTotRows.Caption := 'Dados:';
-  LblTotCols.Caption := 'Campos:';
+  TxtTotRows.Caption := '';
+  TxtTotCols.Caption := '';
   ActOpenFile.Enabled := true;
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := false;
@@ -595,8 +559,8 @@ end;
 procedure TWindowDatas.SelectMode;
 begin
   //TxtFileName.Caption := '';
-  //LblTotRows.Caption := 'Dados:';
-  //LblTotCols.Caption := 'Campos:';
+  //TxtTotRows.Caption := 'Dados:';
+  //TxtTotCols.Caption := 'Campos:';
   ActOpenFile.Enabled := true;
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
@@ -621,8 +585,8 @@ end;
 procedure TWindowDatas.NormalMode;
 begin
   //TxtFileName.Caption := '';
-  //LblTotRows.Caption := 'Dados:';
-  //LblTotCols.Caption := 'Campos:';
+  //TxtTotRows.Caption := 'Dados:';
+  //TxtTotCols.Caption := 'Campos:';
   ActOpenFile.Enabled := true;
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := true;
@@ -647,8 +611,8 @@ end;
 procedure TWindowDatas.AlterMode;
 begin
   //TxtFileName.Caption := '';
-  //LblTotRows.Caption := 'Dados:';
-  //LblTotCols.Caption := 'Campos:';
+  //TxtTotRows.Caption := 'Dados:';
+  //TxtTotCols.Caption := 'Campos:';
   ActOpenFile.Enabled := false;
   ActConfigFields.Enabled := true;
   TxtRowsLimit.Enabled := false;
@@ -673,8 +637,8 @@ end;
 procedure TWindowDatas.HandlingMode;
 begin
   //TxtFileName.Caption := '';
-  //LblTotRows.Caption := 'Dados:';
-  //LblTotCols.Caption := 'Campos:';
+  //TxtTotRows.Caption := 'Dados:';
+  //TxtTotCols.Caption := 'Campos:';
   ActOpenFile.Enabled := false;
   ActConfigFields.Enabled := false;
   TxtRowsLimit.Enabled := false;
@@ -748,14 +712,10 @@ begin
   Result := GridDatas.Cells[0, 1].IsEmpty and GridDatas.Cells[1, 0].IsEmpty and GridDatas.Cells[1, 1].IsEmpty;
 end;
 
+//REWRITE
 //Iniciar a janela com dados já selecionados
 function TWindowDatas.ShowModal(Row: integer): integer;
 begin
-  TxtRowsLimit.Text := '';
-  FillGrid(GetFile);
-  GridDatas.Row := Row;
-  GridDatas.Col := 1;
-  HandlingMode;
   inherited ShowModal;
 end;
 
