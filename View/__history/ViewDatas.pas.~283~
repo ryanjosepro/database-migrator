@@ -74,7 +74,7 @@ type
     procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
 
   private
-    procedure FillGrid(Rows: TStringList);
+    function FillGrid(Rows: TStringList; Limit: integer = 0): integer;
     procedure CleanGrid;
     procedure SetGridTitles;
     procedure SetFileInfos(Rows: TStringList);
@@ -115,38 +115,35 @@ procedure TWindowDatas.FormActivate(Sender: TObject);
 var
   FilePath: string;
 begin
-  if Mode <> 4 then
+  FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
+  if FilePath <> '' then
   begin
-    FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
-    if FilePath <> '' then
+    if FilePath <> TxtFileName.Caption then
     begin
-      if FilePath <> TxtFileName.Caption then
+      ActOpenFile.ImageIndex := 2;
+      BtnOpenFile.Action := ActOpenFile;
+      CleanGrid;
+      SetFileInfos(GetFile);
+      SelectMode;
+    end
+    else
+    begin
+      if GridIsClean then
       begin
-        ActOpenFile.ImageIndex := 2;
-        BtnOpenFile.Action := ActOpenFile;
-        CleanGrid;
         SetFileInfos(GetFile);
         SelectMode;
       end
       else
       begin
-        if GridIsClean then
-        begin
-          SetFileInfos(GetFile);
-          SelectMode;
-        end
-        else
-        begin
-          NormalMode;
-        end;
+        NormalMode;
       end;
-    end
-    else
-    begin
-      DisableMode;
     end;
-    Done;
+  end
+  else
+  begin
+    DisableMode;
   end;
+  Done;
 end;
 
 //Quando a janela é fechada
@@ -162,10 +159,6 @@ begin
     mrCancel:
       Action := caNone;
     end;
-  end;
-  if Mode = 4 then
-  begin
-    NormalMode;
   end;
 end;
 
@@ -211,7 +204,7 @@ end;
 procedure TWindowDatas.ActSelectExecute(Sender: TObject);
 begin
   try
-    FillGrid(GetFile);
+    TxtRowsLimit.Text := FillGrid(GetFile, StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
     NormalMode;
     Done;
   Except on E: Exception do
@@ -278,17 +271,10 @@ procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
   if DidChange then
   begin
-    FillGrid(GetFile);
+    TxtRowsLimit.Text := FillGrid(GetFile, StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
   end;
 
-  if Mode = 4 then
-  begin
-    Close;
-  end
-  else
-  begin
-    NormalMode;
-  end;
+  NormalMode;
 
   RefreshGrid;
 
@@ -434,11 +420,11 @@ begin
 end;
 
 //Insere os dados do arquivo Dataflex na Grid
-procedure TWindowDatas.FillGrid(Rows: TStringList);
+function TWindowDatas.FillGrid(Rows: TStringList; Limit: integer): integer;
 var
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
-  ContRow, ContCol, TotRows: integer;
+  ContRow, ContCol: integer;
 begin
   if Rows.Count = 0 then
   begin
@@ -452,29 +438,19 @@ begin
     Datas := DataFlex.ToMatrix;
 
     try
-      if Trim(TxtRowsLimit.Text) = '' then
+      if (Limit > DataFlex.GetRowCount) or (Limit = 0) then
       begin
-        TotRows := 0;
-      end
-      else
-      begin
-        TotRows := StrToInt(TxtRowsLimit.Text);
-      end;
-
-      if (TotRows > DataFlex.GetRowCount) or (TotRows = 0) then
-      begin
-        TotRows := DataFlex.GetRowCount;
-        TxtRowsLimit.Text := DataFlex.GetRowCount.ToString;
+        Limit := DataFlex.GetRowCount;
       end;
 
       CleanGrid;
 
-      GridDatas.RowCount := TotRows + 2;
+      GridDatas.RowCount := Limit + 2;
       GridDatas.ColCount := DataFlex.GetColCount + 2;
 
       SetGridTitles;
 
-      for ContRow := 1 to TotRows do
+      for ContRow := 1 to Limit do
       begin
         for ContCol := 1 to DataFlex.GetColCount do
         begin
@@ -485,6 +461,7 @@ begin
       FreeAndNil(DataFlex);
     end;
   end;
+  Result := Limit;
 end;
 
 //Limpa os dados da Grid
@@ -520,13 +497,20 @@ begin
   GridDatas.Cells[GridDatas.ColCount - 1, 0] := '    +';
 end;
 
-//REWRITE
 //Insere as informações da grid nos campos acima dela
 procedure TWindowDatas.SetFileInfos(Rows: TStringList);
 var
   DataFlex: TDataFlex;
 begin
+  DataFlex := TDataFlex.Create(Rows, ';');
 
+  try
+    TxtFileName.Caption := OpenFile.FileName;
+    TxtTotRows.Caption := DataFlex.GetRowCount.ToString;
+    TxtTotCols.Caption := DataFlex.GetColCount.ToString;
+  finally
+    FreeAndNil(DataFlex);
+  end;
 end;
 
 //Desfoca e foca na tabela para atualizá-la
@@ -559,7 +543,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-  Mode := 0;
+  //Mode := 0;
 end;
 
 //Modo Button Select ativado
@@ -585,7 +569,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-  Mode := 1;
+  //Mode := 1;
 end;
 
 //Modo Buttons normais
@@ -611,7 +595,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-  Mode := 2;
+  //Mode := 2;
 end;
 
 //Modo Buttons em alteração
@@ -637,7 +621,7 @@ begin
   ActAddCol.Enabled := true;
   ActDelCol.Enabled := true;
   GridDatas.Options := GridDatas.Options + [goEditing];
-  Mode := 3;
+  //Mode := 3;
 end;
 
 //Modo Buttons em tratamento de erro
@@ -663,7 +647,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options + [goEditing];
-  Mode := 4;
+  //Mode := 4;
 end;
 
 //Quando a Grid é editada
@@ -723,6 +707,7 @@ end;
 //Iniciar a janela com dados já selecionados
 function TWindowDatas.ShowModal(Row: integer): integer;
 begin
+  TxtRowsLimit.Text :=  FillGrid(GetFile, Row);
   inherited ShowModal;
 end;
 

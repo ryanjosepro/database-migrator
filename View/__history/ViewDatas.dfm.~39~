@@ -3359,7 +3359,6 @@ object WindowDatas: TWindowDatas
   Position = poMainFormCenter
   OnActivate = FormActivate
   OnClose = FormClose
-  OnCreate = FormCreate
   DesignSize = (
     970
     648)
@@ -3377,7 +3376,7 @@ object WindowDatas: TWindowDatas
   object LblTotRows: TLabel
     Left = 8
     Top = 28
-    Width = 241
+    Width = 35
     Height = 13
     AutoSize = False
     Caption = 'Dados:'
@@ -3385,10 +3384,10 @@ object WindowDatas: TWindowDatas
   object LblTotCols: TLabel
     Left = 296
     Top = 28
-    Width = 241
+    Width = 41
     Height = 13
     AutoSize = False
-    Caption = 'Campos'
+    Caption = 'Campos:'
   end
   object BtnFields: TSpeedButton
     Left = 914
@@ -3581,6 +3580,20 @@ object WindowDatas: TWindowDatas
     Height = 13
     Anchors = [akLeft, akTop, akRight]
   end
+  object TxtTotRows: TLabel
+    Left = 49
+    Top = 28
+    Width = 241
+    Height = 13
+    AutoSize = False
+  end
+  object TxtTotCols: TLabel
+    Left = 343
+    Top = 28
+    Width = 241
+    Height = 13
+    AutoSize = False
+  end
   object TxtRefresh: TEdit
     Left = 408
     Top = 320
@@ -3663,7 +3676,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 552
     Bitmap = {
-      494C01010300D800040340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800080340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -5839,7 +5852,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 504
     Bitmap = {
-      494C01010600D800380340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010600D8003C0340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF

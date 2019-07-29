@@ -3359,7 +3359,6 @@ object WindowDatas: TWindowDatas
   Position = poMainFormCenter
   OnActivate = FormActivate
   OnClose = FormClose
-  OnCreate = FormCreate
   DesignSize = (
     970
     648)
@@ -3377,7 +3376,7 @@ object WindowDatas: TWindowDatas
   object LblTotRows: TLabel
     Left = 8
     Top = 28
-    Width = 241
+    Width = 35
     Height = 13
     AutoSize = False
     Caption = 'Dados:'
@@ -3385,10 +3384,10 @@ object WindowDatas: TWindowDatas
   object LblTotCols: TLabel
     Left = 296
     Top = 28
-    Width = 241
+    Width = 41
     Height = 13
     AutoSize = False
-    Caption = 'Campos'
+    Caption = 'Campos:'
   end
   object BtnFields: TSpeedButton
     Left = 914
@@ -3581,6 +3580,20 @@ object WindowDatas: TWindowDatas
     Height = 13
     Anchors = [akLeft, akTop, akRight]
   end
+  object TxtTotRows: TLabel
+    Left = 49
+    Top = 28
+    Width = 241
+    Height = 13
+    AutoSize = False
+  end
+  object TxtTotCols: TLabel
+    Left = 343
+    Top = 28
+    Width = 241
+    Height = 13
+    AutoSize = False
+  end
   object TxtRefresh: TEdit
     Left = 408
     Top = 320
@@ -3663,7 +3676,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 552
     Bitmap = {
-      494C01010300D800000340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D800080340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -5839,7 +5852,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 504
     Bitmap = {
-      494C01010600D800340340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010600D8003C0340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -10072,7 +10085,7 @@ object WindowDatas: TWindowDatas
   end
   object AltActions: TActionList
     Images = AltImages
-    Left = 776
+    Left = 872
     Top = 504
     object ActExport: TAction
       Caption = 'Exportar'
@@ -10099,38 +10112,40 @@ object WindowDatas: TWindowDatas
       Enabled = False
       Hint = 'Inserir C'#233'lula'
       ImageIndex = 0
+      ShortCut = 45
       OnExecute = ActAddCellExecute
     end
     object ActDelCell: TAction
       Enabled = False
       Hint = 'Remover C'#233'lula'
       ImageIndex = 1
+      ShortCut = 46
       OnExecute = ActDelCellExecute
     end
     object ActAddRow: TAction
       Enabled = False
-      Hint = 'Inserir Linha (Ctrl+Ins)'
+      Hint = 'Inserir Linha'
       ImageIndex = 2
       ShortCut = 16429
       OnExecute = ActAddRowExecute
     end
     object ActDelRow: TAction
       Enabled = False
-      Hint = 'Remover Linha (Ctrl+Del)'
+      Hint = 'Remover Linha'
       ImageIndex = 3
       ShortCut = 16430
       OnExecute = ActDelRowExecute
     end
     object ActAddCol: TAction
       Enabled = False
-      Hint = 'Inserir Coluna (Shift+Ins)'
+      Hint = 'Inserir Coluna'
       ImageIndex = 4
       ShortCut = 8237
       OnExecute = ActAddColExecute
     end
     object ActDelCol: TAction
       Enabled = False
-      Hint = 'Remover Coluna (Shift+Del)'
+      Hint = 'Remover Coluna'
       ImageIndex = 5
       ShortCut = 8238
       OnExecute = ActDelColExecute
