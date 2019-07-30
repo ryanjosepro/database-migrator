@@ -194,16 +194,21 @@ object WindowDB: TWindowDB
       OnHint = ActDBFileHint
     end
     object ActSave: TAction
-      Caption = 'Salvar'
+      Caption = 'Salvar (Ctrl+S)'
+      ShortCut = 16467
       OnExecute = ActSaveExecute
     end
     object ActDiscard: TAction
-      Caption = 'Descartar'
+      Caption = 'Descartar (Esc)'
       OnExecute = ActDiscardExecute
     end
     object ActTestConn: TAction
       Caption = 'Testar Conex'#227'o'
       OnExecute = ActTestConnExecute
+    end
+    object ActEsc: TAction
+      ShortCut = 27
+      OnExecute = ActEscExecute
     end
   end
   object Images: TImageList
@@ -211,7 +216,7 @@ object WindowDB: TWindowDB
     BkColor = clWhite
     Left = 240
     Bitmap = {
-      494C010101000800800010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010101000800880010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

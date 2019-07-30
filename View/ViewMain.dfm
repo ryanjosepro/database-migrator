@@ -3476,9 +3476,9 @@ object WindowMain: TWindowMain
     ShowHint = True
   end
   object BtnStop: TSpeedButton
-    Left = 207
+    Left = 192
     Top = 97
-    Width = 97
+    Width = 129
     Height = 33
     Action = ActStop
     Anchors = [akTop]
@@ -3507,9 +3507,9 @@ object WindowMain: TWindowMain
     ShowHint = True
   end
   object BtnPause: TSpeedButton
-    Left = 216
+    Left = 207
     Top = 58
-    Width = 81
+    Width = 97
     Height = 28
     Action = ActPause
     Anchors = [akTop]
@@ -3564,7 +3564,7 @@ object WindowMain: TWindowMain
     Left = 449
     Top = 544
     Bitmap = {
-      494C010106005C01B40240004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010106005C01B80240004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -7802,51 +7802,59 @@ object WindowMain: TWindowMain
     object ActOpenFile: TAction
       Hint = 'Arquivo Dataflex'
       ImageIndex = 0
+      ShortCut = 79
       OnExecute = ActOpenFileExecute
       OnHint = ActOpenFileHint
     end
     object ActConfigDB: TAction
       Hint = 'Banco de Dados'
       ImageIndex = 1
+      ShortCut = 68
       OnExecute = ActConfigDBExecute
     end
     object ActConfigFields: TAction
       Hint = 'Campos Firebird'
       ImageIndex = 2
+      ShortCut = 70
       OnExecute = ActConfigFieldsExecute
     end
     object ActDatas: TAction
       Hint = 'Dados Dataflex'
       ImageIndex = 3
+      ShortCut = 84
       OnExecute = ActDatasExecute
     end
     object ActConfigs: TAction
       Hint = 'Configura'#231#245'es'
       ImageIndex = 4
+      ShortCut = 67
       OnExecute = ActConfigsExecute
     end
     object ActMigrate: TAction
-      Caption = 'Migrar'
-      Hint = 'Migrar Dados'
+      Caption = 'Migrar (F1)'
+      ShortCut = 112
       OnExecute = ActMigrateExecute
     end
     object ActContinue: TAction
-      Caption = 'Continuar'
+      Caption = 'Continuar (F2)'
       Enabled = False
-      Hint = 'Continuar Migra'#231#227'o'
+      ShortCut = 113
       OnExecute = ActContinueExecute
     end
     object ActPause: TAction
-      Caption = 'Pausar'
+      Caption = 'Pausar (F2)'
       Enabled = False
-      Hint = 'Pausar Migra'#231#227'o'
+      ShortCut = 113
       OnExecute = ActPauseExecute
     end
     object ActStop: TAction
-      Caption = 'Parar'
+      Caption = 'Parar (Esc)'
       Enabled = False
-      Hint = 'Parar Migra'#231#227'o'
       OnExecute = ActStopExecute
+    end
+    object ActEsc: TAction
+      ShortCut = 27
+      OnExecute = ActEscExecute
     end
   end
 end

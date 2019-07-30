@@ -54,6 +54,7 @@ type
     ActDelCol: TAction;
     TxtTotRows: TLabel;
     TxtTotCols: TLabel;
+    ActEsc: TAction;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -72,6 +73,7 @@ type
     procedure ActSaveExecute(Sender: TObject);
     procedure GridDatasSetEditText(Sender: TObject; ACol, ARow: Integer; const Value: string);
     procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
+    procedure ActEscExecute(Sender: TObject);
 
   private
     function FillGrid(Rows: TStringList; Limit: integer = 0): integer;
@@ -99,7 +101,7 @@ var
   WindowDatas: TWindowDatas;
   DidChange: boolean = false;
 
-  //Mode: integer = 0;
+  Mode: integer = 0;
   //0 -> Disable Mode
   //1 -> Select Mode
   //2 -> Normal Mode
@@ -175,6 +177,7 @@ begin
       CleanGrid;
       SetFileInfos(GetFile);
       SelectMode;
+      TxtRowsLimit.SetFocus;
     end;
   end;
 end;
@@ -207,6 +210,7 @@ begin
     TxtRowsLimit.Text := FillGrid(GetFile, StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
     NormalMode;
     Done;
+    GridDatas.SetFocus;
   Except on E: Exception do
     ShowMessage('Arquivo Inválido: ' + E.ToString);
   end;
@@ -703,7 +707,6 @@ begin
   Result := GridDatas.Cells[0, 1].IsEmpty and GridDatas.Cells[1, 0].IsEmpty and GridDatas.Cells[1, 1].IsEmpty;
 end;
 
-//REWRITE
 //Iniciar a janela com dados já selecionados
 function TWindowDatas.ShowModal(Row: integer): integer;
 begin
@@ -712,6 +715,19 @@ begin
   GridDatas.Row := Row;
   GridDatas.Col := 1;
   inherited ShowModal;
+end;
+
+//Quando a tecla Esc é pressionada
+procedure TWindowDatas.ActEscExecute(Sender: TObject);
+begin
+  if Mode = 3 then
+  begin
+    ActCancel.Execute;
+  end
+  else
+  begin
+    Close;
+  end;
 end;
 
 end.

@@ -34,6 +34,7 @@ type
     BtnPause: TSpeedButton;
     ActPause: TAction;
     ActContinue: TAction;
+    ActEsc: TAction;
     procedure ActOpenFileExecute(Sender: TObject);
     procedure ActConfigDBExecute(Sender: TObject);
     procedure ActConfigFieldsExecute(Sender: TObject);
@@ -46,6 +47,7 @@ type
     procedure ActPauseExecute(Sender: TObject);
     procedure ActContinueExecute(Sender: TObject);
     procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
+    procedure ActEscExecute(Sender: TObject);
   private
     procedure Log(Msg: string);
     procedure NormalMode;
@@ -128,6 +130,19 @@ begin
   begin
     TConfigs.SetConfig('TEMP', 'FilePath', '');
     TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
+  end;
+end;
+
+//Quando a tecla Esc é pressionada
+procedure TWindowMain.ActEscExecute(Sender: TObject);
+begin
+  if MigrationEnabled then
+  begin
+    ActStop.Execute;
+  end
+  else
+  begin
+    Close;
   end;
 end;
 

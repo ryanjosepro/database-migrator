@@ -35,13 +35,14 @@ object WindowConfigs: TWindowConfigs
     Height = 23
     Action = ActSave
     Anchors = [akLeft, akBottom]
+    Caption = 'Salvar (Ctrl+S)'
   end
   object PageConfigs: TPageControl
     Left = 8
     Top = 8
     Width = 322
     Height = 324
-    ActivePage = TabFirebird
+    ActivePage = TabMigration
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'
@@ -183,12 +184,17 @@ object WindowConfigs: TWindowConfigs
     Left = 16
     Top = 320
     object ActSave: TAction
-      Caption = 'Salvar'
+      Caption = 'Salvar (Ctrl + S)'
+      ShortCut = 16467
       OnExecute = ActSaveExecute
     end
     object ActDiscard: TAction
-      Caption = 'Descartar'
+      Caption = 'Descartar (Esc)'
       OnExecute = ActDiscardExecute
+    end
+    object ActEsc: TAction
+      ShortCut = 27
+      OnExecute = ActEscExecute
     end
   end
 end

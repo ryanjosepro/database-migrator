@@ -31,6 +31,7 @@ type
     ActTruncFB: TAction;
     BtnConfigTable: TSpeedButton;
     ActConfigTable: TAction;
+    ActEsc: TAction;
     procedure FormActivate(Sender: TObject);
     procedure ActExportExecute(Sender: TObject);
     procedure ActImportExecute(Sender: TObject);
@@ -38,6 +39,7 @@ type
     procedure ActCleanFieldsExecute(Sender: TObject);
     procedure ActTruncFBExecute(Sender: TObject);
     procedure ActConfigTableExecute(Sender: TObject);
+    procedure ActEscExecute(Sender: TObject);
 
   private
     procedure GridTitles;
@@ -285,6 +287,12 @@ begin
     Clean := Clean and GridFields.Cells[4, Cont].IsEmpty;
   end;
   Result := Clean;
+end;
+
+//Quando a tecla Esc é pressionada
+procedure TWindowFields.ActEscExecute(Sender: TObject);
+begin
+  Close;
 end;
 
 end.

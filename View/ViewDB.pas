@@ -28,6 +28,7 @@ type
     ActTestConn: TAction;
     BtnDiscard: TSpeedButton;
     ActDiscard: TAction;
+    ActEsc: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure EditsChange(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -36,9 +37,12 @@ type
     procedure ActTestConnExecute(Sender: TObject);
     procedure ActDiscardExecute(Sender: TObject);
     procedure ActDBFileHint(var HintStr: string; var CanShow: Boolean);
+    procedure ActEscExecute(Sender: TObject);
 
   private
     procedure LoadConfigs;
+    procedure Altered;
+    procedure Done;
   end;
 
 var
@@ -53,7 +57,7 @@ implementation
 procedure TWindowDB.FormActivate(Sender: TObject);
 begin
   LoadConfigs;
-  DidChange := false;
+  Done;
 end;
 
 //Quando a janela é fechada
@@ -70,7 +74,7 @@ begin
   end
   else
   begin
-    DidChange := false;
+    Done;
   end;
 end;
 
@@ -92,7 +96,7 @@ end;
 //Descarta as alterações
 procedure TWindowDB.ActDiscardExecute(Sender: TObject);
 begin
-  DidChange := false;
+  Done;
   Close;
 end;
 
@@ -103,7 +107,7 @@ begin
 
     TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
-    DidChange := false;
+    Done;
 
     Close;
 end;
@@ -131,7 +135,7 @@ end;
 //Quando alguma coisa é alterada
 procedure TWindowDB.EditsChange(Sender: TObject);
 begin
-  DidChange := true;
+  Altered;
 end;
 
 //Carrega as configurações definidas
@@ -143,6 +147,35 @@ begin
   TxtUserName.Text := UserName;
   TxtPassword.Text := Password;
   TxtDatabase.Text := Database;
+end;
+
+//Quando algo é editado
+procedure TWindowDB.Altered;
+begin
+  DidChange := true;
+  ActSave.Enabled := true;
+  ActDiscard.Enabled := true;
+end;
+
+//Quando as alterações são salvas ou descartadas
+procedure TWindowDB.Done;
+begin
+  DidChange := false;
+  ActSave.Enabled := false;
+  ActDiscard.Enabled := false;
+end;
+
+//Quando a tecla Esc é pressionada
+procedure TWindowDB.ActEscExecute(Sender: TObject);
+begin
+  if DidChange then
+  begin
+    ActDiscard.Execute;
+  end
+  else
+  begin
+    Close;
+  end;
 end;
 
 end.

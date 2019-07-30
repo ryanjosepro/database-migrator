@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls,
-  Vcl.Buttons, System.Actions, Vcl.ActnList,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Buttons,
+  System.Actions, Vcl.ActnList,
   MyUtils, MyDialogs, Configs;
 
 type
@@ -31,6 +31,7 @@ type
     CheckLogDatas: TCheckBox;
     CheckLogActions: TCheckBox;
     GroupLog: TGroupBox;
+    ActEsc: TAction;
     procedure ActDiscardExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
     procedure GroupCommitClick(Sender: TObject);
@@ -38,9 +39,12 @@ type
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure SomeChange(Sender: TObject);
+    procedure ActEscExecute(Sender: TObject);
 
   private
     procedure LoadConfigs;
+    procedure Altered;
+    procedure Done;
   end;
 
 var
@@ -55,7 +59,7 @@ implementation
 procedure TWindowConfigs.FormActivate(Sender: TObject);
 begin
   LoadConfigs;
-  DidChange := false;
+  Done;
 end;
 
 //Quando a janela é fechada
@@ -72,14 +76,14 @@ begin
   end
   else
   begin
-    DidChange := false;
+    Done;
   end;
 end;
 
 //Quando algo no GroupCommit é alterado
 procedure TWindowConfigs.GroupCommitClick(Sender: TObject);
 begin
-  DidChange := true;
+  Altered;
   if GroupCommit.ItemIndex = 0 then
   begin
     TxtCommit.Enabled := false;
@@ -94,7 +98,7 @@ end;
 //QUanddo algo no GroupLimit é alterado
 procedure TWindowConfigs.GroupLimitClick(Sender: TObject);
 begin
-  DidChange := true;
+  Altered;
   if GroupLimit.ItemIndex = 0 then
   begin
     TxtLimitStarts.Enabled := false;
@@ -108,10 +112,10 @@ begin
   end;
 end;
 
-//Quando o CheckTruncFB é alterado
+//Quando os checks são alterados
 procedure TWindowConfigs.SomeChange(Sender: TObject);
 begin
-  DidChange := true;
+  Altered;
 end;
 
 //Salva todas as configurações
@@ -131,7 +135,7 @@ begin
 
   TConfigs.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
 
-  DidChange := false;
+  Done;
 
   Close;
 end;
@@ -139,7 +143,7 @@ end;
 //Descarta todas as configurações
 procedure TWindowConfigs.ActDiscardExecute(Sender: TObject);
 begin
-  DidChange := false;
+  Done;
   Close;
 end;
 
@@ -183,6 +187,35 @@ begin
   CheckTruncFB.Checked := (TruncFB = 1);
 
   PageConfigs.TabIndex := 0;
+end;
+
+//Quando algo é editado
+procedure TWindowConfigs.Altered;
+begin
+  DidChange := true;
+  ActSave.Enabled := true;
+  ActDiscard.Enabled := true;
+end;
+
+//Quando as alterações são salvas ou descartadas
+procedure TWindowConfigs.Done;
+begin
+  DidChange := false;
+  ActSave.Enabled := false;
+  ActDiscard.Enabled := false;
+end;
+
+//Quando a tecla Esc é pressionada
+procedure TWindowConfigs.ActEscExecute(Sender: TObject);
+begin
+  if DidChange then
+  begin
+    ActDiscard.Execute;
+  end
+  else
+  begin
+    Close;
+  end;
 end;
 
 end.
