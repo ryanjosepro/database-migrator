@@ -1,5 +1,4 @@
 unit ViewMain;
-
 interface
 
 uses
@@ -93,6 +92,16 @@ implementation
 
 -To add shortcuts on program;
 
+		    ________
+		   /        \
+		__/__________\__
+		 / ___    ___ \
+		 ||   |  |   ||
+		 ||  O|  |  O||
+		  \---    ---/
+		   \   \/   /
+		    \ ____ /
+		     \____/
 }
 
 {$R *.dfm}

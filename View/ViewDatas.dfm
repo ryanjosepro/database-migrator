@@ -3599,7 +3599,8 @@ object WindowDatas: TWindowDatas
     Top = 320
     Width = 121
     Height = 21
-    TabOrder = 2
+    TabStop = False
+    TabOrder = 0
     Text = 'TxtRefresh'
   end
   object GridDatas: TStringGrid
@@ -3612,7 +3613,7 @@ object WindowDatas: TWindowDatas
     FixedColor = clBtnShadow
     RowCount = 2
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goThumbTracking]
-    TabOrder = 0
+    TabOrder = 2
     Touch.ParentTabletOptions = False
     Touch.TabletOptions = [toPressAndHold]
     OnSetEditText = GridDatasSetEditText
@@ -3678,7 +3679,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 552
     Bitmap = {
-      494C01010300D800140340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010300D8001C0340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100004000000001002000000000000000
       010000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -5804,12 +5805,14 @@ object WindowDatas: TWindowDatas
     object ActOpenFile: TAction
       Hint = 'Arquivo Dataflex'
       ImageIndex = 0
+      ShortCut = 112
       OnExecute = ActOpenFileExecute
       OnHint = ActOpenFileHint
     end
     object ActConfigFields: TAction
       Hint = 'Campos Firebird'
       ImageIndex = 1
+      ShortCut = 115
       OnExecute = ActConfigFieldsExecute
     end
     object ActSelect: TAction
@@ -5859,7 +5862,7 @@ object WindowDatas: TWindowDatas
     Left = 920
     Top = 504
     Bitmap = {
-      494C01010A00D800900340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A00D800980340004000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000000010000C000000001002000000000000000
       030000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -12208,25 +12211,28 @@ object WindowDatas: TWindowDatas
     Top = 504
     object ActExport: TAction
       Enabled = False
+      Hint = 'Exportar Dados'
       ImageIndex = 0
       ShortCut = 16453
       OnExecute = ActExportExecute
     end
     object ActAlter: TAction
       Enabled = False
+      Hint = 'Alterar Dados'
       ImageIndex = 1
       ShortCut = 114
       OnExecute = ActAlterExecute
     end
     object ActSave: TAction
       Enabled = False
+      Hint = 'Salvar Altera'#231#245'es'
       ImageIndex = 2
       ShortCut = 16467
       OnExecute = ActSaveExecute
     end
     object ActCancel: TAction
       Enabled = False
-      Hint = 'Cancelar Altera'#231#245'es'
+      Hint = 'Cancelar Altera'#231#245'es (Esc)'
       ImageIndex = 3
       OnExecute = ActCancelExecute
     end

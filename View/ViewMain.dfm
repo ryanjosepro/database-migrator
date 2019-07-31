@@ -3564,7 +3564,7 @@ object WindowMain: TWindowMain
     Left = 449
     Top = 544
     Bitmap = {
-      494C010106005C01B80240004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010106005C01C00240004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -7802,49 +7802,49 @@ object WindowMain: TWindowMain
     object ActOpenFile: TAction
       Hint = 'Arquivo Dataflex'
       ImageIndex = 0
-      ShortCut = 79
+      ShortCut = 112
       OnExecute = ActOpenFileExecute
       OnHint = ActOpenFileHint
     end
     object ActConfigDB: TAction
       Hint = 'Banco de Dados'
       ImageIndex = 1
-      ShortCut = 68
+      ShortCut = 113
       OnExecute = ActConfigDBExecute
-    end
-    object ActConfigFields: TAction
-      Hint = 'Campos Firebird'
-      ImageIndex = 2
-      ShortCut = 70
-      OnExecute = ActConfigFieldsExecute
     end
     object ActDatas: TAction
       Hint = 'Dados Dataflex'
       ImageIndex = 3
-      ShortCut = 84
+      ShortCut = 114
       OnExecute = ActDatasExecute
+    end
+    object ActConfigFields: TAction
+      Hint = 'Campos Firebird'
+      ImageIndex = 2
+      ShortCut = 115
+      OnExecute = ActConfigFieldsExecute
     end
     object ActConfigs: TAction
       Hint = 'Configura'#231#245'es'
       ImageIndex = 4
-      ShortCut = 67
+      ShortCut = 116
       OnExecute = ActConfigsExecute
     end
     object ActMigrate: TAction
-      Caption = 'Migrar (F1)'
-      ShortCut = 112
+      Caption = 'Migrar (F9)'
+      ShortCut = 120
       OnExecute = ActMigrateExecute
     end
     object ActContinue: TAction
-      Caption = 'Continuar (F2)'
+      Caption = 'Continuar (F8)'
       Enabled = False
-      ShortCut = 113
+      ShortCut = 119
       OnExecute = ActContinueExecute
     end
     object ActPause: TAction
-      Caption = 'Pausar (F2)'
+      Caption = 'Pausar (F8)'
       Enabled = False
-      ShortCut = 113
+      ShortCut = 119
       OnExecute = ActPauseExecute
     end
     object ActStop: TAction

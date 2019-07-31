@@ -166,32 +166,38 @@ object WindowFields: TWindowFields
     object ActExport: TAction
       Hint = 'Exportar Configura'#231#227'o'
       ImageIndex = 0
+      ShortCut = 16453
       OnExecute = ActExportExecute
     end
     object ActImport: TAction
       Hint = 'Importar Configura'#231#227'o'
       ImageIndex = 1
+      ShortCut = 16457
       OnExecute = ActImportExecute
     end
     object ActOrdFields: TAction
       Hint = 'Ordenar campos DataFlex'
       ImageIndex = 2
+      ShortCut = 16463
       OnExecute = ActOrdFieldsExecute
     end
     object ActCleanFields: TAction
       Hint = 'Limpar campos DataFlex'
       ImageIndex = 3
+      ShortCut = 16430
       OnExecute = ActCleanFieldsExecute
-    end
-    object ActTruncFB: TAction
-      Hint = 'Truncar Tabela Firebird'
-      ImageIndex = 4
-      OnExecute = ActTruncFBExecute
     end
     object ActConfigTable: TAction
       Hint = 'Configurar Tabela'
       ImageIndex = 5
+      ShortCut = 16468
       OnExecute = ActConfigTableExecute
+    end
+    object ActTruncFB: TAction
+      Hint = 'Truncar Tabela Firebird'
+      ImageIndex = 4
+      ShortCut = 46
+      OnExecute = ActTruncFBExecute
     end
     object ActEsc: TAction
       ShortCut = 27
@@ -204,7 +210,7 @@ object WindowFields: TWindowFields
     Left = 528
     Top = 568
     Bitmap = {
-      494C010106000800640116001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101060008006C0116001600FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000580000002C0000000100200000000000803C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
