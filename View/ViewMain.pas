@@ -257,6 +257,7 @@ end;
 //Para a migração
 procedure TWindowMain.ActStopExecute(Sender: TObject);
 begin
+  TDialogs.YesNo();
   NormalMode;
 end;
 

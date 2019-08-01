@@ -70,7 +70,7 @@ object WindowConfigs: TWindowConfigs
         Items.Strings = (
           'Todas'
           'Limite:')
-        TabOrder = 3
+        TabOrder = 2
         OnClick = GroupLimitClick
       end
       object GroupCommit: TRadioGroup
@@ -84,7 +84,7 @@ object WindowConfigs: TWindowConfigs
         Items.Strings = (
           'No Final'
           'A cada:')
-        TabOrder = 2
+        TabOrder = 1
         OnClick = GroupCommitClick
       end
       object TxtCommit: TEdit
@@ -96,7 +96,7 @@ object WindowConfigs: TWindowConfigs
         AutoSize = False
         Enabled = False
         NumbersOnly = True
-        TabOrder = 0
+        TabOrder = 3
       end
       object TxtLimitStarts: TEdit
         Left = 107
@@ -107,7 +107,7 @@ object WindowConfigs: TWindowConfigs
         AutoSize = False
         Enabled = False
         NumbersOnly = True
-        TabOrder = 1
+        TabOrder = 4
       end
       object TxtLimitEnds: TEdit
         Left = 222
@@ -118,7 +118,7 @@ object WindowConfigs: TWindowConfigs
         AutoSize = False
         Enabled = False
         NumbersOnly = True
-        TabOrder = 4
+        TabOrder = 5
       end
       object GroupLog: TGroupBox
         Left = 3
@@ -126,7 +126,7 @@ object WindowConfigs: TWindowConfigs
         Width = 308
         Height = 94
         Caption = 'Log de Sa'#237'da'
-        TabOrder = 5
+        TabOrder = 0
         object CheckLogActions: TCheckBox
           Left = 8
           Top = 24
@@ -185,13 +185,18 @@ object WindowConfigs: TWindowConfigs
     Top = 320
     object ActSave: TAction
       Caption = 'Salvar (Ctrl + S)'
+      Enabled = False
       ShortCut = 16467
       OnExecute = ActSaveExecute
     end
     object ActDiscard: TAction
       Caption = 'Descartar (Esc)'
-      ShortCut = 27
+      Enabled = False
       OnExecute = ActDiscardExecute
+    end
+    object ActEsc: TAction
+      ShortCut = 27
+      OnExecute = ActEscExecute
     end
   end
 end
