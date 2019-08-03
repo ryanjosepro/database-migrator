@@ -209,7 +209,7 @@ begin
         begin
           GridFields.Cells[0, Cont + 1] := Fields[Cont];
           GridFields.Cells[1, Cont + 1] := Types[Cont];
-          GridFields.Cells[2, Cont + 1] := TUtils.Iff(NotNulls[Cont] = 1, 'Not Null', '');
+          GridFields.Cells[2, Cont + 1] := TUtils.Iif(NotNulls[Cont] = 1, 'Not Null', '');
         end;
       end
       else

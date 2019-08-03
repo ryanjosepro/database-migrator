@@ -46,6 +46,10 @@ object WindowConfigs: TWindowConfigs
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LblUntil: TLabel
         Left = 195
         Top = 252
@@ -150,6 +154,10 @@ object WindowConfigs: TWindowConfigs
     object TabExceptions: TTabSheet
       Caption = 'Exce'#231#245'es'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupException: TRadioGroup
         Left = 3
         Top = 0
@@ -169,6 +177,10 @@ object WindowConfigs: TWindowConfigs
     object TabFirebird: TTabSheet
       Caption = 'Firebird'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object CheckTruncFB: TCheckBox
         Left = 3
         Top = 3

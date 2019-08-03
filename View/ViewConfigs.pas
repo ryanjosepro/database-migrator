@@ -123,14 +123,14 @@ procedure TWindowConfigs.ActSaveExecute(Sender: TObject);
 var
   LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer;
 begin
-  LogActions := TUtils.Iff(CheckLogActions.Checked, 1, 0);
-  LogDatas := TUtils.Iff(CheckLogDatas.Checked, 1, 0);
-  Commit := TUtils.IffEmpty(GroupCommit.ItemIndex = 0, '-1', TxtCommit.Text).ToInteger;
-  LimitStarts := TUtils.IffEmpty(GroupLimit.ItemIndex = 0, '-1', TxtLimitStarts.Text).ToInteger;
+  LogActions := TUtils.Iif(CheckLogActions.Checked, 1, 0);
+  LogDatas := TUtils.Iif(CheckLogDatas.Checked, 1, 0);
+  Commit := TUtils.IifEmpty(GroupCommit.ItemIndex = 0, '-1', TxtCommit.Text).ToInteger;
+  LimitStarts := TUtils.IifEmpty(GroupLimit.ItemIndex = 0, '-1', TxtLimitStarts.Text).ToInteger;
   if LimitStarts = 0 then LimitStarts := -1;
-  LimitEnds := TUtils.IffEmpty(GroupLimit.ItemIndex = 0, '-1', TxtLimitEnds.Text).ToInteger;
+  LimitEnds := TUtils.IifEmpty(GroupLimit.ItemIndex = 0, '-1', TxtLimitEnds.Text).ToInteger;
   if LimitEnds = 0 then LimitEnds := -1;
-  TruncFB := TUtils.Iff(CheckTruncFB.Checked, 1, 0);
+  TruncFB := TUtils.Iif(CheckTruncFB.Checked, 1, 0);
   ErrorHdlg := GroupException.ItemIndex;
 
   TConfigs.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
@@ -176,8 +176,8 @@ begin
   else
   begin
     GroupLimit.ItemIndex := 1;
-    TxtLimitStarts.Text := TUtils.Iff(LimitStarts = -1, '', LimitStarts.ToString);
-    TxtLimitEnds.Text := TUtils.Iff(LimitEnds = -1, '', LimitEnds.ToString);
+    TxtLimitStarts.Text := TUtils.Iif(LimitStarts = -1, '', LimitStarts.ToString);
+    TxtLimitEnds.Text := TUtils.Iif(LimitEnds = -1, '', LimitEnds.ToString);
   end;
 
   //Exceções

@@ -112,7 +112,7 @@ var
   Cont: integer;
 begin
   TConfigs.SetConfig('TEMP', 'FilePath', '');
-  WindowState := TUtils.Iff(TConfigs.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);
+  WindowState := TUtils.Iif(TConfigs.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);
 end;
 
 //Quando o programa é fechado
@@ -128,7 +128,7 @@ begin
     begin
       MigrationEnabled := false;
       TConfigs.SetConfig('TEMP', 'FilePath', '');
-      TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
+      TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iif(WindowMain.WindowState = wsMaximized, '2', '0'));
     end
     else if Answer = mrNo then
     begin
@@ -138,7 +138,7 @@ begin
   else
   begin
     TConfigs.SetConfig('TEMP', 'FilePath', '');
-    TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iff(WindowMain.WindowState = wsMaximized, '2', '0'));
+    TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iif(WindowMain.WindowState = wsMaximized, '2', '0'));
   end;
 end;
 
@@ -257,8 +257,10 @@ end;
 //Para a migração
 procedure TWindowMain.ActStopExecute(Sender: TObject);
 begin
-  TDialogs.YesNo();
-  NormalMode;
+  if TDialogs.YesNo('Deseja cancelar a migração?') = mrYes then
+  begin
+    NormalMode;
+  end;
 end;
 
 //Envia uma string para o TxtLog
@@ -353,11 +355,11 @@ begin
     //Busca as configurações
     TConfigs.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
 
-    Commit := TUtils.IffLess(Commit = -1, DataFlex.GetRowCount, Commit);
+    Commit := TUtils.IifLess(Commit = -1, DataFlex.GetRowCount, Commit);
 
-    LimitEnds := TUtils.Iff(LimitEnds = -1, DataFlex.GetRowCount, LimitEnds);
+    LimitEnds := TUtils.Iif(LimitEnds = -1, DataFlex.GetRowCount, LimitEnds);
 
-    LimitStarts := TUtils.Iff(LimitStarts = -1, 1, LimitStarts);
+    LimitStarts := TUtils.Iif(LimitStarts = -1, 1, LimitStarts);
 
     CommitStep := Commit;
 

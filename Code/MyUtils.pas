@@ -10,14 +10,14 @@ type
 
   TUtils = class
   public
-    class function Iff(Cond: boolean; V1, V2: variant): variant;
+    class function Iif(Cond: boolean; V1, V2: variant): variant;
     class function IfLess(Value, Value2: integer): integer;
     class function IfEmpty(Value, Replace: string): string;
     class function IfZero(Value, Replace: integer): integer;
 
-    class function IffLess(Cond: boolean; V1, V2: integer): integer;
-    class function IffEmpty(Cond: boolean; V1, V2: string): string;
-    class function IffZero(Cond: boolean; V1, V2: integer): integer;
+    class function IifLess(Cond: boolean; V1, V2: integer): integer;
+    class function IifEmpty(Cond: boolean; V1, V2: string): string;
+    class function IifZero(Cond: boolean; V1, V2: integer): integer;
 
     class function Cut(Text, Separator: string): TStringArray;
 
@@ -34,7 +34,7 @@ type
 implementation
 
 //Método para usar operador ternário
-class function TUtils.Iff(Cond: boolean; V1, V2: variant): variant;
+class function TUtils.Iif(Cond: boolean; V1, V2: variant): variant;
 begin
   if Cond then
   begin
@@ -49,37 +49,37 @@ end;
 //Retorna o menor valor
 class function TUtils.IfLess(Value, Value2: integer): integer;
 begin
-  Result := Iff(Value < Value2, Value, Value2);
+  Result := Iif(Value < Value2, Value, Value2);
 end;
 
 //Retorna um substituto se o valor for vazio
 class function TUtils.IfEmpty(Value, Replace: string): string;
 begin
-  Result := Iff(Value.Trim = '', Replace, Value);
+  Result := Iif(Value.Trim = '', Replace, Value);
 end;
 
 //Retorna um substituto se o valor for zero
 class function TUtils.IfZero(Value, Replace: integer): integer;
 begin
-  Result := Iff(Value = 0, Replace, Value);
+  Result := Iif(Value = 0, Replace, Value);
 end;
 
-//Iff e IfLess juntos num método só
-class function TUtils.IffLess(Cond: boolean; V1, V2: integer): integer;
+//Iif e IfLess juntos num método só
+class function TUtils.IifLess(Cond: boolean; V1, V2: integer): integer;
 begin
-  Result := Iff(Cond, V1, IfLess(V2, V1));
+  Result := Iif(Cond, V1, IfLess(V2, V1));
 end;
 
-//Iff e IfEmpty juntos num método só
-class function TUtils.IffEmpty(Cond: boolean; V1, V2: string): string;
+//Iif e IfEmpty juntos num método só
+class function TUtils.IifEmpty(Cond: boolean; V1, V2: string): string;
 begin
-  Result := Iff(Cond, V1, IfEmpty(V2, V1));
+  Result := Iif(Cond, V1, IfEmpty(V2, V1));
 end;
 
-//Iff e IfZero juntos num método só
-class function TUtils.IffZero(Cond: boolean; V1, V2: integer): integer;
+//Iif e IfZero juntos num método só
+class function TUtils.IifZero(Cond: boolean; V1, V2: integer): integer;
 begin
-  Result := Iff(Cond, V1, IfZero(V2, V1));
+  Result := Iif(Cond, V1, IfZero(V2, V1));
 end;
 
 //Divide uma string em array baseando-se no separador
@@ -103,7 +103,7 @@ var
   Cont: integer;
 begin
   Result := '';
-  for Cont := TUtils.Iff(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
+  for Cont := TUtils.Iif(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
   begin
     if Cont = Length(StrArray) - 1 - EndsBefore then
     begin
@@ -121,7 +121,7 @@ var
   Cont: integer;
 begin
   Result := '';
-  for Cont := TUtils.Iff(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
+  for Cont := TUtils.Iif(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
   begin
     if Cont = Length(StrArray) - 1 - EndsBefore then
     begin
@@ -158,7 +158,7 @@ begin
     Inc(Cont);
   end;
 
-  for Cont := Iff(IncStarts, Cont, Cont + 1) to StrList.Count - 1 do
+  for Cont := Iif(IncStarts, Cont, Cont + 1) to StrList.Count - 1 do
   begin
     if StrList[Cont] <> Ends then
     begin
@@ -208,7 +208,7 @@ begin
     Inc(Cont);
   end;
 
-  for Cont := Iff(IncStarts, Cont, Cont + 1) to Ends do
+  for Cont := Iif(IncStarts, Cont, Cont + 1) to Ends do
   begin
     Result.Add(StrList[Cont]);
   end;
