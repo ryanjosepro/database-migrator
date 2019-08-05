@@ -9,7 +9,7 @@ uses
   ViewFields in 'View\ViewFields.pas' {WindowFields},
   DAO in 'DAO\DAO.pas',
   ViewConfigs in 'View\ViewConfigs.pas' {WindowConfigs},
-  Configs in 'Code\Configs.pas',
+  Config in 'Code\Config.pas',
   DataFlex in 'Code\DataFlex.pas',
   Arrays in 'Code\Arrays.pas',
   ViewDatas in 'View\ViewDatas.pas' {WindowDatas},

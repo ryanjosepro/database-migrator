@@ -5,7 +5,7 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.ExtDlgs, Vcl.ComCtrls,
-  ViewDB, ViewFields, ViewDatas, ViewConfigs, Arrays, MyDialogs, Configs, MyUtils, DataFlex, DAO;
+  ViewDB, ViewFields, ViewDatas, ViewConfigs, Arrays, MyDialogs, Config, MyUtils, DataFlex, DAO;
 
 type
   TWindowMain = class(TForm)
@@ -111,8 +111,8 @@ procedure TWindowMain.FormActivate(Sender: TObject);
 var
   Cont: integer;
 begin
-  TConfigs.SetConfig('TEMP', 'FilePath', '');
-  WindowState := TUtils.Iif(TConfigs.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);
+  TConfig.SetConfig('TEMP', 'FilePath', '');
+  WindowState := TUtils.Iif(TConfig.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);
 end;
 
 //Quando o programa é fechado
@@ -127,8 +127,8 @@ begin
     if Answer = mrYes then
     begin
       MigrationEnabled := false;
-      TConfigs.SetConfig('TEMP', 'FilePath', '');
-      TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iif(WindowMain.WindowState = wsMaximized, '2', '0'));
+      TConfig.SetConfig('TEMP', 'FilePath', '');
+      TConfig.SetConfig('SYSTEM', 'WindowState', TUtils.Iif(WindowMain.WindowState = wsMaximized, '2', '0'));
     end
     else if Answer = mrNo then
     begin
@@ -137,8 +137,8 @@ begin
   end
   else
   begin
-    TConfigs.SetConfig('TEMP', 'FilePath', '');
-    TConfigs.SetConfig('SYSTEM', 'WindowState', TUtils.Iif(WindowMain.WindowState = wsMaximized, '2', '0'));
+    TConfig.SetConfig('TEMP', 'FilePath', '');
+    TConfig.SetConfig('SYSTEM', 'WindowState', TUtils.Iif(WindowMain.WindowState = wsMaximized, '2', '0'));
   end;
 end;
 
@@ -160,7 +160,7 @@ procedure TWindowMain.ActOpenFileExecute(Sender: TObject);
 begin
   if OpenFile.Execute then
   begin
-    TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+    TConfig.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
     ActOpenFile.ImageIndex := 5;
     BtnOpenFile.Action := ActOpenFile;
   end;
@@ -169,7 +169,7 @@ end;
 //Mostra o caminho do arquivo
 procedure TWindowMain.ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
 begin
-  HintStr := TUtils.IfEmpty(TConfigs.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
+  HintStr := TUtils.IfEmpty(TConfig.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
 end;
 
 //Abre as configurações do banco de dados
@@ -188,7 +188,7 @@ end;
 procedure TWindowMain.ActDatasExecute(Sender: TObject);
 begin
   WindowDatas.ShowModal;
-  if TConfigs.GetConfig('TEMP', 'FilePath').Trim <> '' then
+  if TConfig.GetConfig('TEMP', 'FilePath').Trim <> '' then
   begin
     ActOpenFile.ImageIndex := 5;
     BtnOpenFile.Action := ActOpenFile;
@@ -220,14 +220,14 @@ begin
     ShowMessage('Configure os campos!');
     WindowFields.ShowModal;
   end
-  else if TConfigs.GetConfig('TEMP', 'FilePath') = '' then
+  else if TConfig.GetConfig('TEMP', 'FilePath') = '' then
   begin
     Ok := false;
     ShowMessage('Selecione um arquivo!');
     if OpenFile.Execute then
     begin
       Ok := true;
-      TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+      TConfig.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
       ActOpenFile.ImageIndex := 5;
       BtnOpenFile.Action := ActOpenFile;
     end;
@@ -343,7 +343,7 @@ begin
   try
     //Passa o arquivo Dataflex para uma StringList
     Rows := TStringList.Create;
-    Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+    Rows.LoadFromFile(TConfig.GetConfig('TEMP', 'FilePath'));
 
     //Passa a StringList para a classe de tratamento
     DataFlex := TDataFlex.Create(Rows, ';');
@@ -353,7 +353,7 @@ begin
     Datas := DataFlex.ToMatrix;
 
     //Busca as configurações
-    TConfigs.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
+    TConfig.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
 
     Commit := TUtils.IifLess(Commit = -1, DataFlex.GetRowCount, Commit);
 
@@ -459,7 +459,7 @@ begin
           if TDialogs.YesNo('Deseja reinserir o dado ' + (ContRow + 1).ToString + '?', mbYes) = mrYes then
           begin
             Rows := TStringList.Create;
-            Rows.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+            Rows.LoadFromFile(TConfig.GetConfig('TEMP', 'FilePath'));
             DataFlex := TDataFlex.Create(Rows, ';');
             Datas := DataFlex.ToMatrix;
             ContRow := ContRow - 1;

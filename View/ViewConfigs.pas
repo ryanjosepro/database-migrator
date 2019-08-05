@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.Buttons,
   System.Actions, Vcl.ActnList,
-  MyUtils, MyDialogs, Configs;
+  MyUtils, MyDialogs, Config;
 
 type
   TWindowConfigs = class(TForm)
@@ -133,7 +133,7 @@ begin
   TruncFB := TUtils.Iif(CheckTruncFB.Checked, 1, 0);
   ErrorHdlg := GroupException.ItemIndex;
 
-  TConfigs.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
+  TConfig.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
 
   Done;
 
@@ -152,7 +152,7 @@ procedure TWindowConfigs.LoadConfigs;
 var
   LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer;
 begin
-  TConfigs.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
+  TConfig.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
 
   //Migração
   CheckLogActions.Checked := (LogActions = 1);

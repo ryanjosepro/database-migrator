@@ -106,7 +106,7 @@
         <DCCReference Include="View\ViewConfigs.pas">
             <Form>WindowConfigs</Form>
         </DCCReference>
-        <DCCReference Include="Code\Configs.pas"/>
+        <DCCReference Include="Code\Config.pas"/>
         <DCCReference Include="Code\DataFlex.pas"/>
         <DCCReference Include="Code\Arrays.pas"/>
         <DCCReference Include="View\ViewDatas.pas">

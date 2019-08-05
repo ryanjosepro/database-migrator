@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, System.Variants, Winapi.Windows, Winapi.Messages, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.Grids, Vcl.StdCtrls, Vcl.Buttons, Data.DB, Vcl.DBGrids,
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList, shlObj,
-  Arrays, MyUtils, MyDialogs, Configs, DAO;
+  Arrays, MyUtils, MyDialogs, Config, DAO;
 
 type
   TWindowFields = class(TForm)
@@ -77,7 +77,7 @@ var
   Arq: TextFile;
   Cont: integer;
 begin
-  SaveFile.FileName := 'Campos' + TConfigs.GetConfig('DB', 'Table');
+  SaveFile.FileName := 'Campos' + TConfig.GetConfig('DB', 'Table');
   if SaveFile.Execute then
   begin
     AssignFile(Arq, SaveFile.FileName);
@@ -154,8 +154,8 @@ procedure TWindowFields.ActConfigTableExecute(Sender: TObject);
 var
   Table: string;
 begin
-  Table := InputBox('Configurar Tabela', 'Insira o nome da tabela', TConfigs.GetConfig('DB', 'Table')).Trim;
-  TConfigs.SetConfig('DB', 'Table', Table);
+  Table := InputBox('Configurar Tabela', 'Insira o nome da tabela', TConfig.GetConfig('DB', 'Table')).Trim;
+  TConfig.SetConfig('DB', 'Table', Table);
   FillGrid;
   if TDAO.Count <= 0 then
   begin
@@ -168,7 +168,7 @@ procedure TWindowFields.ActTruncFBExecute(Sender: TObject);
 var
   Answer: integer;
 begin
-  Answer :=  TDialogs.YesNo('Deseja apagar todos os dados da tabela ' + TConfigs.GetConfig('DB', 'Table') + '?');
+  Answer :=  TDialogs.YesNo('Deseja apagar todos os dados da tabela ' + TConfig.GetConfig('DB', 'Table') + '?');
   if Answer = mrYes then
   begin
     TDAO.Truncate;
@@ -197,7 +197,7 @@ begin
     try
       if TDAO.Count <> 0 then
       begin
-        LblTable.Caption := TConfigs.GetConfig('DB', 'Table');
+        LblTable.Caption := TConfig.GetConfig('DB', 'Table');
         SetLength(Fields, TDAO.Count);
         Fields := TDAO.GetFieldsNames;
         SetLength(Types, TDAO.Count);

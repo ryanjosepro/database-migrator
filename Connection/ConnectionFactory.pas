@@ -7,7 +7,7 @@ uses
   FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.FB, FireDAC.Phys.FBDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Param,
   FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
-  Configs;
+  Config;
 
 type
   TConnFactory = class(TDataModule)
@@ -32,7 +32,7 @@ procedure TConnFactory.DataModuleCreate(Sender: TObject);
 var
   UserName, Password, Database: string;
 begin
-  TConfigs.GetDB(UserName, Password, Database);
+  TConfig.GetDB(UserName, Password, Database);
   Conn.Params.UserName := UserName;
   Conn.Params.Password := Password;
   Conn.Params.Database := Database;

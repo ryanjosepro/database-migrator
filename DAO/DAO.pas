@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, System.Types, System.Variants, FireDAC.Comp.Client,
-  Arrays, Configs, ConnectionFactory;
+  Arrays, Config, ConnectionFactory;
 
 type
 
@@ -61,7 +61,7 @@ end;
 //Retorna a tabela definida nas configurações
 class function TDAO.Table: string;
 begin
-  Result := TConfigs.GetConfig('DB', 'Table');
+  Result := TConfig.GetConfig('DB', 'Table');
 end;
 
 //Seleciona os campos na QueryFields

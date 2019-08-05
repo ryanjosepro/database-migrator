@@ -1,0 +1,181 @@
+unit ViewDB;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms,Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons,
+  System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList,
+  MyUtils, MyDialogs, Configs, DAO;
+
+type
+  TWindowDB = class(TForm)
+    ImageTitle: TImage;
+    LblUserName: TLabel;
+    TxtUserName: TEdit;
+    LblPassword: TLabel;
+    TxtPassword: TEdit;
+    LblDatabase: TLabel;
+    TxtDatabase: TEdit;
+    BtnSave: TSpeedButton;
+    BtnTestConn: TSpeedButton;
+    OpenFile: TFileOpenDialog;
+    Actions: TActionList;
+    Images: TImageList;
+    ActDBFile: TAction;
+    BtnDBFile: TSpeedButton;
+    ActSave: TAction;
+    ActTestConn: TAction;
+    BtnDiscard: TSpeedButton;
+    ActDiscard: TAction;
+    ActEsc: TAction;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure EditsChange(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure ActDBFileExecute(Sender: TObject);
+    procedure ActSaveExecute(Sender: TObject);
+    procedure ActTestConnExecute(Sender: TObject);
+    procedure ActDiscardExecute(Sender: TObject);
+    procedure ActDBFileHint(var HintStr: string; var CanShow: Boolean);
+    procedure ActEscExecute(Sender: TObject);
+
+  private
+    procedure LoadConfigs;
+    procedure Altered;
+    procedure Done;
+  end;
+
+var
+  WindowDB: TWindowDB;
+  DidChange: boolean;
+
+implementation
+
+{$R *.dfm}
+
+//Quando a janela é aberta
+procedure TWindowDB.FormActivate(Sender: TObject);
+begin
+  LoadConfigs;
+  Done;
+end;
+
+//Quando a janela é fechada
+procedure TWindowDB.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  if DidChange then
+  begin
+    case TDialogs.YesNoCancel('Deseja salvar as alterações?') of
+    mrYes:
+      ActSaveExecute(BtnSave);
+    mrCancel:
+      Action := TCloseAction.caNone;
+    end;
+  end
+  else
+  begin
+    Done;
+  end;
+end;
+
+//Busca o arquivo do banco de dados
+procedure TWindowDB.ActDBFileExecute(Sender: TObject);
+begin
+  if OpenFile.Execute then
+  begin
+    TxtDatabase.Text := OpenFile.FileName;
+  end;
+end;
+
+//Quando o hint é mostrado
+procedure TWindowDB.ActDBFileHint(var HintStr: string; var CanShow: Boolean);
+begin
+  HintStr := TUtils.IfEmpty(TConfigs.GetConfig('DB', 'Database'), 'Banco de Dados');
+end;
+
+//Descarta as alterações
+procedure TWindowDB.ActDiscardExecute(Sender: TObject);
+begin
+  Done;
+  Close;
+end;
+
+//Salva as alterações
+procedure TWindowDB.ActSaveExecute(Sender: TObject);
+begin
+    TConfigs.SetDB(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
+
+    TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
+
+    Done;
+
+    Close;
+end;
+
+//Testa a conexão
+procedure TWindowDB.ActTestConnExecute(Sender: TObject);
+var
+  CurrUserName, CurrPassword, CurrDatabase: string;
+begin
+  TDAO.GetParams(CurrUserName, CurrPassword, CurrDatabase);
+
+  TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
+  try
+    try
+      TDAO.TestConn;
+      ShowMessage('Conexão Ok!');
+    except on E: Exception do
+      ShowMessage('Erro de conexão: ' + E.ToString);
+    end;
+  finally
+    TDAO.SetParams(CurrUserName, CurrPassword, CurrDatabase);
+  end;
+end;
+
+//Quando alguma coisa é alterada
+procedure TWindowDB.EditsChange(Sender: TObject);
+begin
+  Altered;
+end;
+
+//Carrega as configurações definidas
+procedure TWindowDB.LoadConfigs;
+var
+  UserName, Password, Database: string;
+begin
+  TConfigs.GetDB(UserName, Password, Database);
+  TxtUserName.Text := UserName;
+  TxtPassword.Text := Password;
+  TxtDatabase.Text := Database;
+end;
+
+//Quando algo é editado
+procedure TWindowDB.Altered;
+begin
+  DidChange := true;
+  ActSave.Enabled := true;
+  ActDiscard.Enabled := true;
+end;
+
+//Quando as alterações são salvas ou descartadas
+procedure TWindowDB.Done;
+begin
+  DidChange := false;
+  ActSave.Enabled := false;
+  ActDiscard.Enabled := false;
+end;
+
+//Quando a tecla Esc é pressionada
+procedure TWindowDB.ActEscExecute(Sender: TObject);
+begin
+  if DidChange then
+  begin
+    ActDiscard.Execute;
+  end
+  else
+  begin
+    Close;
+  end;
+end;
+
+end.

@@ -46,10 +46,6 @@ object WindowConfigs: TWindowConfigs
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LblUntil: TLabel
         Left = 195
         Top = 252

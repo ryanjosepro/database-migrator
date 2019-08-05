@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.Buttons, Vcl.ExtCtrls, Vcl.DBGrids,
-  ViewFields, Arrays, MyUtils, MyDialogs, Configs, DataFlex, Data.DB;
+  ViewFields, Arrays, MyUtils, MyDialogs, Config, DataFlex, Data.DB;
 
 type
   TWindowDatas = class(TForm)
@@ -117,7 +117,7 @@ procedure TWindowDatas.FormActivate(Sender: TObject);
 var
   FilePath: string;
 begin
-  FilePath := TConfigs.GetConfig('TEMP', 'FilePath');
+  FilePath := TConfig.GetConfig('TEMP', 'FilePath');
   if FilePath <> '' then
   begin
     if FilePath <> TxtFileName.Caption then
@@ -169,9 +169,9 @@ procedure TWindowDatas.ActOpenFileExecute(Sender: TObject);
 begin
   if OpenFile.Execute then
   begin
-    if OpenFile.FileName <> TConfigs.GetConfig('TEMP', 'FilePath') then
+    if OpenFile.FileName <> TConfig.GetConfig('TEMP', 'FilePath') then
     begin
-      TConfigs.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
+      TConfig.SetConfig('TEMP', 'FilePath', OpenFile.FileName);
       ActOpenFile.ImageIndex := 2;
       BtnOpenFile.Action := ActOpenFile;
       CleanGrid;
@@ -185,7 +185,7 @@ end;
 //Mostra o caminho do arquivo
 procedure TWindowDatas.ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
 begin
-  HintStr := TUtils.IfEmpty(TConfigs.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
+  HintStr := TUtils.IfEmpty(TConfig.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
 end;
 
 //Abre a configuração de campos
@@ -243,7 +243,7 @@ begin
       if TDialogs.YesNo('Arquivo existente, deseja sobrescrevê-lo?') = mrYes then
       begin
         GridToStrList(CheckConsLimit.Checked).SaveToFile(SaveFile.FileName);
-        if SaveFile.FileName = TConfigs.GetConfig('TEMP', 'FilePath') then
+        if SaveFile.FileName = TConfig.GetConfig('TEMP', 'FilePath') then
         begin
           CleanGrid;
           SetFileInfos(GetFile);
@@ -263,7 +263,7 @@ end;
 //Salva as alterações feitas no aquivo
 procedure TWindowDatas.ActSaveExecute(Sender: TObject);
 begin
-  GridToStrList(CheckConsLimit.Checked).SaveToFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+  GridToStrList(CheckConsLimit.Checked).SaveToFile(TConfig.GetConfig('TEMP', 'FilePath'));
   SetFileInfos(GetFile);
   RefreshGrid;
   Done;
@@ -672,7 +672,7 @@ end;
 function TWindowDatas.GetFile: TStringList;
 begin
   Result := TStringList.Create;
-  Result.LoadFromFile(TConfigs.GetConfig('TEMP', 'FilePath'));
+  Result.LoadFromFile(TConfig.GetConfig('TEMP', 'FilePath'));
 end;
 
 //Retorna os dados da Grid em linhas numa StringList

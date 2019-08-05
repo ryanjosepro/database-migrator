@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms,Vcl.Dialogs, Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls, Vcl.Buttons,
   System.ImageList, Vcl.ImgList, System.Actions, Vcl.ActnList,
-  MyUtils, MyDialogs, Configs, DAO;
+  MyUtils, MyDialogs, Config, DAO;
 
 type
   TWindowDB = class(TForm)
@@ -90,7 +90,7 @@ end;
 //Quando o hint é mostrado
 procedure TWindowDB.ActDBFileHint(var HintStr: string; var CanShow: Boolean);
 begin
-  HintStr := TUtils.IfEmpty(TConfigs.GetConfig('DB', 'Database'), 'Banco de Dados');
+  HintStr := TUtils.IfEmpty(TConfig.GetConfig('DB', 'Database'), 'Banco de Dados');
 end;
 
 //Descarta as alterações
@@ -103,7 +103,7 @@ end;
 //Salva as alterações
 procedure TWindowDB.ActSaveExecute(Sender: TObject);
 begin
-    TConfigs.SetDB(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
+    TConfig.SetDB(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
     TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
@@ -143,7 +143,7 @@ procedure TWindowDB.LoadConfigs;
 var
   UserName, Password, Database: string;
 begin
-  TConfigs.GetDB(UserName, Password, Database);
+  TConfig.GetDB(UserName, Password, Database);
   TxtUserName.Text := UserName;
   TxtPassword.Text := Password;
   TxtDatabase.Text := Database;
