@@ -111,7 +111,7 @@ object WindowDB: TWindowDB
     Top = 194
     Width = 89
     Height = 23
-    Action = ActTestConn
+    Action = ActTest
     Anchors = [akLeft, akBottom]
   end
   object BtnDBFile: TSpeedButton
@@ -145,7 +145,7 @@ object WindowDB: TWindowDB
     ParentShowHint = False
     ShowHint = True
     TabOrder = 2
-    OnChange = EditsChange
+    OnChange = TxtChange
   end
   object TxtUserName: TEdit
     Left = 57
@@ -159,7 +159,7 @@ object WindowDB: TWindowDB
     Font.Style = []
     ParentFont = False
     TabOrder = 0
-    OnChange = EditsChange
+    OnChange = TxtChange
   end
   object TxtPassword: TEdit
     Left = 57
@@ -174,7 +174,7 @@ object WindowDB: TWindowDB
     ParentFont = False
     PasswordChar = '*'
     TabOrder = 1
-    OnChange = EditsChange
+    OnChange = TxtChange
   end
   object OpenFile: TFileOpenDialog
     FavoriteLinks = <>
@@ -204,9 +204,10 @@ object WindowDB: TWindowDB
       Enabled = False
       OnExecute = ActDiscardExecute
     end
-    object ActTestConn: TAction
-      Caption = 'Testar Conex'#227'o'
-      OnExecute = ActTestConnExecute
+    object ActTest: TAction
+      Caption = 'Testar (Ctrl+T) '
+      ShortCut = 16468
+      OnExecute = ActTestExecute
     end
     object ActEsc: TAction
       ShortCut = 27
@@ -218,7 +219,7 @@ object WindowDB: TWindowDB
     BkColor = clWhite
     Left = 240
     Bitmap = {
-      494C010101000800940010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C0101010008009C0010001000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000001000000001002000000000000010
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

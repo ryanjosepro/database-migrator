@@ -136,15 +136,13 @@ begin
   TConfig.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
 
   Done;
-
-  Close;
 end;
 
 //Descarta todas as configurações
 procedure TWindowConfigs.ActDiscardExecute(Sender: TObject);
 begin
+  LoadConfigs;
   Done;
-  Close;
 end;
 
 //Carregas as configurações definidas

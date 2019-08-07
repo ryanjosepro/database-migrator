@@ -150,10 +150,6 @@ object WindowConfigs: TWindowConfigs
     object TabExceptions: TTabSheet
       Caption = 'Exce'#231#245'es'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupException: TRadioGroup
         Left = 3
         Top = 0
@@ -173,10 +169,6 @@ object WindowConfigs: TWindowConfigs
     object TabFirebird: TTabSheet
       Caption = 'Firebird'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object CheckTruncFB: TCheckBox
         Left = 3
         Top = 3

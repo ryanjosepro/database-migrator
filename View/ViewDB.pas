@@ -25,16 +25,16 @@ type
     ActDBFile: TAction;
     BtnDBFile: TSpeedButton;
     ActSave: TAction;
-    ActTestConn: TAction;
+    ActTest: TAction;
     BtnDiscard: TSpeedButton;
     ActDiscard: TAction;
     ActEsc: TAction;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure EditsChange(Sender: TObject);
+    procedure TxtChange(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure ActDBFileExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
-    procedure ActTestConnExecute(Sender: TObject);
+    procedure ActTestExecute(Sender: TObject);
     procedure ActDiscardExecute(Sender: TObject);
     procedure ActDBFileHint(var HintStr: string; var CanShow: Boolean);
     procedure ActEscExecute(Sender: TObject);
@@ -96,8 +96,8 @@ end;
 //Descarta as alterações
 procedure TWindowDB.ActDiscardExecute(Sender: TObject);
 begin
+  LoadConfigs;
   Done;
-  Close;
 end;
 
 //Salva as alterações
@@ -108,12 +108,10 @@ begin
     TDAO.SetParams(TxtUserName.Text, TxtPassword.Text, TxtDatabase.Text);
 
     Done;
-
-    Close;
 end;
 
 //Testa a conexão
-procedure TWindowDB.ActTestConnExecute(Sender: TObject);
+procedure TWindowDB.ActTestExecute(Sender: TObject);
 var
   CurrUserName, CurrPassword, CurrDatabase: string;
 begin
@@ -133,7 +131,7 @@ begin
 end;
 
 //Quando alguma coisa é alterada
-procedure TWindowDB.EditsChange(Sender: TObject);
+procedure TWindowDB.TxtChange(Sender: TObject);
 begin
   Altered;
 end;
