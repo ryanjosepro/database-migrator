@@ -2,7 +2,8 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2019/08/05 16:01:48.000.426,C:\Users\Ryan\Documents\Delphi Projects\ProjectMigrator\Code\Config.pas=C:\Users\Ryan\Documents\Delphi Projects\ProjectMigrator\Code\Configs.pas</Transaction>
-  </Transactions>  <ProjectSortOrder AutoSort="0" SortType="0">
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Code"/>
     <File Path="Code\Arrays.pas"/>
     <File Path="Code\MyUtils.pas"/>

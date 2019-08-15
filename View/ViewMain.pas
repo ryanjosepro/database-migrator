@@ -85,7 +85,6 @@ implementation
 
 --> TO DO <--
 
--To add dark theme option on ViewConfigs;
 -To add a option to create a table on migration (By Danilo);
 
 --> DOING <--
@@ -334,7 +333,7 @@ var
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
   ContRow, CommitStep: integer;
-  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer;
+  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer;
   Error: string;
   OutStr: string;
 begin
@@ -353,7 +352,7 @@ begin
     Datas := DataFlex.ToMatrix;
 
     //Busca as configurações
-    TConfig.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
+    TConfig.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg);
 
     Commit := TUtils.IifLess(Commit = -1, DataFlex.GetRowCount, Commit);
 
@@ -363,8 +362,8 @@ begin
 
     CommitStep := Commit;
 
-    //Trunca a tabela Firebird
-    if TruncFB = 1 then
+    //Aplica a configuração de tabela firebird
+    if TableAction = 1 then
     begin
       TDAO.Truncate;
     end;

@@ -21,6 +21,7 @@ type
     class procedure GetParams(var UserName, Password, Database: string);
     class procedure SetParams(UserName, Password, Database: string);
 
+    class procedure CreateTable(Name: string; FieldsName, FieldsType: TStringArray);
     class procedure Insert(Datas: TStringArray; Order: TIntegerArray; Defaults: TStringArray);
 
     class function GetFieldsNames: TStringArray;
@@ -92,6 +93,12 @@ end;
 class procedure TDAO.TestConn;
 begin
   Connection.Connected := true;
+end;
+
+//Cria uma Tabela no DB selecionado
+class procedure TDAO.CreateTable(Name: string; FieldsName, FieldsType: TStringArray);
+begin
+  //
 end;
 
 //Insere os dados no banco

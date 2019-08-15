@@ -4,8 +4,8 @@ object WindowMain: TWindowMain
   Hint = 'Configura'#231#245'es'
   Anchors = [akTop]
   Caption = 'Migrator'
-  ClientHeight = 639
-  ClientWidth = 510
+  ClientHeight = 638
+  ClientWidth = 614
   Color = clBtnFace
   Constraints.MinHeight = 340
   Constraints.MinWidth = 520
@@ -3361,12 +3361,12 @@ object WindowMain: TWindowMain
   OnActivate = FormActivate
   OnClose = FormClose
   DesignSize = (
-    510
-    639)
+    614
+    638)
   PixelsPerInch = 96
   TextHeight = 13
   object LblTitle1: TLabel
-    Left = 56
+    Left = 72
     Top = 8
     Width = 75
     Height = 24
@@ -3379,7 +3379,7 @@ object WindowMain: TWindowMain
     ParentFont = False
   end
   object LblTitle2: TLabel
-    Left = 374
+    Left = 471
     Top = 8
     Width = 67
     Height = 24
@@ -3391,13 +3391,12 @@ object WindowMain: TWindowMain
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    ExplicitLeft = 381
   end
   object BtnMigrate: TSpeedButton
-    Left = 159
-    Top = 3
+    Left = 211
+    Top = 8
     Width = 193
-    Height = 49
+    Height = 61
     Action = ActMigrate
     Anchors = [akTop]
     Font.Charset = DEFAULT_CHARSET
@@ -3408,7 +3407,7 @@ object WindowMain: TWindowMain
     ParentFont = False
   end
   object BtnOpenFile: TSpeedButton
-    Left = 67
+    Left = 83
     Top = 38
     Width = 48
     Height = 48
@@ -3424,7 +3423,7 @@ object WindowMain: TWindowMain
     ShowHint = True
   end
   object BtnDatabase: TSpeedButton
-    Left = 382
+    Left = 479
     Top = 38
     Width = 48
     Height = 48
@@ -3439,10 +3438,9 @@ object WindowMain: TWindowMain
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    ExplicitLeft = 395
   end
   object BtnFields: TSpeedButton
-    Left = 382
+    Left = 479
     Top = 101
     Width = 48
     Height = 48
@@ -3457,10 +3455,9 @@ object WindowMain: TWindowMain
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
-    ExplicitLeft = 395
   end
   object BtnDatas: TSpeedButton
-    Left = 67
+    Left = 83
     Top = 101
     Width = 48
     Height = 48
@@ -3476,10 +3473,10 @@ object WindowMain: TWindowMain
     ShowHint = True
   end
   object BtnStop: TSpeedButton
-    Left = 192
-    Top = 97
-    Width = 129
-    Height = 33
+    Left = 211
+    Top = 119
+    Width = 193
+    Height = 47
     Action = ActStop
     Anchors = [akTop]
     Font.Charset = DEFAULT_CHARSET
@@ -3490,12 +3487,12 @@ object WindowMain: TWindowMain
     ParentFont = False
   end
   object BtnConfigs: TSpeedButton
-    Left = 240
-    Top = 136
+    Left = 568
+    Top = 8
     Width = 33
     Height = 33
     Action = ActConfigs
-    Anchors = [akTop]
+    Anchors = [akTop, akRight]
     Flat = True
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3505,12 +3502,13 @@ object WindowMain: TWindowMain
     ParentFont = False
     ParentShowHint = False
     ShowHint = True
+    ExplicitLeft = 469
   end
   object BtnPause: TSpeedButton
-    Left = 207
-    Top = 58
-    Width = 97
-    Height = 28
+    Left = 211
+    Top = 75
+    Width = 193
+    Height = 38
     Action = ActPause
     Anchors = [akTop]
     Font.Charset = DEFAULT_CHARSET
@@ -3523,8 +3521,8 @@ object WindowMain: TWindowMain
   object TxtLog: TMemo
     Left = 8
     Top = 172
-    Width = 494
-    Height = 435
+    Width = 598
+    Height = 434
     TabStop = False
     Anchors = [akLeft, akTop, akRight, akBottom]
     ReadOnly = True
@@ -3534,8 +3532,8 @@ object WindowMain: TWindowMain
   end
   object ProgressBar: TProgressBar
     Left = 8
-    Top = 613
-    Width = 495
+    Top = 612
+    Width = 599
     Height = 17
     Anchors = [akLeft, akRight, akBottom]
     Step = 1
@@ -3561,10 +3559,10 @@ object WindowMain: TWindowMain
     BkColor = clWhite
     Height = 64
     Width = 64
-    Left = 449
+    Left = 545
     Top = 544
     Bitmap = {
-      494C010106005C01D40240004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
+      494C010106005C01E00240004000FFFFFF00FF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000000100008000000001002000000000000000
       020000000000000000000000000000000000FFFFFF00FFFFFF00FFFFFF00FFFF
       FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
@@ -7797,7 +7795,7 @@ object WindowMain: TWindowMain
   end
   object Actions: TActionList
     Images = Images
-    Left = 401
+    Left = 497
     Top = 544
     object ActOpenFile: TAction
       Hint = 'Arquivo Dataflex'

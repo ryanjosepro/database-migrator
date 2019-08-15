@@ -16,8 +16,8 @@ type
     class function GetConfig(const Section, Name: string; Default: string = ''): string;
     class procedure SetConfig(const Section, Name: string; Value: string = '');
 
-    class procedure GetGeneral(var LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer);
-    class procedure SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer);
+    class procedure GetGeneral(var LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer);
+    class procedure SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer);
 
     class procedure GetDB(var UserName, Password, Database: string);
     class procedure SetDB(UserName, Password, Database: string);
@@ -52,13 +52,13 @@ begin
   Arq := TIniFile.Create(Path);
   try
     Arq.WriteString('SYSTEM', 'WindowState', '0');
+    Arq.WriteString('GENERAL', 'LogActions', '1');
+    Arq.WriteString('GENERAL', 'LogDatas', '1');
     Arq.WriteString('GENERAL', 'Commit', '-1');
     Arq.WriteString('GENERAL', 'LimitStarts', '-1');
     Arq.WriteString('GENREAL', 'LimitEnds', '-1');
-    Arq.WriteString('GENERAL', 'TruncFB', '0');
+    Arq.WriteString('GENERAL', 'TableAction', '0');
     Arq.WriteString('GENERAL', 'ErrorHdlg', '0');
-    Arq.WriteString('GENERAL', 'LogActions', '1');
-    Arq.WriteString('GENERAL', 'LogDatas', '1');
     Arq.WriteString('DB', 'UserName', 'SYSDBA');
     Arq.WriteString('DB', 'Password', 'masterkey');
     Arq.WriteString('DB', 'Database', '');
@@ -96,25 +96,25 @@ begin
 end;
 
 //Configurações da seção GENERAL
-class procedure TConfig.GetGeneral(var LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer);
+class procedure TConfig.GetGeneral(var LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer);
 begin
   LogActions := GetConfig('GENERAL', 'LogActions', '0').ToInteger;
   LogDatas := GetConfig('GENERAL', 'LogDatas', '0').ToInteger;
   Commit := GetConfig('GENERAL', 'Commit', '-1').ToInteger;
   LimitStarts := GetConfig('GENERAL', 'LimitStarts', '-1').ToInteger;
   LimitEnds := GetConfig('GENERAL', 'LimitEnds', '-1').ToInteger;
-  TruncFB := GetConfig('GENERAL', 'TruncFB', '0').ToInteger;
+  TableAction := GetConfig('GENERAL', 'TruncFB', '0').ToInteger;
   ErrorHdlg := GetConfig('GENERAL', 'ErrorHdlg', '2').ToInteger;
 end;
 
-class procedure TConfig.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer);
+class procedure TConfig.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer);
 begin
   SetConfig('GENERAL', 'LogActions', LogActions.ToString);
   SetConfig('GENERAL', 'LogDatas', LogDatas.ToString);
   SetConfig('GENERAL', 'Commit', Commit.ToString);
   SetConfig('GENERAL', 'LimitStarts', LimitStarts.ToString);
   SetConfig('GENERAL', 'LimitEnds', LimitEnds.ToString);
-  SetConfig('GENERAL', 'TruncFB', TruncFB.ToString);
+  SetConfig('GENERAL', 'TruncFB', TableAction.ToString);
   SetConfig('GENERAL', 'ErrorHdlg', ErrorHdlg.ToString);
 end;
 

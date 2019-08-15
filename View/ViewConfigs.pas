@@ -11,10 +11,8 @@ uses
 type
   TWindowConfigs = class(TForm)
     TxtLimitStarts: TEdit;
-    PageConfigs: TPageControl;
     TabMigration: TTabSheet;
     TabFirebird: TTabSheet;
-    CheckTruncFB: TCheckBox;
     BtnDiscard: TSpeedButton;
     BtnSave: TSpeedButton;
     Actions: TActionList;
@@ -32,6 +30,8 @@ type
     CheckLogActions: TCheckBox;
     GroupLog: TGroupBox;
     ActEsc: TAction;
+    GroupTable: TRadioGroup;
+    PageConfigs: TPageControl;
     procedure ActDiscardExecute(Sender: TObject);
     procedure ActSaveExecute(Sender: TObject);
     procedure GroupCommitClick(Sender: TObject);
@@ -121,7 +121,7 @@ end;
 //Salva todas as configurações
 procedure TWindowConfigs.ActSaveExecute(Sender: TObject);
 var
-  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer;
+  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer;
 begin
   LogActions := TUtils.Iif(CheckLogActions.Checked, 1, 0);
   LogDatas := TUtils.Iif(CheckLogDatas.Checked, 1, 0);
@@ -130,10 +130,10 @@ begin
   if LimitStarts = 0 then LimitStarts := -1;
   LimitEnds := TUtils.IifEmpty(GroupLimit.ItemIndex = 0, '-1', TxtLimitEnds.Text).ToInteger;
   if LimitEnds = 0 then LimitEnds := -1;
-  TruncFB := TUtils.Iif(CheckTruncFB.Checked, 1, 0);
+  TableAction := GroupTable.ItemIndex;
   ErrorHdlg := GroupException.ItemIndex;
 
-  TConfig.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
+  TConfig.SetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg);
 
   Done;
 end;
@@ -148,9 +148,9 @@ end;
 //Carregas as configurações definidas
 procedure TWindowConfigs.LoadConfigs;
 var
-  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer;
+  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer;
 begin
-  TConfig.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
+  TConfig.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg);
 
   //Migração
   CheckLogActions.Checked := (LogActions = 1);
@@ -182,7 +182,7 @@ begin
   GroupException.ItemIndex := ErrorHdlg;
 
   //Firebird
-  CheckTruncFB.Checked := (TruncFB = 1);
+  GroupTable.ItemIndex := TableAction;
 
   PageConfigs.TabIndex := 0;
 end;
