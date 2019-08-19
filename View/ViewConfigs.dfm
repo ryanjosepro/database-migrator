@@ -42,7 +42,7 @@ object WindowConfigs: TWindowConfigs
     Top = 8
     Width = 322
     Height = 324
-    ActivePage = TabFirebird
+    ActivePage = TabMigration
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'
@@ -177,8 +177,7 @@ object WindowConfigs: TWindowConfigs
         ItemIndex = 0
         Items.Strings = (
           'Manter Tabela'
-          'Limpar Tabela'
-          'Criar Tabela')
+          'Limpar Tabela')
         TabOrder = 0
         OnClick = GroupLimitClick
       end

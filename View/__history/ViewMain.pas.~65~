@@ -47,7 +47,6 @@ type
     procedure ActContinueExecute(Sender: TObject);
     procedure ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
     procedure ActEscExecute(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
   private
     procedure Log(Msg: string);
     procedure NormalMode;
@@ -84,24 +83,6 @@ implementation
 
 -Default Uses -> System.SysUtils, System.Classes, System.Types;
 
---> TO DO <--
-
--To add a option to create a table on migration (By Danilo);
-
---> DOING <--
-
--To add shortcuts on program;
-
-		    ________
-		   /        \
-		__/__________\__
-		 / ___    ___ \
-		 ||   |  |   ||
-		 ||  O|  |  O||
-		  \---    ---/
-		   \   \/   /
-		    \ ____ /
-		     \____/
 }
 
 {$R *.dfm}
@@ -140,11 +121,6 @@ begin
     TConfig.SetConfig('TEMP', 'FilePath', '');
     TConfig.SetConfig('SYSTEM', 'WindowState', TUtils.Iif(WindowMain.WindowState = wsMaximized, '2', '0'));
   end;
-end;
-
-procedure TWindowMain.FormCreate(Sender: TObject);
-begin
-
 end;
 
 //Quando a tecla Esc é pressionada
@@ -262,9 +238,14 @@ end;
 //Para a migração
 procedure TWindowMain.ActStopExecute(Sender: TObject);
 begin
+  PausedMode;
   if TDialogs.YesNo('Deseja cancelar a migração?') = mrYes then
   begin
     NormalMode;
+  end
+  else
+  begin
+
   end;
 end;
 
@@ -339,7 +320,7 @@ var
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
   ContRow, CommitStep: integer;
-  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg: integer;
+  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer;
   Error: string;
   OutStr: string;
 begin
@@ -358,7 +339,7 @@ begin
     Datas := DataFlex.ToMatrix;
 
     //Busca as configurações
-    TConfig.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TruncFB, ErrorHdlg);
+    TConfig.GetGeneral(LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg);
 
     Commit := TUtils.IifLess(Commit = -1, DataFlex.GetRowCount, Commit);
 
@@ -368,8 +349,8 @@ begin
 
     CommitStep := Commit;
 
-    //Trunca a tabela Firebird
-    if TruncFB = 1 then
+    //Aplica a configuração de tabela firebird
+    if TableAction = 1 then
     begin
       TDAO.Truncate;
     end;

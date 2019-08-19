@@ -37,7 +37,7 @@ object WindowConfigs: TWindowConfigs
     Anchors = [akLeft, akBottom]
     Caption = 'Salvar (Ctrl+S)'
   end
-  object TPageControl
+  object PageConfigs: TPageControl
     Left = 8
     Top = 8
     Width = 322
@@ -46,10 +46,6 @@ object WindowConfigs: TWindowConfigs
     TabOrder = 0
     object TabMigration: TTabSheet
       Caption = 'Migra'#231#227'o'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object LblUntil: TLabel
         Left = 195
         Top = 252
@@ -154,10 +150,6 @@ object WindowConfigs: TWindowConfigs
     object TabExceptions: TTabSheet
       Caption = 'Exce'#231#245'es'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupException: TRadioGroup
         Left = 3
         Top = 0
@@ -176,10 +168,6 @@ object WindowConfigs: TWindowConfigs
     object TabFirebird: TTabSheet
       Caption = 'Firebird'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupTable: TRadioGroup
         Left = 3
         Top = 0
@@ -189,16 +177,15 @@ object WindowConfigs: TWindowConfigs
         ItemIndex = 0
         Items.Strings = (
           'Manter Tabela'
-          'Limpar Tabela'
-          'Criar Tabela')
+          'Limpar Tabela')
         TabOrder = 0
         OnClick = GroupLimitClick
       end
     end
   end
   object Actions: TActionList
-    Left = 16
-    Top = 280
+    Left = 288
+    Top = 48
     object ActSave: TAction
       Caption = 'Salvar (Ctrl + S)'
       Enabled = False

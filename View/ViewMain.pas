@@ -83,24 +83,6 @@ implementation
 
 -Default Uses -> System.SysUtils, System.Classes, System.Types;
 
---> TO DO <--
-
--To add a option to create a table on migration (By Danilo);
-
---> DOING <--
-
--To add shortcuts on program;
-
-		    ________
-		   /        \
-		__/__________\__
-		 / ___    ___ \
-		 ||   |  |   ||
-		 ||  O|  |  O||
-		  \---    ---/
-		   \   \/   /
-		    \ ____ /
-		     \____/
 }
 
 {$R *.dfm}
@@ -256,9 +238,14 @@ end;
 //Para a migração
 procedure TWindowMain.ActStopExecute(Sender: TObject);
 begin
+  PausedMode;
   if TDialogs.YesNo('Deseja cancelar a migração?') = mrYes then
   begin
     NormalMode;
+  end
+  else
+  begin
+    MigrationMode;
   end;
 end;
 

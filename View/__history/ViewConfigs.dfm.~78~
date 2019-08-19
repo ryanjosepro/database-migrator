@@ -37,7 +37,7 @@ object WindowConfigs: TWindowConfigs
     Anchors = [akLeft, akBottom]
     Caption = 'Salvar (Ctrl+S)'
   end
-  object TPageControl
+  object PageConfigs: TPageControl
     Left = 8
     Top = 8
     Width = 322
@@ -177,16 +177,15 @@ object WindowConfigs: TWindowConfigs
         ItemIndex = 0
         Items.Strings = (
           'Manter Tabela'
-          'Limpar Tabela'
-          'Criar Tabela')
+          'Limpar Tabela')
         TabOrder = 0
         OnClick = GroupLimitClick
       end
     end
   end
   object Actions: TActionList
-    Left = 16
-    Top = 280
+    Left = 288
+    Top = 48
     object ActSave: TAction
       Caption = 'Salvar (Ctrl + S)'
       Enabled = False
