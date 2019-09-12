@@ -34,14 +34,12 @@ var
 begin
   Path := ExtractFilePath(Application.ExeName) + 'Config.ini';
 
-  if FileExists(Path) then
-  begin
-    Result := Path;
-  end
-  else
+  if not FileExists(Path) then
   begin
     CreateFile(Path);
   end;
+
+  Result := Path;
 end;
 
 //Cria o arquivo Config.ini
