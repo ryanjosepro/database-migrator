@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2019/08/05 16:01:48.000.426,C:\Users\Ryan\Documents\Delphi Projects\ProjectMigrator\Code\Config.pas=C:\Users\Ryan\Documents\Delphi Projects\ProjectMigrator\Code\Configs.pas</Transaction>
+    <Transaction>2019/08/05 16:01:48.000.426,C:\Users\Ryan\Documents\Delphi Projects\ProjectMigrator\Code\Configs.pas=C:\Users\Ryan\Documents\Delphi Projects\ProjectMigrator\Code\Config.pas</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Code"/>
