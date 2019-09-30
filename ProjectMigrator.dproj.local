@@ -16,15 +16,15 @@
     <File Path="DAO"/>
     <File Path="DAO\DAO.pas"/>
     <File Path="View"/>
-    <File Path="View\ViewConfigs.pas"/>
-    <File Path="View\ViewConfigs.dfm"/>
-    <File Path="View\ViewDatas.pas"/>
-    <File Path="View\ViewDatas.dfm"/>
-    <File Path="View\ViewDB.pas"/>
-    <File Path="View\ViewDB.dfm"/>
-    <File Path="View\ViewFields.pas"/>
-    <File Path="View\ViewFields.dfm"/>
     <File Path="View\ViewMain.pas"/>
     <File Path="View\ViewMain.dfm"/>
+    <File Path="View\ViewDatas.pas"/>
+    <File Path="View\ViewDatas.dfm"/>
+    <File Path="View\ViewFields.pas"/>
+    <File Path="View\ViewFields.dfm"/>
+    <File Path="View\ViewConfigs.pas"/>
+    <File Path="View\ViewConfigs.dfm"/>
+    <File Path="View\ViewDB.pas"/>
+    <File Path="View\ViewDB.dfm"/>
   </ProjectSortOrder>
 </BorlandProject>

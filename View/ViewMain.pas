@@ -319,8 +319,10 @@ var
   Rows: TStringList;
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
+  Order: TIntegerArray;
+  Defaults, FieldsValues: TStringArray;
   ContRow, CommitStep: integer;
-  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg: integer;
+  LogActions, LogDatas, Commit, LimitStarts, LimitEnds, TableAction, ErrorHdlg, ContOrders: integer;
   Error: string;
   OutStr: string;
 begin
@@ -376,12 +378,24 @@ begin
         //Verifica se a migração foi parada
         if MigrationEnabled then
         begin
+          Order := WindowFields.GetOrder;
+
+          Defaults := WindowFields.GetDefaults;
+
           //Manda os dados para classe DAO para inserir
-          TDAO.Insert(Datas[ContRow], WindowFields.GetOrder, WindowFields.GetDefauts);
+          TDAO.Insert(Datas[ContRow], Order, Defaults);
 
           //Manda os dados para o log
           if LogDatas = 1 then
           begin
+
+            SetLength(FieldsValues, Length(order));
+
+            for ContOrders := 0 to Length(Order) - 1 do
+            begin
+              FieldsValues[ContOrders] := Datas[ContRow][Order[ContOrders]];
+            end;
+
             Log('DADO ' + (ContRow + 1).ToString + ' INSERIDO -> ' + TUtils.ArrayToStr(Datas[ContRow], ' - ', ';'));
           end;
 

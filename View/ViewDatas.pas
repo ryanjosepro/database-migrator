@@ -55,6 +55,7 @@ type
     TxtTotRows: TLabel;
     TxtTotCols: TLabel;
     ActEsc: TAction;
+    CheckFieldsByLine: TCheckBox;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -547,7 +548,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-  //Mode := 0;
+  Mode := 0;
 end;
 
 //Modo Button Select ativado
@@ -573,7 +574,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-  //Mode := 1;
+  Mode := 1;
 end;
 
 //Modo Buttons normais
@@ -599,7 +600,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options - [goEditing];
-  //Mode := 2;
+  Mode := 2;
 end;
 
 //Modo Buttons em alteração
@@ -625,7 +626,7 @@ begin
   ActAddCol.Enabled := true;
   ActDelCol.Enabled := true;
   GridDatas.Options := GridDatas.Options + [goEditing];
-  //Mode := 3;
+  Mode := 3;
 end;
 
 //Modo Buttons em tratamento de erro
@@ -651,7 +652,7 @@ begin
   ActAddCol.Enabled := false;
   ActDelCol.Enabled := false;
   GridDatas.Options := GridDatas.Options + [goEditing];
-  //Mode := 4;
+  Mode := 4;
 end;
 
 //Quando a Grid é editada

@@ -48,7 +48,7 @@ type
 
   public
     function GetOrder: TIntegerArray;
-    function GetDefauts: TStringArray;
+    function GetDefaults: TStringArray;
     function IsClean: boolean;
 
   end;
@@ -252,7 +252,7 @@ begin
 end;
 
 //Retorna os defaults definidos na Grid
-function TWindowFields.GetDefauts: TStringArray;
+function TWindowFields.GetDefaults: TStringArray;
 var
   Cont: integer;
 begin
