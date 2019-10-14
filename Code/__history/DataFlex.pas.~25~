@@ -1,0 +1,75 @@
+unit DataFlex;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Types, Vcl.Forms,
+  Arrays, MyUtils;
+
+type
+
+  TDataFlex = class
+  private
+    Datas: TStringList;
+    Separator: string;
+    RowCount: integer;
+    ColCount: integer;
+
+  public
+    constructor Create(Path: string; Separator: string);
+
+    function GetRowCount: integer;
+    function GetColCount: integer;
+
+    function ToStringList: TStringList;
+    function ToMatrix: TStringMatrix;
+  end;
+
+implementation
+
+constructor TDataFlex.Create(Path: string; Separator: string);
+begin
+  self.Datas := TStringList.Create;
+  self.Datas.LoadFromFile(Path);
+
+  self.Separator := Separator;
+
+  self.RowCount := Datas.Count;
+
+  if self.RowCount = 0 then
+  begin
+    self.ColCount := 0;
+  end
+  else
+  begin
+    self.ColCount := Length(TUtils.Cut(self.Datas[0], self.Separator));
+  end;
+end;
+
+function TDataFlex.GetRowCount: integer;
+begin
+  Result := self.RowCount;
+end;
+
+function TDataFlex.GetColCount: integer;
+begin
+  Result := self.ColCount;
+end;
+
+function TDataFlex.ToStringList: TStringList;
+begin
+  Result := self.Datas;
+end;
+
+function TDataFlex.ToMatrix: TStringMatrix;
+var
+  Cont: integer;
+begin
+  SetLength(Result, GetRowCount, GetColCount);
+  for Cont := 0 to GetRowCount - 1 do
+  begin
+    Result[Cont] := TUtils.Cut(Datas[Cont], self.Separator);
+  end;
+end;
+
+end.

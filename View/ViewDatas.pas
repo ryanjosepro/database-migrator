@@ -55,7 +55,6 @@ type
     TxtTotRows: TLabel;
     TxtTotCols: TLabel;
     ActEsc: TAction;
-    CheckFieldsByLine: TCheckBox;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -251,6 +250,16 @@ begin
           SelectMode;
         end;
       end;
+    end
+    else
+    begin
+      GridToStrList(CheckConsLimit.Checked).SaveToFile(SaveFile.FileName);
+        if SaveFile.FileName = TConfig.GetConfig('TEMP', 'FilePath') then
+        begin
+          CleanGrid;
+          SetFileInfos(GetFile);
+          SelectMode;
+        end;
     end;
   end;
 end;
