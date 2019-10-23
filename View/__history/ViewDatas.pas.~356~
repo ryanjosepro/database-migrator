@@ -55,7 +55,6 @@ type
     TxtTotRows: TLabel;
     TxtTotCols: TLabel;
     ActEsc: TAction;
-    CheckFieldsByLine: TCheckBox;
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure ActOpenFileExecute(Sender: TObject);
@@ -77,19 +76,19 @@ type
     procedure ActEscExecute(Sender: TObject);
 
   private
-    function FillGrid(Limit: integer): integer;
+    function FillGrid(Rows: TStringList; Limit: integer = 0): integer;
     procedure CleanGrid;
     procedure SetGridTitles;
-    procedure SetFileInfos;
+    procedure SetFileInfos(Rows: TStringList);
     procedure RefreshGrid;
     procedure DisableMode;
     procedure SelectMode;
     procedure NormalMode;
     procedure AlterMode;
     procedure HandlingMode;
-    procedure UpdateModes;
     procedure Altered;
     procedure Done;
+    function GetFile: TStringList;
     function GridToStrList(ConsLimit: boolean): TStringList;
     function GridIsClean: boolean;
 
@@ -115,8 +114,38 @@ implementation
 
 //Quando a janela é aberta
 procedure TWindowDatas.FormActivate(Sender: TObject);
+var
+  FilePath: string;
 begin
-  UpdateModes;
+  FilePath := TConfig.GetConfig('TEMP', 'FilePath');
+  if FilePath <> '' then
+  begin
+    if FilePath <> TxtFileName.Caption then
+    begin
+      ActOpenFile.ImageIndex := 2;
+      BtnOpenFile.Action := ActOpenFile;
+      CleanGrid;
+      SetFileInfos(GetFile);
+      SelectMode;
+    end
+    else
+    begin
+      if GridIsClean then
+      begin
+        SetFileInfos(GetFile);
+        SelectMode;
+      end
+      else
+      begin
+        NormalMode;
+      end;
+    end;
+  end
+  else
+  begin
+    DisableMode;
+  end;
+  Done;
 end;
 
 //Quando a janela é fechada
@@ -146,7 +175,7 @@ begin
       ActOpenFile.ImageIndex := 2;
       BtnOpenFile.Action := ActOpenFile;
       CleanGrid;
-      SetFileInfos;
+      SetFileInfos(GetFile);
       SelectMode;
       TxtRowsLimit.SetFocus;
     end;
@@ -178,7 +207,7 @@ end;
 procedure TWindowDatas.ActSelectExecute(Sender: TObject);
 begin
   try
-    TxtRowsLimit.Text := FillGrid(StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
+    TxtRowsLimit.Text := FillGrid(GetFile, StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
     NormalMode;
     Done;
     GridDatas.SetFocus;
@@ -217,7 +246,7 @@ begin
         if SaveFile.FileName = TConfig.GetConfig('TEMP', 'FilePath') then
         begin
           CleanGrid;
-          SetFileInfos;
+          SetFileInfos(GetFile);
           SelectMode;
         end;
       end;
@@ -225,12 +254,12 @@ begin
     else
     begin
       GridToStrList(CheckConsLimit.Checked).SaveToFile(SaveFile.FileName);
-      if SaveFile.FileName = TConfig.GetConfig('TEMP', 'FilePath') then
-      begin
-        CleanGrid;
-        SetFileInfos;
-        SelectMode;
-      end;
+        if SaveFile.FileName = TConfig.GetConfig('TEMP', 'FilePath') then
+        begin
+          CleanGrid;
+          SetFileInfos(GetFile);
+          SelectMode;
+        end;
     end;
   end;
 end;
@@ -256,14 +285,23 @@ procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
   if DidChange then
   begin
-    TxtRowsLimit.Text := FillGrid(GetFile, StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
+    case TDialogs.YesNoCancel('Deseja salvar as alterações?') of
+      mrYes:
+      begin
+        ActSave.Execute;
+      end;
+      mrNo:
+      begin
+        TxtRowsLimit.Text := FillGrid(GetFile, StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
+
+        NormalMode;
+
+        RefreshGrid;
+
+        Done;
+      end;
+    end;
   end;
-
-  NormalMode;
-
-  RefreshGrid;
-
-  Done;
 end;
 
 //Adiciona uma nova célula na Grid
@@ -405,21 +443,20 @@ begin
 end;
 
 //Insere os dados do arquivo Dataflex na Grid
-function TWindowDatas.FillGrid(Limit: integer): integer;
+function TWindowDatas.FillGrid(Rows: TStringList; Limit: integer): integer;
 var
   DataFlex: TDataFlex;
   Datas: TStringMatrix;
   ContRow, ContCol: integer;
 begin
-  DataFlex := TDataFlex.Create(TConfig.GetFilePath, ';');
-
-  if DataFlex.GetRowCount = 0 then
+  if Rows.Count = 0 then
   begin
     CleanGrid;
     SetGridTitles;
   end
   else
   begin
+    DataFlex := TDataFlex.Create(Rows, ';');
     SetLength(Datas, DataFlex.GetRowCount, DataFlex.GetColCount);
     Datas := DataFlex.ToMatrix;
 
@@ -484,11 +521,11 @@ begin
 end;
 
 //Insere as informações da grid nos campos acima dela
-procedure TWindowDatas.SetFileInfos;
+procedure TWindowDatas.SetFileInfos(Rows: TStringList);
 var
   DataFlex: TDataFlex;
 begin
-  DataFlex := TDataFlex.Create(TConfig.GetFilePath, ';');
+  DataFlex := TDataFlex.Create(Rows, ';');
 
   try
     TxtFileName.Caption := OpenFile.FileName;
@@ -636,38 +673,6 @@ begin
   Mode := 4;
 end;
 
-procedure TWindowDatas.UpdateModes;
-begin
-  if TConfig.GetFilePath <> '' then
-  begin
-    if TConfig.GetFilePath <> TxtFileName.Caption then
-    begin
-      ActOpenFile.ImageIndex := 2;
-      BtnOpenFile.Action := ActOpenFile;
-      CleanGrid;
-      SetFileInfos;
-      SelectMode;
-    end
-    else
-    begin
-      if GridIsClean then
-      begin
-        SetFileInfos;
-        SelectMode;
-      end
-      else
-      begin
-        NormalMode;
-      end;
-    end;
-  end
-  else
-  begin
-    DisableMode;
-  end;
-  Done;
-end;
-
 //Quando a Grid é editada
 procedure TWindowDatas.Altered;
 begin
@@ -680,6 +685,13 @@ procedure TWindowDatas.Done;
 begin
   DidChange := false;
   ActSave.Enabled := false;
+end;
+
+//Retorna o arquivo selecionado em uma StringList
+function TWindowDatas.GetFile: TStringList;
+begin
+  Result := TStringList.Create;
+  Result.LoadFromFile(TConfig.GetConfig('TEMP', 'FilePath'));
 end;
 
 //Retorna os dados da Grid em linhas numa StringList

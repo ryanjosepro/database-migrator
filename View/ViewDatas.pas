@@ -285,14 +285,31 @@ procedure TWindowDatas.ActCancelExecute(Sender: TObject);
 begin
   if DidChange then
   begin
-    TxtRowsLimit.Text := FillGrid(GetFile, StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
+    case TDialogs.YesNoCancel('Deseja salvar as alterações?') of
+      mrYes:
+      begin
+        ActSave.Execute;
+      end;
+      mrNo:
+      begin
+        TxtRowsLimit.Text := FillGrid(GetFile, StrToInt(TUtils.IfEmpty(TxtRowsLimit.Text, '0'))).ToString;
+
+        NormalMode;
+
+        RefreshGrid;
+
+        Done;
+      end;
+    end;
+  end
+  else
+  begin
+    NormalMode;
+
+    RefreshGrid;
+
+    Done;
   end;
-
-  NormalMode;
-
-  RefreshGrid;
-
-  Done;
 end;
 
 //Adiciona uma nova célula na Grid
