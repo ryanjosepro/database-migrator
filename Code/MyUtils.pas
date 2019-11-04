@@ -21,8 +21,8 @@ type
 
     class function Cut(Text, Separator: string): TStringArray;
 
-    class function ArrayToStr(StrArray: TStringArray; Separator: string; StrFinal: string; Starts: integer = 0; EndsBefore: integer = 0): string; overload;
-    class function ArrayToStr(StrArray: System.TArray<System.string>; Separator: string; StrFinal: string; Starts: integer = 0; EndsBefore: integer = 0): string; overload;
+    class function ArrayToStr(StrArray: TStringArray; Separator: string; StrFinal: string; StartsAfter: integer = 0; EndsBefore: integer = 0): string; overload;
+    class function ArrayToStr(StrArray: System.TArray<System.string>; Separator: string; StrFinal: string; StartsAfter: integer = 0; EndsBefore: integer = 0): string; overload;
 
     class function Extract(StrList: TStringList; Starts, Ends: integer): TStringList; overload;
     class function Extract(StrList: TStringList; Starts, Ends: string; IncStarts: boolean = true; IncEnds: boolean = true): TStringList; overload;
@@ -98,12 +98,12 @@ begin
 end;
 
 //Transforma um array em uma string
-class function TUtils.ArrayToStr(StrArray: TStringArray; Separator, StrFinal: string; Starts: integer; EndsBefore: integer): string;
+class function TUtils.ArrayToStr(StrArray: TStringArray; Separator, StrFinal: string; StartsAfter: integer; EndsBefore: integer): string;
 var
   Cont: integer;
 begin
   Result := '';
-  for Cont := TUtils.Iif(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
+  for Cont := TUtils.Iif(StartsAfter >= Length(StrArray), 0, StartsAfter) to Length(StrArray) - 1 - EndsBefore do
   begin
     if Cont = Length(StrArray) - 1 - EndsBefore then
     begin
@@ -116,12 +116,12 @@ begin
   end;
 end;
 
-class function TUtils.ArrayToStr(StrArray: System.TArray<System.string>; Separator, StrFinal: string; Starts: integer; EndsBefore: integer): string;
+class function TUtils.ArrayToStr(StrArray: System.TArray<System.string>; Separator, StrFinal: string; StartsAfter: integer; EndsBefore: integer): string;
 var
   Cont: integer;
 begin
   Result := '';
-  for Cont := TUtils.Iif(Starts >= Length(StrArray), 0, Starts) to Length(StrArray) - 1 - EndsBefore do
+  for Cont := TUtils.Iif(StartsAfter >= Length(StrArray), 0, StartsAfter) to Length(StrArray) - 1 - EndsBefore do
   begin
     if Cont = Length(StrArray) - 1 - EndsBefore then
     begin
