@@ -1,2 +1,2 @@
 # Project Migrator
-Database migrator...
+Database migrator
