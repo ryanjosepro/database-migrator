@@ -87,8 +87,6 @@ implementation
 
 //Quando o programa inicia
 procedure TWindowMain.FormActivate(Sender: TObject);
-var
-  Cont: integer;
 begin
   TConfig.SetConfig('TEMP', 'FilePath', '');
   WindowState := TUtils.Iif(TConfig.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);

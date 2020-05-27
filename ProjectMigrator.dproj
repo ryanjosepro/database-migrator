@@ -83,6 +83,7 @@
         <UWP_DelphiLogo44>..\..\..\Pictures\Png\Seagull2.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>..\..\..\Pictures\Png\Seagull2.png</UWP_DelphiLogo150>
         <AppDPIAwarenessMode>PerMonitor</AppDPIAwarenessMode>
+        <DCC_ExeOutput>.\$(Platform)\$(Config)\src</DCC_ExeOutput>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
