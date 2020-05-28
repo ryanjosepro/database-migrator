@@ -1,4 +1,4 @@
-unit ConnectionFactory;
+unit Connection;
 
 interface
 
@@ -10,32 +10,20 @@ uses
   Config;
 
 type
-  TConnFactory = class(TDataModule)
+  TDataModuleConn = class(TDataModule)
     Conn: TFDConnection;
     Trans: TFDTransaction;
-    QuerySQL: TFDQuery;
-    QueryFields: TFDQuery;
-    procedure DataModuleCreate(Sender: TObject);
+    Query: TFDQuery;
 
   end;
 
 var
-  ConnFactory: TConnFactory;
+  DataModuleConn: TDataModuleConn;
 
 implementation
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
-
-procedure TConnFactory.DataModuleCreate(Sender: TObject);
-var
-  UserName, Password, Database: string;
-begin
-  TConfig.GetDB(UserName, Password, Database);
-  Conn.Params.UserName := UserName;
-  Conn.Params.Password := Password;
-  Conn.Params.Database := Database;
-end;
 
 end.

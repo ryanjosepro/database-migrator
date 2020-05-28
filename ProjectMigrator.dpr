@@ -3,17 +3,13 @@ program ProjectMigrator;
 uses
   Vcl.Forms,
   ViewMain in 'View\ViewMain.pas' {WindowMain},
-  MyUtils in 'Code\MyUtils.pas',
-  ConnectionFactory in 'Connection\ConnectionFactory.pas' {ConnFactory: TDataModule},
+  Connection in 'Modal\Connection.pas' {DataModuleConn: TDataModule},
   ViewDB in 'View\ViewDB.pas' {WindowDB},
-  ViewFields in 'View\ViewFields.pas' {WindowFields},
-  DAO in 'DAO\DAO.pas',
   ViewConfigs in 'View\ViewConfigs.pas' {WindowConfigs},
   Config in 'Code\Config.pas',
-  DataFlex in 'Code\DataFlex.pas',
-  Arrays in 'Code\Arrays.pas',
   ViewDatas in 'View\ViewDatas.pas' {WindowDatas},
-  MyDialogs in 'Code\MyDialogs.pas';
+  MyDialogs in 'Code\MyDialogs.pas',
+  MyUtils in 'Code\MyUtils.pas';
 
 {$R *.res}
 
@@ -22,9 +18,8 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.Title := 'Migration';
   Application.CreateForm(TWindowMain, WindowMain);
-  Application.CreateForm(TConnFactory, ConnFactory);
+  Application.CreateForm(TDataModuleConn, DataModuleConn);
   Application.CreateForm(TWindowDB, WindowDB);
-  Application.CreateForm(TWindowFields, WindowFields);
   Application.CreateForm(TWindowConfigs, WindowConfigs);
   Application.CreateForm(TWindowDatas, WindowDatas);
   Application.Run;

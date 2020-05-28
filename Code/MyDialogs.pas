@@ -3,15 +3,15 @@ unit MyDialogs;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.Types, Vcl.Forms, Vcl.Dialogs, Vcl.Buttons, Vcl.StdCtrls;
+  System.SysUtils, System.Classes, System.Types, Vcl.Dialogs, Vcl.Forms,
+  Vcl.StdCtrls;
 
 type
   TDialogs = class
   public
     class function YesNo(Msg: string; BtnDefault: TMsgDlgBtn = mbNo): integer;
     class function YesNoCancel(Msg: string; BtnDefault: TMsgDlgBtn = mbCancel): integer;
-    class function MyMessageDlg(CONST Msg: string; DlgTypt: TmsgDlgType; button: TMsgDlgButtons;
-    Caption: ARRAY OF string; dlgcaption: string): Integer;
+    class function CustomDialog(const Msg: string; DlgType: TmsgDlgType; Buttons: TMsgDlgButtons; ButtonsCaption: array of string; dlgcaption: string): Integer;
   end;
 
 implementation
@@ -28,25 +28,24 @@ begin
   Result := MessageDlg(Msg, mtConfirmation, mbYesNoCancel, 0, BtnDefault);
 end;
 
-class function TDialogs.MyMessageDlg(CONST Msg: string; DlgTypt: TmsgDlgType; button: TMsgDlgButtons;
-  Caption: ARRAY OF string; dlgcaption: string): Integer;
+class function TDialogs.CustomDialog(const Msg: string; DlgType: TmsgDlgType; Buttons: TMsgDlgButtons; ButtonsCaption: array of string; dlgcaption: string): Integer;
 var
   aMsgdlg: TForm;
-  i: Integer;
-  Dlgbutton: TButton;
+  I: Integer;
+  Dlgbutton: Tbutton;
   Captionindex: Integer;
 begin
-  aMsgdlg := createMessageDialog(Msg, DlgTypt, button);
+  aMsgdlg := createMessageDialog(Msg, DlgType, Buttons);
   aMsgdlg.Caption := dlgcaption;
   aMsgdlg.BiDiMode := bdRightToLeft;
   Captionindex := 0;
-  for i := 0 to aMsgdlg.componentcount - 1 Do
+  for I := 0 to aMsgdlg.componentcount - 1 Do
   begin
-    if (aMsgdlg.components[i] is Tbutton) then
+    if (aMsgdlg.components[I] is Tbutton) then
     Begin
-      Dlgbutton := Tbutton(aMsgdlg.components[i]);
-      if Captionindex <= High(Caption) then
-        Dlgbutton.Caption := Caption[Captionindex];
+      Dlgbutton := Tbutton(aMsgdlg.components[I]);
+      if Captionindex <= High(ButtonsCaption) then
+        Dlgbutton.Caption := ButtonsCaption[Captionindex];
       inc(Captionindex);
     end;
   end;

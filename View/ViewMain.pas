@@ -5,15 +5,13 @@ uses
   System.SysUtils, System.Classes, System.Types, Winapi.Windows, Winapi.Messages, System.Variants, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Buttons, System.Actions, Vcl.ActnList,
   System.ImageList, Vcl.ImgList, Vcl.ExtDlgs, Vcl.ComCtrls,
-  ViewDB, ViewFields, ViewDatas, ViewConfigs, Arrays, MyDialogs, Config, MyUtils, DataFlex, DAO;
+  ViewDB, ViewDatas, ViewConfigs, Arrays, MyDialogs, Config, MyUtils, DataFlex, DAO;
 
 type
   TWindowMain = class(TForm)
     TxtLog: TMemo;
     BtnMigrate: TSpeedButton;
-    BtnOpenFile: TSpeedButton;
     BtnDatabase: TSpeedButton;
-    BtnFields: TSpeedButton;
     OpenFile: TFileOpenDialog;
     BtnDatas: TSpeedButton;
     BtnStop: TSpeedButton;
@@ -68,31 +66,14 @@ var
 
 implementation
 
-{
---> PROJECT DEFAULTS <--
-
--To keep code always clean and organized;
--To create variables, objects and components always in english;
--To comment everything that you can;
-
--Forms Order -> ViewMain - ViewConfigs - ViewDatas - ViewFields - ViewDB;
-
--Units Order -> Arrays - MyUtils - MyDialogs - Configs - DataFlex - DAO - ConnectionFactory;
-
--Default Uses -> System.SysUtils, System.Classes, System.Types;
-
-}
-
 {$R *.dfm}
 
-//Quando o programa inicia
 procedure TWindowMain.FormActivate(Sender: TObject);
 begin
   TConfig.SetConfig('TEMP', 'FilePath', '');
   WindowState := TUtils.Iif(TConfig.GetConfig('SYSTEM', 'WindowState') = '2', wsMaximized, wsNormal);
 end;
 
-//Quando o programa é fechado
 procedure TWindowMain.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   Answer: integer;
@@ -119,7 +100,6 @@ begin
   end;
 end;
 
-//Quando a tecla Esc é pressionada
 procedure TWindowMain.ActEscExecute(Sender: TObject);
 begin
   if MigrationEnabled then
@@ -132,7 +112,6 @@ begin
   end;
 end;
 
-//Abre o arquivo Dataflex
 procedure TWindowMain.ActOpenFileExecute(Sender: TObject);
 begin
   if OpenFile.Execute then
@@ -143,25 +122,21 @@ begin
   end;
 end;
 
-//Mostra o caminho do arquivo
 procedure TWindowMain.ActOpenFileHint(var HintStr: string; var CanShow: Boolean);
 begin
   HintStr := TUtils.IfEmpty(TConfig.GetConfig('TEMP', 'FilePath'), 'Arquivo Dataflex');
 end;
 
-//Abre as configurações do banco de dados
 procedure TWindowMain.ActConfigDBExecute(Sender: TObject);
 begin
   WindowDB.ShowModal;
 end;
 
-//Abre as configurações de campos
 procedure TWindowMain.ActConfigFieldsExecute(Sender: TObject);
 begin
   WindowFields.ShowModal;
 end;
 
-//Abre a configuraçãos dos Dados Dataflex
 procedure TWindowMain.ActDatasExecute(Sender: TObject);
 begin
   WindowDatas.ShowModal;
@@ -172,13 +147,11 @@ begin
   end;
 end;
 
-//Abre as configurações de migração
 procedure TWindowMain.ActConfigsExecute(Sender: TObject);
 begin
   WindowConfigs.ShowModal;
 end;
 
-//Libera a Thread de migração
 procedure TWindowMain.ActMigrateExecute(Sender: TObject);
 var
   Ok: boolean;
@@ -219,19 +192,16 @@ begin
   end;
 end;
 
-//Pausa a migração
 procedure TWindowMain.ActPauseExecute(Sender: TObject);
 begin
   PausedMode;
 end;
 
-//Continua a migração pausada
 procedure TWindowMain.ActContinueExecute(Sender: TObject);
 begin
   MigrationMode;
 end;
 
-//Para a migração
 procedure TWindowMain.ActStopExecute(Sender: TObject);
 begin
   PausedMode;
@@ -245,13 +215,11 @@ begin
   end;
 end;
 
-//Envia uma string para o TxtLog
 procedure TWindowMain.Log(Msg: string);
 begin
   TxtLog.Lines.Add(Msg);
 end;
 
-//Modo normal
 procedure TWindowMain.NormalMode;
 begin
   ActMigrate.Enabled := true;
@@ -267,7 +235,6 @@ begin
   MigrationPaused := false;
 end;
 
-//Modo de migração
 procedure TWindowMain.MigrationMode;
 begin
   ActMigrate.Enabled := false;
@@ -284,7 +251,6 @@ begin
   BtnPause.Action := ActPause;
 end;
 
-//Modo migração pausada
 procedure TWindowMain.PausedMode;
 begin
   ActMigrate.Enabled := false;
@@ -303,13 +269,11 @@ end;
 
 { TMyThread }
 
-//Cria a Thread e a executa
 constructor TMigration.Create;
 begin
   inherited Create(false);
 end;
 
-//Migra os dados: Dataflex -> Firebird
 procedure TMigration.Execute;
 var
   Rows: TStringList;
@@ -482,7 +446,6 @@ begin
   end;
 end;
 
-//Manda as informações para o log de saída
 procedure TMigration.Log(Msg: string);
 begin
   WindowMain.Log(Msg);
